@@ -1,0 +1,28 @@
+/* Tailwind CSS will be written here  */
+* {
+  @apply font-urbanist;
+}
+
+.btn1 {
+  @apply bg-[#21295C] rounded-md hover:!bg-[#4DA6C8] text-gray-50 hover:!text-gray-50;
+}
+
+.btn2 {
+  @apply bg-[#065A82] rounded-3xl px-4 py-1 hover:!bg-[#4DA6C8] text-gray-50 hover:!text-gray-50 uppercase;
+}
+
+.heading1 {
+  @apply mb-5 font-semibold text-2xl;
+}
+
+.active {
+  @apply bg-white;
+}
+
+.main-menu a:not(.active):hover {
+  @apply bg-white duration-300;
+}
+
+.container {
+  @apply px-6 md:px-0;
+}

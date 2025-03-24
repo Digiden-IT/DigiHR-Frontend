@@ -1,0 +1,97 @@
+/* manual css will be written here  */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-type-one: #21295c;
+  --color-type-two: #065a82;
+  --color-type-three: #4da6c8;
+  --color-type-four: #eff7ff;
+  --color-type-five: #d4dcff;
+  --bg-color: #e5e7eb;
+}
+
+.bg-one {
+  background-color: var(--color-type-one);
+}
+.bg-two {
+  background-color: var(--color-type-two);
+}
+.bg-three {
+  background-color: var(--color-type-three);
+}
+.bg-four {
+  background-color: var(--color-type-four);
+}
+
+.dark {
+  --bg-color: #221129;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.background-gradient {
+  background-image: linear-gradient(
+    to top left,
+    var(--color-type-five),
+    white 65%
+  );
+}
+
+/* sticky card scrool animation */
+.feature-box {
+  position: relative;
+}
+.feature-card {
+  position: sticky;
+}
+.feature-card:nth-child(1) {
+  top: 60px;
+}
+.feature-card:nth-child(2) {
+  top: 120px;
+}
+.feature-card:nth-child(3) {
+  top: 180px;
+}
+
+/* ant design css will be written here */
+.ant-layout-content {
+  padding: 0px 24px 24px;
+}
+
+.ant-menu-item-selected {
+  background-color: var(--color-type-three) !important;
+  color: white !important;
+  font-weight: 500;
+}
+
+.ant-layout-sider-trigger {
+  background-color: var(--color-type-three) !important;
+  color: white !important;
+}
+
+/* Laptop screens */
+@media (max-width: 1439px) {
+}
+
+/* Tablets */
+@media (max-width: 1023px) {
+}
+
+/* Mobile devices */
+@media (max-width: 767px) {
+  * {
+    font-size: 12px;
+  }
+  .ant-layout-content {
+    padding: 0px;
+  }
+}
