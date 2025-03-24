@@ -10,7 +10,7 @@ const announcements = [
     time: "Mar 16, 09:00 pm",
     topic: "Announcement Topic",
     content:
-      "Lorem ipsum dolor sit ameLorem ipssdf  adfar ar aetfas eftaerft aer gas ertum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor t consectetur. Lorem tortor dolor elLorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor it tincidunt cursus tincidunt amet varius. Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
+      "Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas ertum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor t consectetur. Lorem tortor dolor elLorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor it tincidunt cursus tincidunt amet varius. Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
   },
   {
@@ -20,7 +20,7 @@ const announcements = [
     time: "Mar 16, 09:00 pm",
     topic: "Announcement Topic",
     content:
-      "Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
+      "Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas  Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
   },
    {
@@ -40,7 +40,7 @@ const announcements = [
     time: "Mar 16, 09:00 pm",
     topic: "Announcement Topic",
     content:
-      "Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
+      "Lorem ipsum Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
   },
   {
@@ -60,7 +60,7 @@ const announcements = [
     time: "Mar 16, 09:00 pm",
     topic: "Announcement Topic",
     content:
-      "Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
+      "Lorem ipsum dolor sit Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas  amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
   },
 ];
@@ -75,7 +75,7 @@ const Announcements = () => {
 
       <div className="grid md:grid-cols-2 gap-4">
         {announcements.map((announcement) => (
-          <Card key={announcement.id} className="shadow-md rounded-lg border-blue-300 max-h-30">
+          <Card key={announcement.id} className="shadow-md rounded-lg border-blue-300 h-60 ">
             <div className="flex items-center gap-3 mb-4">
               <Avatar size={30} src={announcement.avatar} />
               <div>
@@ -87,7 +87,7 @@ const Announcements = () => {
               <AiOutlineMore className="ml-auto text-lg cursor-pointer" />
             </div>
             <h3 className="text-lg font-semibold">{announcement.topic}</h3>
-            <p className="text-gray-600 my-2 truncate">{announcement.content}</p>
+            <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">{announcement.content}</p>
           </Card>
         ))}
       </div>
