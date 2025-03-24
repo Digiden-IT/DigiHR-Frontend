@@ -9,7 +9,7 @@ const DashboardLayout = () => {
   return (
     <Layout style={{ height: "100%" }}>
       <DashboardSidebar />
-      <Layout style={{ background: "#fff" }}>
+      <Layout style={{ background: "#f4f0f7" }}>
         <DashboardHeader />
         <Content style={{ margin: "24px 16px 0" }}>
           <div className="dashboard-content">

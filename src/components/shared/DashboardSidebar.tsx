@@ -47,12 +47,12 @@ const DashboardSidebar = () => {
       breakpoint="lg"
       collapsedWidth={55}
       collapsible
-      width={220}
+      width={260}
       theme="light"
       className="h-screen sticky top-0 left-0 bg-four"
     >
       <div className="h-[4rem] flex justify-center items-center text-gray-50 mb-5">
-        <img src={logo} className="w-28" />
+        <img src={logo} className="w-40" />
       </div>
 
       <Menu

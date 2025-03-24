@@ -8,8 +8,9 @@
   --color-type-one: #21295c;
   --color-type-two: #065a82;
   --color-type-three: #4da6c8;
-  --color-type-four: #eff7ff;
+  --color-type-four: #ffffff;
   --color-type-five: #d4dcff;
+  --color-type-six: #d3e9fc;
   --bg-color: #e5e7eb;
 }
 
@@ -45,6 +46,11 @@
   );
 }
 
+.dashboard-content {
+  background: white;
+  border-radius: 10px;
+}
+
 /* sticky card scrool animation */
 .feature-box {
   position: relative;
@@ -64,17 +70,19 @@
 
 /* ant design css will be written here */
 .ant-layout-content {
-  padding: 0px 24px 24px;
+  padding: 0px 5px 24px;
 }
 
 .ant-menu-item-selected {
-  background-color: var(--color-type-three) !important;
-  color: white !important;
+  background-color: var(--color-type-six) !important;
+  color: rgb(143, 21, 143) !important;
   font-weight: 500;
+  border-color: var(--color-blue-500);
+  border-radius: 5px;
 }
 
 .ant-layout-sider-trigger {
-  background-color: var(--color-type-three) !important;
+  background-color: var(--color-type-six) !important;
   color: white !important;
 }
 
