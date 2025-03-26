@@ -33,7 +33,7 @@ const DashboardSidebar = () => {
         {
           key: "manage-users",
           icon: <PiUsersFourBold size={18} />,
-          label: <p>User</p>,
+          label: <p>Employee Management</p>,
         },
       ];
       break;
