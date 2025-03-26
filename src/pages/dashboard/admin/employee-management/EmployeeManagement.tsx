@@ -1,8 +1,10 @@
-import React from 'react';
-import { Space, Table } from 'antd';
+import React, { useState } from 'react';
+import { Space, Table, Modal } from 'antd';
 import { FaEye } from 'react-icons/fa';
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+// import UserDetails from './UserDetails';
+import EmployeeProfile from './EmployeeProfile';
 
 const { Column } = Table;
 
@@ -15,7 +17,7 @@ interface DataType {
   JoiningDate: string;
 }
 
-const data: DataType[] = [
+const initialData: DataType[] = [
   {
     key: '1',
     EmployeeName: 'Aktaruzzaman',
@@ -66,23 +68,58 @@ const data: DataType[] = [
   },
 ];
 
-const EmployeeManagement = () => (
-  <Table<DataType> dataSource={data}>
-    
-    <Column title="Employee Name" dataIndex="EmployeeName" key="EmployeeName" />
-   
-    <Column title="Email" dataIndex="Email" key="Email" />
-    <Column title="Department" dataIndex="Department" key="Department" />
-    <Column title="Role" dataIndex="Role" key="Role" />
-    <Column title="JoiningDate" dataIndex="JoiningDate" key="JoiningDate" />
-    <Column title="Action" dataIndex="Action" key="Action" render={() => (
-        <Space size="middle">
-          <FaEye size={20} />
-          <CiEdit size={20} />
-          <MdDelete size={20} />
-        </Space>
-      )} />
-  </Table>
-);
+const EmployeeManagement = () => {
+  const [data, setData] = useState<DataType[]>(initialData);
+  const [selectedEmployee, setSelectedEmployee] = useState<DataType | null>(null);;
+
+  const handleDelete = (key: React.Key) => {
+    setData((prevData) => prevData.filter((item) => item.key !== key));
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = (user: DataType) => {
+    setIsModalOpen(true);
+    setSelectedEmployee(user);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <Table<DataType> dataSource={data} pagination={{ pageSize: 5 }}>
+      <Column title="Employee Name" dataIndex="EmployeeName" key="EmployeeName" />
+      <Column title="Email" dataIndex="Email" key="Email" />
+      <Column title="Department" dataIndex="Department" key="Department" />
+      <Column title="Role" dataIndex="Role" key="Role" />
+      <Column title="Joining Date" dataIndex="JoiningDate" key="JoiningDate" />
+      <Column 
+        title="Action" 
+        key="Action" 
+        render={(_, record: DataType) => (
+          <Space size="middle">
+            <FaEye size={20} style={{ cursor: 'pointer' }} onClick={() => showModal(record)} />
+            <CiEdit size={20} style={{ cursor: 'pointer' }} />
+            <MdDelete 
+              size={20} 
+              style={{ cursor: 'pointer', color: 'red' }} 
+              onClick={() => handleDelete(record.key)} 
+            />
+            <Modal title="Employee Details" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        {/* {selectedEmployee && <UserDetails user={selectedEmployee} />} */}
+        {selectedEmployee && <EmployeeProfile user={selectedEmployee} />}
+
+      </Modal>
+          </Space>
+        )} 
+      />
+    </Table>
+  );
+};
 
 export default EmployeeManagement;
