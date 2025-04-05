@@ -1,15 +1,15 @@
 import React from "react";
-import { Card, Row, Col, Avatar, Button } from "antd";
+import { Row, Col, Avatar, Button } from "antd";
 import { EditOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 
 // Define TypeScript interface for user data
 interface User {
-    key: React.Key;
-    EmployeeName: string;
-    Email: string;
-    Department: string;
-    Role: string;
-    JoiningDate: string;
+  key: React.Key;
+  EmployeeName: string;
+  Email: string;
+  Department: string;
+  Role: string;
+  JoiningDate: string;
 }
 
 // Define props interface
@@ -19,10 +19,7 @@ interface EmployeeProfileProps {
 
 const EmployeeProfile: React.FC<EmployeeProfileProps> = ({ user }) => {
   return (
-    <Card
-      style={{ maxWidth: 600, margin: "20px auto", borderRadius: 12 }}
-      bodyStyle={{ padding: "20px" }}
-    >
+    <div>
       <Row gutter={[16, 16]} align="middle">
         <Col span={6}>
           <Avatar
@@ -89,7 +86,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({ user }) => {
           </p>
         </Col>
       </Row>
-    </Card>
+    </div>
   );
 };
 
