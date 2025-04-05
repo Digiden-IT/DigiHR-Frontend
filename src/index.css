@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --color-type-one: #21295c;
-  --color-type-two: #065a82;
+  --color-type-one: #7152F3;
+  --color-type-two: #EEF5FF;
   --color-type-three: #4da6c8;
   --color-type-four: #ffffff;
   --color-type-five: #d4dcff;
-  --color-type-six: #d3e9fc;
+  --color-type-six: #1b6bb1;
   --bg-color: #e5e7eb;
 }
 
@@ -48,7 +48,9 @@
 
 .dashboard-content {
   background: white;
-  border-radius: 10px;
+  border-radius: 5px;
+  border: 1px !important;
+  border-color: #E8DDFF !important;
 }
 
 /* sticky card scrool animation */
@@ -74,10 +76,10 @@
 }
 
 .ant-menu-item-selected {
-  background-color: var(--color-type-six) !important;
-  color: rgb(143, 21, 143) !important;
+  background-color: var(--color-type-two) !important;
+  color:  var(--color-type-one) !important;
   font-weight: 500;
-  border-color: var(--color-blue-500);
+  border-color: violet;
   border-radius: 5px;
 }
 
@@ -102,4 +104,9 @@
   .ant-layout-content {
     padding: 0px;
   }
+}
+
+.btn-1{
+  background-color: var(--color-type-one) !important;
+  color: #ffffff !important;
 }

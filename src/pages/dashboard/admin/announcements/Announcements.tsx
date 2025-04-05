@@ -67,10 +67,10 @@ const announcements = [
 
 const Announcements = () => {
   return (
-    <div className="p-6 bg-white-100 min-h-screen">
+    <div className="p-6 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Recent Announcements</h1>
-        <Button color="purple" variant="solid" icon={<FaPlus />}>Add Announcement</Button>
+        <Button className="btn-1" icon={<FaPlus />}>Add Announcement</Button>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
