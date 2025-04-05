@@ -1,6 +1,10 @@
-import { Card, Button, Avatar } from "antd";
+import { Card, Button, Avatar,Modal,Input } from "antd";
 import { AiOutlineMore } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
+import { useState } from 'react';
+
+const { TextArea } = Input;
+
 
 const announcements = [
   {
@@ -66,11 +70,28 @@ const announcements = [
 ];
 
 const Announcements = () => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [topic,setTopic] = useState('');
+  const [message,setMessage] = useState('');
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => setIsModalOpen(false);
+  const handleAdd = () => {
+    console.log('New announcement:', topic, message);
+    setIsModalOpen(false);
+    setTopic('');
+    setMessage('');
+  };
+
   return (
     <div className="p-6 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Recent Announcements</h1>
-        <Button className="btn-1" icon={<FaPlus />}>Add Announcement</Button>
+        <Button className="btn-1" icon={<FaPlus />} onClick={showModal} >Add Announcement</Button>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
@@ -91,7 +112,54 @@ const Announcements = () => {
           </Card>
         ))}
       </div>
+      <Modal
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+        centered
+        closable = {false}
+        className="rounded-xl"
+      >
+        <div className="p-4">
+          <h2 className="text-xl font-bold mb-4">Create New Announcement</h2>
+          <div className="mb-3">
+            <label className="block font-semibold mb-1">Enter Announcement Topic</label>
+            <Input
+              placeholder="Announcement Subject"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              className="rounded-lg py-2"
+            />
+          </div>
+          <div className="mb-5">
+            <label className="block font-semibold mb-1">Give Announcement</label>
+            <TextArea
+              placeholder="Announcement Message"
+              rows={3}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="rounded-lg py-2"
+            />
+          </div>
+          <div className="flex justify-center gap-7">
+            <Button
+              onClick={handleCancel}
+              className="rounded-xl border-gray-300"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAdd}
+              className="bg-purple-600 hover:bg-purple-700 text-white rounded-xl px-6"
+            >
+              Add
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
+
+    
   );
 };
 
