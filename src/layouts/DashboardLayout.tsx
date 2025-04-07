@@ -7,12 +7,12 @@ const { Content } = Layout;
 
 const DashboardLayout = () => {
   return (
-    <Layout style={{ height: "100%" }}>
+    <Layout className="h-full">
       <DashboardSidebar />
-      <Layout style={{ background: "#FBF9FF" }}>
+      <Layout className="bg-[#FBF9FF]">
         <DashboardHeader />
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div className="dashboard-content">
+        <Content className="mt-6 mx-4">
+          <div className="bg-white rounded-[5px] border border-[#E8DDFF]">
             <Outlet />
           </div>
         </Content>

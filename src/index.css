@@ -46,13 +46,6 @@
   );
 }
 
-.dashboard-content {
-  background: white;
-  border-radius: 5px;
-  border: 1px !important;
-  border-color: #E8DDFF !important;
-}
-
 /* sticky card scrool animation */
 .feature-box {
   position: relative;
