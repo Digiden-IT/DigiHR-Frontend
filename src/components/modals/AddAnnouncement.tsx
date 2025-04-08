@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Input, Form } from "antd";
 
 interface AnnouncementProps {
   visible: boolean;
   onCancel: () => void;
   onAdd: (announcement: AnnouncementType) => void;
+  initialData?: AnnouncementType | null;
+  isEditing?: boolean;
 }
 
 interface AnnouncementType {
@@ -21,31 +23,48 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
   visible,
   onCancel,
   onAdd,
+  initialData = null,
+  isEditing = false,
 }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (visible && initialData) {
+      form.setFieldsValue({
+        topic: initialData.topic,
+        message: initialData.content,
+      });
+    } else if (visible && !initialData) {
+      form.resetFields();
+    }
+  }, [visible, initialData, form]);
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
       setIsLoading(true);
 
-      const newAnnouncement = {
-        id: Date.now(), // Simple ID generation
-        name: "Darlene Robertson", // Hardcoded for demo
-        role: "Project Manager",
-        time: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }),
+      const announcementData = {
+        id: initialData ? initialData.id : Date.now(), // Use existing ID when editing
+        name: initialData ? initialData.name : "Jabed Uddin",
+        role: initialData ? initialData.role : "CEO",
+        time: initialData
+          ? initialData.time
+          : new Date().toLocaleString("en-US", {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            }),
         topic: values.topic,
         content: values.message,
-        avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+        avatar: initialData
+          ? initialData.avatar
+          : "https://avatars.githubusercontent.com/u/90123719?v=4",
       };
 
-      onAdd(newAnnouncement);
+      onAdd(announcementData);
       form.resetFields();
       setIsLoading(false);
       onCancel();
@@ -60,14 +79,13 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
   return (
     <Modal
       open={visible}
-      onCancel={onCancel}
       footer={null}
       centered
       closable={false}
       className="rounded-xl"
       title={
         <div className="text-2xl font-semibold mb-6">
-          Create New Announcement
+          {isEditing ? "Edit Announcement" : "Create New Announcement"}
         </div>
       }
     >
@@ -121,7 +139,7 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
             className="btn-1"
             loading={isLoading}
           >
-            Add
+            {isEditing ? "Update" : "Add"}
           </Button>
         </div>
       </Form>
