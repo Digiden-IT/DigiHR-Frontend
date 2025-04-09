@@ -47,7 +47,7 @@ const DashboardSidebar = () => {
       breakpoint="lg"
       collapsedWidth={55}
       collapsible
-      width={260}
+      width={302}
       theme="light"
       className="h-screen sticky top-0 left-0 bg-four"
     >

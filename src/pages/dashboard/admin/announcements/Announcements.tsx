@@ -3,16 +3,7 @@ import { AiOutlineMore } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
 import AddAnnouncement from "../../../../components/modals/AddAnnouncement";
-
-interface AnnouncementType {
-  id: number;
-  name: string;
-  role: string;
-  time: string;
-  topic: string;
-  content: string;
-  avatar: string;
-}
+import { AnnouncementType } from "../../../../types/props.type";
 
 const Announcements: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,23 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Input, Form } from "antd";
-
-interface AnnouncementProps {
-  visible: boolean;
-  onCancel: () => void;
-  onAdd: (announcement: AnnouncementType) => void;
-  initialData?: AnnouncementType | null;
-  isEditing?: boolean;
-}
-
-interface AnnouncementType {
-  id: number;
-  name: string;
-  role: string;
-  time: string;
-  topic: string;
-  content: string;
-  avatar: string;
-}
+import { AnnouncementProps } from "../../types/props.type";
 
 const AddAnnouncement: React.FC<AnnouncementProps> = ({
   visible,
