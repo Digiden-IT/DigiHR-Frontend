@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Space, Table, Modal, Button } from "antd";
 import { PiEye } from "react-icons/pi";
 import { CiTrash } from "react-icons/ci";
-
-import { BsFilterLeft } from "react-icons/bs";
+import { VscSettings } from "react-icons/vsc";
 
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
 import { Link } from "react-router-dom";
@@ -80,11 +79,11 @@ const EmployeeManagement = () => {
   };
 
   return (
-    <>
+    <div className="p-6 min-h-screen">
       <Space className="mb-4 flex justify-between">
         <div>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
+            className="btn-1 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
             onClick={() => setnewEmployee(true)} // function Name changed since its adding a newEmployee
           >
             + Add Employee
@@ -97,7 +96,7 @@ const EmployeeManagement = () => {
             className="w-full px-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <Button>
-            <BsFilterLeft size={20} />
+            <VscSettings size={20} />
             Filter
           </Button>
         </div>
@@ -154,7 +153,7 @@ const EmployeeManagement = () => {
       >
         <AddNewEmployeeModal />
       </Modal>
-    </>
+    </div>
   );
 };
 
