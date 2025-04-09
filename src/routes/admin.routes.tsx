@@ -5,6 +5,9 @@ import EmployeeManagement from "../pages/dashboard/admin/employee-management/Emp
 import Announcements from "../pages/dashboard/admin/announcements/Announcements";
 import { GrAnnounce } from "react-icons/gr";
 
+import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
+import LeaveManagement from "../pages/dashboard/admin/leave-management.tsx/LeaveManagement";
+
 export const adminPaths = [
   {
     name: "Dashboard",
@@ -19,10 +22,24 @@ export const adminPaths = [
     element: <EmployeeManagement />,
   },
   {
+
+    name: "SingleEmployeeDetails",
+    path: "/employee-management/user-details/:userId",
+    icon: <LuLayoutDashboard size={18} />,
+    element: <EmployeeDetails />,
+  },
+  {
+    name: "Leave Management",
+    path: "/leave-management",
+    icon: <RxPerson size={18} />,
+    element: <LeaveManagement />,
+  },
+  {
     name: "Announcements",
     path: "/announcements",
     icon: <GrAnnounce size={18} />,
     element: <Announcements />,
   },
+
 
 ];
