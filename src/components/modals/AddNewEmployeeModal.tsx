@@ -1,151 +1,233 @@
-import React from "react";
-import { DatePicker, Form, Input, Select } from "antd";
-import type { FormItemProps } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import { Button } from "antd";
+import { useState } from "react";
 
-dayjs.extend(customParseFormat);
-
-const MyFormItemContext = React.createContext<(string | number)[]>([]);
-
-interface MyFormItemGroupProps {
-  prefix: string | number | (string | number)[];
-}
-
-function toArr(
-  str: string | number | (string | number)[]
-): (string | number)[] {
-  return Array.isArray(str) ? str : [str];
-}
-
-const MyFormItemGroup: React.FC<
-  React.PropsWithChildren<MyFormItemGroupProps>
-> = ({ prefix, children }) => {
-  const prefixPath = React.useContext(MyFormItemContext);
-  const concatPath = React.useMemo(
-    () => [...prefixPath, ...toArr(prefix)],
-    [prefixPath, prefix]
-  );
-
-  return (
-    <MyFormItemContext.Provider value={concatPath}>
-      {children}
-    </MyFormItemContext.Provider>
-  );
+type AddNewEmployeeModalProps = {
+  closeModal: () => void;
 };
 
-const MyFormItem = ({ name, ...props }: FormItemProps) => {
-  const prefixPath = React.useContext(MyFormItemContext);
-  const concatName =
-    name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;
-
-  return <Form.Item name={concatName} {...props} />;
+const defaultFormData = {
+  name: "",
+  number: "",
+  birth: "",
+  gender: "",
+  group: "",
+  email: "",
+  role: "",
+  type: "",
+  department: "",
+  join: "",
+  designation: "",
+  address: "",
 };
 
-const AddNewEmployeeModal: React.FC = () => {
-  const onFinish = (value: object) => {
-    console.log(value);
+const AddNewEmployeeModal = ({ closeModal }: AddNewEmployeeModalProps) => {
+  const [formData, setformData] = useState(defaultFormData);
+  const {
+    name,
+    number,
+    birth,
+    gender,
+    group,
+    email,
+    role,
+    type,
+    department,
+    join,
+    designation,
+    address,
+  } = formData;
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setformData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
   };
 
+  const onChangeDropdown = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setformData((prevState) => ({
+      ...prevState,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+    setformData(defaultFormData);
+    closeModal();
+  };
   return (
-    <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
-      <MyFormItemGroup prefix={["user"]}>
-        <div className="grid grid-cols-2 gap-4">
-          <MyFormItemGroup prefix={["name"]}>
-            <MyFormItem name="EnterEmployeeName" label="Enter Employee Name">
-              <Input />
-            </MyFormItem>
-            <MyFormItem name="EnterMobileNumber" label="Enter Mobile Number">
-              <Input />
-            </MyFormItem>
-          </MyFormItemGroup>
+    <div className="p-8">
+      <form
+        onSubmit={onSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <div>
+          <label className="block text-sm mb-1">Enter Employee Name</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => onChange(e)}
+            className="w-full border rounded p-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Enter Mobile Number</label>
+          <input
+            type="text"
+            id="number"
+            value={number}
+            onChange={onChange}
+            className="w-full border rounded p-2"
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <MyFormItem name="DateofBirth" label="Date of Birth">
-            <DatePicker defaultValue={dayjs("01/01/2015")} className="w-full" />
-          </MyFormItem>
-
-          <MyFormItem name="SelectGender" label="Select Gender">
-            <Select
-              defaultValue="Select Gender"
-              style={{ width: "100%" }}
-              options={[
-                { value: "Male", label: "Male" },
-                { value: "Female", label: "Female" },
-              ]}
-            />
-          </MyFormItem>
+        <div>
+          <label className="block text-sm mb-1">Date of Birth</label>
+          <input
+            type="date"
+            id="birth"
+            value={birth}
+            onChange={onChange}
+            className="w-full border rounded p-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Select Gender</label>
+          <select
+            id="gender"
+            value={gender}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Choose Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <MyFormItemGroup prefix={["name"]}>
-            <MyFormItem name="SelectBloodGroup" label="Select Blood Group">
-              <Select
-                defaultValue="Choose Group"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-              />
-            </MyFormItem>
-            <MyFormItem name="EnterEmailAddress" label="Enter Email Address">
-              <Input />
-            </MyFormItem>
-          </MyFormItemGroup>
+        <div>
+          <label className="block text-sm mb-1">Select Blood Group</label>
+          <select
+            id="group"
+            value={group}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Choose Group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Enter Email Address</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={onChange}
+            placeholder="abc@gmail.com"
+            className="w-full border rounded p-2"
+          />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <MyFormItemGroup prefix={["name"]}>
-            <MyFormItem name="SelectRole" label="Select Role">
-              <Select
-                defaultValue="Choose Role"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-              />
-            </MyFormItem>
-            <MyFormItem name="SelectEmployeeType" label="Select Employee Type">
-              <Select
-                defaultValue="Choose Type"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-              />
-            </MyFormItem>
-          </MyFormItemGroup>
+        <div>
+          <label className="block text-sm mb-1">Select Role</label>
+          <select
+            id="role"
+            value={role}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Select Role</option>
+            <option>Frontend</option>
+            <option>Backend</option>
+            <option>Full Stact</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Select Employee Type</label>
+          <select
+            id="type"
+            value={type}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Select Type</option>
+
+            <option>Employee</option>
+            <option>Intern</option>
+            <option>Manager</option>
+          </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <MyFormItemGroup prefix={["name"]}>
-            <MyFormItem name="SelectDepartment" label="Select Department">
-              <Select
-                defaultValue="Department Name"
-                style={{ width: "100%" }}
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-              />
-            </MyFormItem>
-            <MyFormItem name="SelectJoiningDate" label="Select Joining Date">
-              <DatePicker
-                defaultValue={dayjs("01/01/2015")}
-                className="w-full"
-              />
-            </MyFormItem>
-          </MyFormItemGroup>
+        <div>
+          <label className="block text-sm mb-1">Select Department</label>
+          <select
+            id="department"
+            value={department}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Department name</option>
+            <option>HR</option>
+            <option>Management</option>
+            <option>Client</option>
+          </select>
         </div>
-        <MyFormItem name="EnterAddress" label="Enter Address">
-          <Input placeholder="Street, district etc..." />
-        </MyFormItem>
-      </MyFormItemGroup>
-    </Form>
+        <div>
+          <label className="block text-sm mb-1">Select Joining Date</label>
+          <input
+            type="date"
+            id="join"
+            value={join}
+            onChange={onChange}
+            className="w-full border rounded p-2"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-1">Select Designation</label>
+          <select
+            id="designation"
+            value={designation}
+            onChange={onChangeDropdown}
+            className="w-full border rounded p-2 bg-white"
+          >
+            <option>Designation</option>
+            <option>Senior Employee</option>
+            <option>junior Employee</option>
+            <option>Mid Level</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm mb-1">Enter Address</label>
+          <input
+            type="text"
+            id="address"
+            value={address}
+            onChange={onChange}
+            placeholder="street, district etc.."
+            className="w-full border rounded p-2"
+          />
+        </div>
+
+        <div className="col-span-1 md:col-span-2 flex justify-end gap-4 mt-4">
+          <Button onClick={closeModal}>Cancel</Button>
+          <Button htmlType="submit" className="btn-1">
+            Apply
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
