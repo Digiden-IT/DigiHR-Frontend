@@ -20,9 +20,7 @@ const LoginForm = () => {
     const toastId = toast.loading("Logging in");
     try {
       const response = await login(values).unwrap();
-
       const decodedUser = jwtDecode(response.accessToken) as TUser;
-
       dispatch(
         setUser({
           user: decodedUser,
@@ -41,11 +39,13 @@ const LoginForm = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // message.error(err?.data?.message as string);
-      toast.error("Something went wrong, try again later", {
-        id: toastId,
-        duration: 2000,
-      });
-      console.log("inside: ", err);
+      toast.error(
+        err?.data?.message || "Something went wrong, try again later",
+        {
+          id: toastId,
+          duration: 2000,
+        }
+      );
     }
   };
 

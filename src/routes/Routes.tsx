@@ -4,13 +4,14 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ProtectedRoute from "../layouts/ProtectedRoute";
 import { routeGenerator } from "../utils/routeGenerator";
 import { adminPaths } from "./admin.routes";
+import RedirectToRoleBasedDashboard from "../layouts/RedirectToRoleBasedDashboard";
 
 console.log(routeGenerator(adminPaths, "admin"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Dashboard />,
+    element: <RedirectToRoleBasedDashboard />,
     errorElement: (
       <p>
         Page not found back to <Link to={"/"}>Home</Link>
