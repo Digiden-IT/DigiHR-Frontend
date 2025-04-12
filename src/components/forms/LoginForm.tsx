@@ -1,4 +1,4 @@
-import { Button, Checkbox, CheckboxProps, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/feature/auth/authApi";
@@ -20,28 +20,35 @@ const LoginForm = () => {
     const toastId = toast.loading("Logging in");
     try {
       const response = await login(values).unwrap();
-      const decodedUser = jwtDecode(response.data.token) as TUser;
+
+      const decodedUser = jwtDecode(response.accessToken) as TUser;
+
       dispatch(
         setUser({
           user: decodedUser,
-          token: response.data.token,
+          token: response.accessToken,
         })
       );
-      if (response.success) {
-        toast.success(response.message, { id: toastId, duration: 2000 });
-        navigate(`/${decodedUser?.userRole}/dashboard`, { replace: true });
+      if (response.accessToken && decodedUser) {
+        toast.success("Logged in successfully", {
+          id: toastId,
+          duration: 2000,
+        });
+        navigate(`/${decodedUser?.role.toLowerCase()}/dashboard`, {
+          replace: true,
+        });
       }
-
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // message.error(err?.data?.message as string);
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      toast.error("Something went wrong, try again later", {
+        id: toastId,
+        duration: 2000,
+      });
+      console.log("inside: ", err);
     }
   };
 
-  const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
   return (
     <Form
       name="login"
@@ -74,10 +81,9 @@ const LoginForm = () => {
           size="large"
         />
       </Form.Item>
-      <div className="flex justify-between mb-4">
-        <Checkbox onChange={onChange}>Remember Me.</Checkbox>
-        <p>Forgot Password?</p>
-      </div>
+
+      <p className="mb-4">Forgot Password?</p>
+
       <Form.Item className="text-primary">
         <Button
           block
