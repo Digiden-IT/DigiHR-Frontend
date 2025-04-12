@@ -14,32 +14,34 @@ export const adminPaths = [
     path: "/dashboard",
     icon: <LuLayoutDashboard size={18} />,
     element: <HomeDashboard />,
+    show: true,
   },
   {
     name: "Employee Management",
     path: "/employee-management",
     icon: <RxPerson size={18} />,
     element: <EmployeeManagement />,
+    show: true,
   },
   {
-
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
     icon: <LuLayoutDashboard size={18} />,
     element: <EmployeeDetails />,
+    show: false,
   },
   {
     name: "Leave Management",
     path: "/leave-management",
     icon: <RxPerson size={18} />,
     element: <LeaveManagement />,
+    show: true,
   },
   {
     name: "Announcements",
     path: "/announcements",
     icon: <GrAnnounce size={18} />,
     element: <Announcements />,
+    show: true,
   },
-
-
 ];
