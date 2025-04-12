@@ -22,11 +22,11 @@ const DashboardSidebar = () => {
 
   let sidebarItems: MenuProps["items"];
 
-  switch ((user as TUser)!.userRole) {
+  switch ((user as TUser)!.role) {
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(
         adminPaths,
-        userRole.ADMIN
+        "admin"
       ) as MenuProps["items"];
       break;
     case userRole.USER:

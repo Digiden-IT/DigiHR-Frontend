@@ -6,6 +6,7 @@ import { VscSettings } from "react-icons/vsc";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
 
 import { Link } from "react-router-dom";
+import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
 
 const { Column } = Table;
 
@@ -70,6 +71,10 @@ const initialData: DataType[] = [
 ];
 
 const EmployeeManagement = () => {
+  const { data: usersData, isLoading } = useGetAllUserQuery(undefined);
+
+  console.log(isLoading, usersData?.data);
+
   const [data, setData] = useState<DataType[]>(initialData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
