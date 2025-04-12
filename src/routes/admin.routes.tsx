@@ -1,12 +1,14 @@
 import { RxPerson } from "react-icons/rx";
-import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
 import { LuLayoutDashboard } from "react-icons/lu";
-import EmployeeManagement from "../pages/dashboard/admin/employee-management/EmployeeManagement";
-import Announcements from "../pages/dashboard/admin/announcements/Announcements";
 import { GrAnnounce } from "react-icons/gr";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
 import LeaveManagement from "../pages/dashboard/admin/leave-management.tsx/LeaveManagement";
+import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
+import EmployeeManagement from "../pages/dashboard/admin/employee-management/EmployeeManagement";
+import Announcements from "../pages/dashboard/admin/announcements/Announcements";
+import HolidayManagement from "../pages/dashboard/admin/holiday-management/HolidayManagement";
 
 export const adminPaths = [
   {
@@ -36,6 +38,12 @@ export const adminPaths = [
     icon: <RxPerson size={18} />,
     element: <LeaveManagement />,
     show: true,
+  },
+  {
+    name: "Holiday Management",
+    path: "/holiday-management",
+    icon: <FaRegCalendarAlt size={18} />,
+    element: <HolidayManagement />,
   },
   {
     name: "Announcements",
