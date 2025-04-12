@@ -85,9 +85,11 @@ const HolidayManagement = () => {
       key: "date",
       render: (text, record, index) => (
         <div className="flex items-center">
-          {index > 4 ? (
+          {new Date(record.date) > new Date() ? (
             <div className="w-1 h-7 bg-one  mr-2"></div>
-          ): (<div className="w-1 h-7 bg-three  mr-2"></div>)}
+          ) : (
+            <div className="w-1 h-7 bg-three  mr-2"></div>
+          )}
           <span>{text}</span>
         </div>
       ),
@@ -105,7 +107,7 @@ const HolidayManagement = () => {
     {
       title: "",
       key: "action",
-      render: () => <CiTrash className="text-red-500" size={20}/>,
+      render: () => <CiTrash className="text-red-500" size={20} />,
     },
   ];
 
