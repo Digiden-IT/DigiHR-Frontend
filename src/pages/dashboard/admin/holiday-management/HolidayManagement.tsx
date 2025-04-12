@@ -1,14 +1,15 @@
 import { Button, Table, Pagination, Tag } from "antd";
 import { useState } from "react";
-
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
+import type { TableColumnsType, PaginationProps } from "antd";
+import { Holiday } from "../../../../types/props.type";
 
-const HolidayManagement = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+const HolidayManagement: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false) ;
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  // Sample data for the holidays
-  const holidaysData = [
+  const holidaysData: Holiday[] = [
     {
       key: "1",
       date: "January 01, 2025",
@@ -77,18 +78,17 @@ const HolidayManagement = () => {
     },
   ];
 
-  // Define the columns for the table
-  const columns = [
+  const columns: TableColumnsType<Holiday> = [
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: (text, record, index) => (
+      render: (text: string, record: Holiday) => (
         <div className="flex items-center">
           {new Date(record.date) > new Date() ? (
-            <div className="w-1 h-7 bg-one  mr-2"></div>
+            <div className="w-1 h-7 bg-one mr-2"></div>
           ) : (
-            <div className="w-1 h-7 bg-three  mr-2"></div>
+            <div className="w-1 h-7 bg-three mr-2"></div>
           )}
           <span>{text}</span>
         </div>
@@ -107,21 +107,27 @@ const HolidayManagement = () => {
     {
       title: "",
       key: "action",
-      render: () => <CiTrash className="text-red-500" size={20} />,
+      render: (_: unknown, record: Holiday) => (
+        <CiTrash className="text-red-500" size={20} />
+      ),
     },
   ];
 
-  const getCurrentData = () => {
+  const getCurrentData = (): Holiday[] => {
     return holidaysData.slice((currentPage - 1) * 10, currentPage * 10);
+  };
+
+  const handlePageChange: PaginationProps["onChange"] = (page) => {
+    setCurrentPage(page);
   };
 
   return (
     <div className="p-6 min-h-screen">
-      <Button icon={<FaPlus />} className="btn-1 mb-4">
+      <Button icon={<FaPlus />} className="btn-1 mb-4" onClick={()=>setIsModalOpen(true)}>
         Add New Holiday
       </Button>
 
-      <Table
+      <Table<Holiday>
         columns={columns}
         dataSource={getCurrentData()}
         pagination={false}
@@ -147,7 +153,7 @@ const HolidayManagement = () => {
         <Pagination
           current={currentPage}
           total={holidaysData.length}
-          onChange={setCurrentPage}
+          onChange={handlePageChange}
           showSizeChanger={false}
           itemRender={(page, type, originalElement) => {
             if (type === "page") {

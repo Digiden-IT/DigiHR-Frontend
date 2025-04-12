@@ -25,4 +25,11 @@ export interface AnnouncementProps {
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
 };
+export interface Holiday {
+  key: string;
+  date: string;
+  day: string;
+  holidayName: string;
+};
+
 
