@@ -25,3 +25,4 @@ export interface AnnouncementProps {
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
 };
+

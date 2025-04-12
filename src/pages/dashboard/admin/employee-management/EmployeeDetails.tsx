@@ -1,4 +1,5 @@
-import { Pencil, ArrowLeft } from "lucide-react";
+import { PiPencilSimpleLineThin } from "react-icons/pi";
+import { MdOutlineSubdirectoryArrowLeft } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 type ProfileFieldProps = {
@@ -12,7 +13,12 @@ const ProfileField = ({ label, value, editable }: ProfileFieldProps) => (
     <p className="text-gray-500 text-sm">{label}</p>
     <div className="flex items-center justify-between">
       <p className="text-gray-900">{value}</p>
-      {editable && <Pencil className="h-4 w-4 text-gray-400 cursor-pointer" />}
+      {editable && (
+        <PiPencilSimpleLineThin
+          size={20}
+          className="text-gray-800 cursor-pointer"
+        />
+      )}
     </div>
   </div>
 );
@@ -40,7 +46,7 @@ export default function EmployeeDetails() {
           to={"/admin/employee-management"}
           className="flex items-center gap-2 text-purple-600 border border-purple-300 px-4 py-1.5 rounded-lg hover:bg-purple-50"
         >
-          <ArrowLeft size={16} /> Go Back
+          <MdOutlineSubdirectoryArrowLeft size={16} /> Go Back
         </Link>
       </div>
 

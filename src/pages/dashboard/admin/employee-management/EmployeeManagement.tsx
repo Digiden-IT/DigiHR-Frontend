@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Space, Table, Modal, Button } from "antd";
+import { Space, Table, Button, Modal } from "antd";
 import { PiEye } from "react-icons/pi";
 import { CiTrash } from "react-icons/ci";
-
-import { BsFilterLeft } from "react-icons/bs";
-
+import { VscSettings } from "react-icons/vsc";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
+
 import { Link } from "react-router-dom";
 
 const { Column } = Table;
@@ -73,19 +72,32 @@ const initialData: DataType[] = [
 const EmployeeManagement = () => {
   const [data, setData] = useState<DataType[]>(initialData);
 
-  const [newEmployee, setnewEmployee] = useState(false); // state name changed as they are newEmployee
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const handleDelete = (key: React.Key) => {
     setData((prevData) => prevData.filter((item) => item.key !== key));
   };
 
   return (
-    <>
+    <div className="p-6 min-h-screen">
       <Space className="mb-4 flex justify-between">
         <div>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-            onClick={() => setnewEmployee(true)} // function Name changed since its adding a newEmployee
+            className="btn-1 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
+            onClick={showModal}
           >
             + Add Employee
           </button>
@@ -94,10 +106,10 @@ const EmployeeManagement = () => {
           <input
             type="text"
             placeholder="Search by Date"
-            className="w-full px-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <Button>
-            <BsFilterLeft size={20} />
+          <Button className="rounded-md">
+            <VscSettings size={20} />
             Filter
           </Button>
         </div>
@@ -138,23 +150,16 @@ const EmployeeManagement = () => {
       </Table>
       <Modal
         title="Add New Employee"
-        okText={"Apply"}
-        closeIcon={null}
-        open={newEmployee}
-        onOk={() => setnewEmployee(false)}
-        onCancel={() => setnewEmployee(false)}
-        width={{
-          xs: "90%",
-          sm: "80%",
-          md: "70%",
-          lg: "60%",
-          xl: "50%",
-          xxl: "40%",
-        }}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={closeModal}
+        width="70%"
+        footer={null}
+        closable={false}
       >
-        <AddNewEmployeeModal />
+        <AddNewEmployeeModal closeModal={closeModal} />
       </Modal>
-    </>
+    </div>
   );
 };
 
