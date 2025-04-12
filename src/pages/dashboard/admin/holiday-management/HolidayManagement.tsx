@@ -1,201 +1,172 @@
-// import { FaPlus } from "react-icons/fa";
-// import { Button } from "antd";
+import { Button, Table, Pagination, Tag } from "antd";
+import { useState } from "react";
 
-// const HolidayManagement = () => {
-//   return (
-//     <>
-//       <div className="p-6 min-h-screen">
-//         <Button
-//           className="btn-1"
-//           icon={<FaPlus />}
-//           onClick={() => {
-//             alert("hoaihr");
-//           }}
-//         >
-//           Add New Holiday
-//         </Button>
-//       </div>
-//     </>
-//   );
-// };
+import { CiTrash } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa";
 
-import React, { useState } from "react";
-import { FaTrash, FaPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Button } from "antd";
-
-const HolidayCalendar = () => {
+const HolidayManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewType, setViewType] = useState("upcoming");
 
-  // Sample holiday data
-  const holidayData = [
-    { key: "1", date: "January 01, 2023", day: "Tuesday", name: "New Year" },
+  // Sample data for the holidays
+  const holidaysData = [
+    {
+      key: "1",
+      date: "January 01, 2025",
+      day: "Tuesday",
+      holidayName: "New Year",
+    },
     {
       key: "2",
-      date: "January 07, 2023",
+      date: "January 07, 2025",
       day: "Saturday",
-      name: "International Programmers' Day",
+      holidayName: "International Programmers' Day",
     },
     {
       key: "3",
-      date: "February 04, 2023",
+      date: "February 04, 2025",
       day: "Saturday",
-      name: "World Cancer Day",
+      holidayName: "World Cancer Day",
     },
     {
       key: "4",
-      date: "April 01, 2023",
+      date: "April 01, 2025",
       day: "Saturday",
-      name: "April Fool Day",
+      holidayName: "April Fool Day",
     },
     {
       key: "5",
-      date: "May 07, 2023",
+      date: "May 07, 2025",
       day: "Monday",
-      name: "International Programmers' Day",
+      holidayName: "International Programmers' Day",
     },
     {
       key: "6",
-      date: "May 22, 2023",
+      date: "May 22, 2025",
       day: "Tuesday",
-      name: "International Day for Biological Diversity",
+      holidayName: "International Day for Biological Diversity",
     },
     {
       key: "7",
-      date: "June 05, 2023",
+      date: "June 05, 2025",
       day: "Monday",
-      name: "International Day for Biological Diversity",
+      holidayName: "International Day for Biological Diversity",
     },
     {
       key: "8",
-      date: "August 07, 2023",
+      date: "August 07, 2025",
       day: "Monday",
-      name: "International Friendship Day",
+      holidayName: "International Friendship Day",
     },
     {
       key: "9",
-      date: "September 15, 2023",
+      date: "September 15, 2025",
       day: "Friday",
-      name: "International Day of Democracy",
+      holidayName: "International Day of Democracy",
     },
     {
       key: "10",
-      date: "November 14, 2023",
+      date: "November 14, 2025",
       day: "Tuesday",
-      name: "World Diabetes Day",
+      holidayName: "World Diabetes Day",
     },
     {
       key: "11",
-      date: "December 25, 2023",
+      date: "December 25, 2025",
       day: "Monday",
-      name: "Merry Christmas",
+      holidayName: "Merry Chrismas",
     },
   ];
 
-  // Determine if a record should have the blue left border
-  const isRecent = (key: string) => ["8", "9", "10", "11"].includes(key);
+  // Define the columns for the table
+  const columns = [
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text, record, index) => (
+        <div className="flex items-center">
+          {index > 4 ? (
+            <div className="w-1 h-7 bg-one  mr-2"></div>
+          ): (<div className="w-1 h-7 bg-three  mr-2"></div>)}
+          <span>{text}</span>
+        </div>
+      ),
+    },
+    {
+      title: "Day",
+      dataIndex: "day",
+      key: "day",
+    },
+    {
+      title: "Holiday Name",
+      dataIndex: "holidayName",
+      key: "holidayName",
+    },
+    {
+      title: "",
+      key: "action",
+      render: () => <CiTrash className="text-red-500" size={20}/>,
+    },
+  ];
+
+  const getCurrentData = () => {
+    return holidaysData.slice((currentPage - 1) * 10, currentPage * 10);
+  };
 
   return (
-    <>
     <div className="p-6 min-h-screen">
-        <Button
-          className="btn-1"
-          icon={<FaPlus />}
-          onClick={() => {
-             alert("hoaihr");
-          }}         >
-          Add New Holiday
-        </Button>    
-      {/* Holiday Table */}
-      <div className="w-full mb-4">
-        {/* Table Header */}
-        <div className="grid grid-cols-4 border-b pb-2 text-gray-500">
-          <div className="py-2">Date</div>
-          <div className="py-2">Day</div>
-          <div className="py-2">Holiday Name</div>
-          <div className="py-2"></div>
-        </div>
+      <Button icon={<FaPlus />} className="btn-1 mb-4">
+        Add New Holiday
+      </Button>
 
-        {/* Table Rows */}
-        {holidayData.map((holiday) => (
-          <div
-            key={holiday.key}
-            className={`grid grid-cols-4 border-b hover:bg-gray-50 ${
-              isRecent(holiday.key) ? "border-l-4 border-indigo-500 pl-2" : ""
-            }`}
-          >
-            <div className="py-4 text-gray-500">{holiday.date}</div>
-            <div className="py-4 text-gray-500">{holiday.day}</div>
-            <div className="py-4 text-gray-500">{holiday.name}</div>
-            <div className="py-4 flex justify-end">
-              <button className="text-red-500">
-                <FaTrash size={20} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <Table
+        columns={columns}
+        dataSource={getCurrentData()}
+        pagination={false}
+        className="mb-6"
+      />
 
-      {/* Footer Controls */}
-      <div className="flex items-center justify-between mt-4">
-        {/* View Toggle */}
-        <div className="flex items-center space-x-6">
-          <button
-            className={`flex items-center ${
-              viewType === "upcoming" ? "text-indigo-500" : "text-gray-500"
-            }`}
-            onClick={() => setViewType("upcoming")}
-          >
-            <div
-              className={`w-3 h-3 rounded-full ${
-                viewType === "upcoming" ? "bg-indigo-500" : "bg-gray-300"
-              } mr-2`}
-            ></div>
-            Upcoming
-          </button>
-          <button
-            className={`flex items-center ${
-              viewType === "past" ? "text-indigo-500" : "text-gray-500"
-            }`}
-            onClick={() => setViewType("past")}
-          >
-            <div
-              className={`w-3 h-3 rounded-full ${
-                viewType === "past" ? "bg-indigo-500" : "bg-gray-300"
-              } mr-2`}
-            ></div>
-            Past Holidays
-          </button>
-        </div>
-
-        {/* Pagination */}
+      <div className="flex justify-between items-center mt-4">
         <div className="flex items-center">
-          <button className="flex items-center justify-center border border-gray-200 rounded p-2 text-gray-400">
-            <FaChevronLeft size={16} />
-          </button>
-          <div className="flex mx-2 space-x-2">
-            {[1, 2, 3, 4, 5].map((page) => (
-              <button
-                key={page}
-                className={`flex items-center justify-center w-10 h-10 rounded-md border ${
-                  currentPage === page
-                    ? "bg-indigo-500 text-white border-indigo-500"
-                    : "border-gray-200 text-gray-500"
-                }`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            ))}
+          <div className="mr-2">
+            <Tag color="purple" className="flex items-center">
+              <div className="w-2 h-2 bg-one rounded-full mr-1"></div>
+              Upcoming
+            </Tag>
           </div>
-          <button className="flex items-center justify-center border border-gray-200 rounded p-2 text-gray-400">
-            <FaChevronRight size={16} />
-          </button>
+          <div>
+            <Tag color="default" className="flex items-center">
+              <div className="w-2 h-2 bg-three rounded-full mr-1"></div>
+              Past Holidays
+            </Tag>
+          </div>
         </div>
+
+        <Pagination
+          current={currentPage}
+          total={holidaysData.length}
+          onChange={setCurrentPage}
+          showSizeChanger={false}
+          itemRender={(page, type, originalElement) => {
+            if (type === "page") {
+              return (
+                <div
+                  className={`flex items-center justify-center w-8 h-8 rounded ${
+                    page === currentPage
+                      ? "btn-1 text-white"
+                      : "bg-white text-black border border-purple-500"
+                  }`}
+                >
+                  {page}
+                </div>
+              );
+            }
+            return originalElement;
+          }}
+        />
       </div>
-      </div>
-    </>
+    </div>
   );
 };
 
-export default HolidayCalendar;
+export default HolidayManagement;
