@@ -1,7 +1,6 @@
 import { TRoute, TUserPath } from "../types/sidebar.type";
 
 export const routeGenerator = (items: TUserPath[], role: string) => {
-  console.log(role);
   const routes = items.reduce((acc: TRoute[], item) => {
     if (item.path && item.element) {
       acc.push({

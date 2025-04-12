@@ -17,7 +17,7 @@ const userApi = baseApi.injectEndpoints({
     }),
     getAllUser: builder.query({
       query: () => ({
-        url: "/user",
+        url: "/users",
         method: "GET",
       }),
       providesTags: ["allUsers"],

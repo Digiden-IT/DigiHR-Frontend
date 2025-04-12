@@ -6,8 +6,6 @@ import { routeGenerator } from "../utils/routeGenerator";
 import { adminPaths } from "./admin.routes";
 import RedirectToRoleBasedDashboard from "../layouts/RedirectToRoleBasedDashboard";
 
-console.log(routeGenerator(adminPaths, "admin"));
-
 const router = createBrowserRouter([
   {
     path: "/",
