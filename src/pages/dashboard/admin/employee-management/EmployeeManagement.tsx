@@ -7,6 +7,8 @@ import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeMod
 
 import { Link } from "react-router-dom";
 import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 
 const { Column } = Table;
 
@@ -19,63 +21,12 @@ interface DataType {
   JoiningDate: string;
 }
 
-const initialData: DataType[] = [
-  {
-    key: "1",
-    EmployeeName: "Aktaruzzaman",
-    Email: "opu@gmail.com",
-    Department: "Frontend",
-    Role: "Employee",
-    JoiningDate: "01/01/2024",
-  },
-  {
-    key: "2",
-    EmployeeName: "osman",
-    Email: "antor@gmail.com",
-    Department: "Frontend",
-    Role: "Intern",
-    JoiningDate: "08/02/2024",
-  },
-  {
-    key: "3",
-    EmployeeName: "fahim",
-    Email: "fahim@gmail.com",
-    Department: "Frontend",
-    Role: "Employee",
-    JoiningDate: "01/01/2025",
-  },
-  {
-    key: "4",
-    EmployeeName: "Rahat",
-    Email: "Rahat@gmail.com",
-    Department: "backend",
-    Role: "Intern",
-    JoiningDate: "08/02/2025",
-  },
-  {
-    key: "5",
-    EmployeeName: "Nahid",
-    Email: "Nahid@gmail.com",
-    Department: "Manager",
-    Role: "CTO",
-    JoiningDate: "01/01/2024",
-  },
-  {
-    key: "6",
-    EmployeeName: "Javed",
-    Email: "Javed@gmail.com",
-    Department: "Manager",
-    Role: "CEO",
-    JoiningDate: "01/01/2025",
-  },
-];
-
 const EmployeeManagement = () => {
   const { data: usersData, isLoading } = useGetAllUserQuery(undefined);
-
+  // todo: make action according to loading and remove console
   console.log(isLoading, usersData?.data);
 
-  const [data, setData] = useState<DataType[]>(initialData);
+  const user = useSelector(selectCurrentUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -88,12 +39,8 @@ const EmployeeManagement = () => {
     setIsModalOpen(false);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   const handleDelete = (key: React.Key) => {
-    setData((prevData) => prevData.filter((item) => item.key !== key));
+    console.log("delete data: ", key);
   };
 
   return (
@@ -119,19 +66,15 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<DataType> dataSource={data} pagination={{ pageSize: 5 }}>
-        <Column
-          title="Employee Name"
-          dataIndex="EmployeeName"
-          key="EmployeeName"
-        />
-        <Column title="Email" dataIndex="Email" key="Email" />
-        <Column title="Department" dataIndex="Department" key="Department" />
-        <Column title="Role" dataIndex="Role" key="Role" />
+      <Table<DataType> dataSource={usersData?.data} pagination={false}>
+        <Column title="Employee Name" dataIndex="name" key="name" />
+        <Column title="Email" dataIndex="email" key="email" />
+        <Column title="Department" dataIndex="department" key="department" />
+        <Column title="Role" dataIndex="role" key="role" />
         <Column
           title="Joining Date"
-          dataIndex="JoiningDate"
-          key="JoiningDate"
+          dataIndex="dateOfJoining"
+          key="dateOfJoining"
         />
         <Column
           title="Action"
@@ -139,7 +82,9 @@ const EmployeeManagement = () => {
           render={(_, record: DataType) => (
             <Space size="middle">
               <Link
-                to={`/admin/employee-management/user-details/${record.key}`}
+                to={`/${user?.role.toLowerCase()}/employee-management/user-details/${
+                  record.key
+                }`}
               >
                 <PiEye size={20} />
               </Link>

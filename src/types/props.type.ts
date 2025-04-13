@@ -11,17 +11,16 @@ export type FeatureCardProps = {
 };
 export interface AnnouncementType {
   id: number;
-  name: string;
-  role: string;
-  time: string;
-  topic: string;
-  content: string;
-  avatar: string;
-};
+  title: string;
+  description: string;
+  authorName: string;
+  announcementDate: string;
+}
+
 export interface AnnouncementProps {
   visible: boolean;
   onCancel: () => void;
-  onAdd: (announcement: AnnouncementType) => void;
+  onAdd?: (announcement: AnnouncementType) => void;
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
 };
@@ -31,7 +30,6 @@ export interface HolidayType {
   day: string;
   holidayName: string;
 };
-
 export interface HolidayProps {
   visible: boolean;
   onCancel: () =>void;
