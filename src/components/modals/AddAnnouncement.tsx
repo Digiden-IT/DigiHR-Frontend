@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Modal, Input, Form } from "antd";
 import { AnnouncementProps } from "../../types/props.type";
+import { useAddAnnouncementsMutation } from "../../redux/api/announcementApi";
+import { toast } from "sonner";
 
 const AddAnnouncement: React.FC<AnnouncementProps> = ({
   visible,
   onCancel,
-  onAdd,
+  // onAdd,
   initialData = null,
   isEditing = false,
 }) => {
+  const [addAnnouncement, { error, isLoading }] = useAddAnnouncementsMutation();
+  console.log(error);
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (visible && initialData) {
       form.setFieldsValue({
-        topic: initialData.topic,
-        message: initialData.content,
+        topic: initialData.title,
+        message: initialData.description,
       });
     } else if (visible && !initialData) {
       form.resetFields();
@@ -24,32 +27,22 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
   }, [visible, initialData, form]);
 
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      setIsLoading(true);
-
+    form.validateFields().then(async (values) => {
       const announcementData = {
-        id: initialData ? initialData.id : Date.now(), // Use existing ID when editing
-        name: initialData ? initialData.name : "Jabed Uddin",
-        role: initialData ? initialData.role : "CEO",
-        time: initialData
-          ? initialData.time
-          : new Date().toLocaleString("en-US", {
-              month: "short",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            }),
-        topic: values.topic,
-        content: values.message,
-        avatar: initialData
-          ? initialData.avatar
-          : "https://avatars.githubusercontent.com/u/90123719?v=4",
+        title: values.topic,
+        description: values.message,
       };
+      try {
+        const response = await addAnnouncement(announcementData).unwrap();
+        if (response) {
+          toast.success("Announcement added successfully!");
+        }
+        form.resetFields();
+      } catch (err) {
+        console.log(err);
+        toast.error("Failed to add announcement");
+      }
 
-      onAdd(announcementData);
-      form.resetFields();
-      setIsLoading(false);
       onCancel();
     });
   };
