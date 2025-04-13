@@ -5,6 +5,7 @@ import ProtectedRoute from "../layouts/ProtectedRoute";
 import { routeGenerator } from "../utils/routeGenerator";
 import { adminPaths } from "./admin.routes";
 import RedirectToRoleBasedDashboard from "../layouts/RedirectToRoleBasedDashboard";
+import { userPaths } from "./user.routes";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
         <Dashboard />
       </ProtectedRoute>
     ),
+    children: routeGenerator(userPaths, "user"),
   },
 ]);
 
