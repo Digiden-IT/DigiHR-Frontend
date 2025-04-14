@@ -6,9 +6,9 @@ import type { TableColumnsType, PaginationProps } from "antd";
 import { Holiday } from "../../../../types/props.type";
 
 const HolidayManagement: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false) ;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  console.log(isModalOpen);
   const holidaysData: Holiday[] = [
     {
       key: "1",
@@ -108,7 +108,11 @@ const HolidayManagement: React.FC = () => {
       title: "",
       key: "action",
       render: (_: unknown, record: Holiday) => (
-        <CiTrash className="text-red-500" size={20} />
+        <CiTrash
+          className="text-red-500"
+          size={20}
+          onClick={() => console.log(record.key)}
+        />
       ),
     },
   ];
@@ -123,7 +127,11 @@ const HolidayManagement: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <Button icon={<FaPlus />} className="btn-1 mb-4" onClick={()=>setIsModalOpen(true)}>
+      <Button
+        icon={<FaPlus />}
+        className="btn-1 mb-4"
+        onClick={() => setIsModalOpen(true)}
+      >
         Add New Holiday
       </Button>
 
