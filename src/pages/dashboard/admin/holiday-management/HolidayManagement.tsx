@@ -117,8 +117,12 @@ const HolidayManagement: React.FC = () => {
     {
       title: "",
       key: "action",
-      render: () => (
-        <CiTrash className="text-red-500" size={20} />
+      render: (_: unknown, record: HolidayType) => (
+        <CiTrash
+          className="text-red-500"
+          size={20}
+          onClick={() => console.log(record.key)}
+        />
       ),
     },
   ];

@@ -66,7 +66,11 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<DataType> dataSource={usersData?.data} pagination={false}>
+      <Table<DataType>
+        dataSource={usersData?.data}
+        pagination={false}
+        loading={isLoading}
+      >
         <Column title="Employee Name" dataIndex="name" key="name" />
         <Column title="Email" dataIndex="email" key="email" />
         <Column title="Department" dataIndex="department" key="department" />
