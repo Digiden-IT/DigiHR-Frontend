@@ -5,6 +5,7 @@ import { useState } from "react";
 import AddAnnouncement from "../../../../components/modals/AddAnnouncement";
 import { AnnouncementType } from "../../../../types/props.type";
 import { useGetAllAnnouncementsQuery } from "../../../../redux/api/announcementApi";
+import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const Announcements: React.FC = () => {
   const { data: announcements, isLoading } =
@@ -157,39 +158,42 @@ const Announcements: React.FC = () => {
           Add Announcement
         </Button>
       </div>
-
-      <div className="grid md:grid-cols-2 gap-4">
-        {announcements?.data.map((announcement: AnnouncementType) => (
-          <Card
-            key={announcement.id}
-            className="shadow-md rounded-lg border-blue-300 h-60"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <Avatar
-                size={30}
-                src={"https://avatars.githubusercontent.com/u/90123719?v=4"}
-              />
-              <div>
-                <h4 className="font-medium">{announcement.authorName}</h4>
-                <h6 className="text-gray-500 text-sm">
-                  {announcement.announcementDate}
-                </h6>
+      {isLoading ? (
+        <BasicLoader />
+      ) : (
+        <div className="grid md:grid-cols-2 gap-4">
+          {announcements?.data.map((announcement: AnnouncementType) => (
+            <Card
+              key={announcement.id}
+              className="shadow-md rounded-lg border-blue-300 h-60"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Avatar
+                  size={30}
+                  src={"https://avatars.githubusercontent.com/u/90123719?v=4"}
+                />
+                <div>
+                  <h4 className="font-medium">{announcement.authorName}</h4>
+                  <h6 className="text-gray-500 text-sm">
+                    {announcement.announcementDate}
+                  </h6>
+                </div>
+                <Dropdown
+                  menu={{ items: getDropdownItems(announcement.id) }}
+                  placement="bottomRight"
+                  trigger={["click"]}
+                >
+                  <AiOutlineMore className="ml-auto cursor-pointer" size={20} />
+                </Dropdown>
               </div>
-              <Dropdown
-                menu={{ items: getDropdownItems(announcement.id) }}
-                placement="bottomRight"
-                trigger={["click"]}
-              >
-                <AiOutlineMore className="ml-auto cursor-pointer" size={20} />
-              </Dropdown>
-            </div>
-            <h3 className="text-lg font-semibold">{announcement.title}</h3>
-            <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">
-              {announcement.description}
-            </p>
-          </Card>
-        ))}
-      </div>
+              <h3 className="text-lg font-semibold">{announcement.title}</h3>
+              <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">
+                {announcement.description}
+              </p>
+            </Card>
+          ))}
+        </div>
+      )}
       <AddAnnouncement
         visible={isModalOpen}
         onCancel={handleCloseModal}
