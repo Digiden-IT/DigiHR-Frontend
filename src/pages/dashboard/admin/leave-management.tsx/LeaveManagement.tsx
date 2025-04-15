@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Table, Tag, Button } from "antd";
-import { BsFilterLeft } from "react-icons/bs";
-import { CiSearch } from "react-icons/ci";
+import { Table, Tag, Space, Button } from "antd";
+import { VscSettings } from "react-icons/vsc";
 
 interface DataType {
   key: string;
@@ -122,26 +121,22 @@ const LeaveManagement: React.FC = () => {
   ];
 
   return (
-    <>
-      <div className="flex gap-4 mb-4 justify-end">
-        <div className="relative w-full max-w-sm">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <CiSearch size={18} />
-          </span>
+    <div className="p-6 min-h-screen">
+      <Space className="mb-4 flex justify-end">
+        <div className="flex gap-4">
           <input
             type="text"
             placeholder="Search by Date"
-            className="pl-10 pr-3 py-1 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+            className="w-full px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
+          <Button className="rounded-md">
+            <VscSettings size={20} />
+            Filter
+          </Button>
         </div>
-
-        <Button>
-          <BsFilterLeft size={20} />
-          Filter
-        </Button>
-      </div>
+      </Space>
       <Table<DataType> columns={columns} dataSource={data} />
-    </>
+    </div>
   );
 };
 

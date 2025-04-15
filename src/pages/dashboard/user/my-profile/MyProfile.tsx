@@ -1,6 +1,6 @@
 import { PiPencilSimpleLineThin } from "react-icons/pi";
-import { MdOutlineSubdirectoryArrowLeft } from "react-icons/md";
-import { Link } from "react-router-dom";
+
+import { Button } from "antd";
 
 type ProfileFieldProps = {
   label: string;
@@ -23,11 +23,11 @@ const ProfileField = ({ label, value, editable }: ProfileFieldProps) => (
   </div>
 );
 
-export default function EmployeeDetails() {
+export default function MyProfile() {
   return (
-    <div className="mx-auto p-8 bg-white rounded-2xl shadow-md border border-purple-100 mb-2">
+    <div className="min-h-screen mx-auto p-12 shadow-md">
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex items-start justify-between mb-16">
         <div className="flex items-center gap-4">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcMxLW5LbeJApiOdKAWdx7973rVC1iEUPtXg&s"
@@ -42,24 +42,22 @@ export default function EmployeeDetails() {
             <p className="text-sm text-gray-500">Random@gmail.com</p>
           </div>
         </div>
-        <Link
-          to={"/admin/employee-management"}
-          className="flex items-center gap-2 text-purple-600 border border-purple-300 px-4 py-1.5 rounded-lg hover:bg-purple-50"
-        >
-          <MdOutlineSubdirectoryArrowLeft size={16} /> Go Back
-        </Link>
+        <Button className="btn-1 py-6 px-5 rounded-lg">
+          <PiPencilSimpleLineThin size={20} />
+          Edit Profile
+        </Button>
       </div>
 
       {/* Body */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ProfileField label="Full Name" value="Brooklyn Simmons" />
+        <ProfileField label="Full Name" value="Brooklyn Simmons" editable />
         <ProfileField label="Employee ID" value="879912390" />
         <ProfileField label="Mobile Number" value="(702) 555-0122" editable />
-        <ProfileField label="Employee Type" value="Office" editable />
+        <ProfileField label="Employee Type" value="Office" />
         <ProfileField label="Date of Birth" value="July 14, 1995" />
-        <ProfileField label="Department" value="Project Manager" editable />
+        <ProfileField label="Department" value="Project Manager" />
         <ProfileField label="Gender" value="Female" />
-        <ProfileField label="Designation" value="Project Manager" editable />
+        <ProfileField label="Designation" value="Project Manager" />
         <ProfileField
           label="Address"
           value="2464 Royal Ln. Mesa, New Jersey"

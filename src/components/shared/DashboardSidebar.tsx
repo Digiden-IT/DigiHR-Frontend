@@ -1,12 +1,13 @@
 import { Layout, Menu, MenuProps } from "antd";
 import { useCurrentToken } from "../../redux/feature/auth/authSlice";
-import { PiUsersFourBold } from "react-icons/pi";
+
 import { useAppSelector } from "../../redux/hooks";
 import { jwtDecode } from "jwt-decode";
 import logo from "../../../public/Logo.png";
 import { TUser, userRole } from "../../types/user.type";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
+import { userPaths } from "../../routes/user.routes";
 
 const { Sider } = Layout;
 
@@ -21,21 +22,18 @@ const DashboardSidebar = () => {
 
   let sidebarItems: MenuProps["items"];
 
-  switch ((user as TUser)!.userRole) {
+  switch ((user as TUser)!.role) {
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(
         adminPaths,
-        userRole.ADMIN
+        "admin"
       ) as MenuProps["items"];
       break;
     case userRole.USER:
-      sidebarItems = [
-        {
-          key: "manage-users",
-          icon: <PiUsersFourBold size={18} />,
-          label: <p>Employee Management</p>,
-        },
-      ];
+      sidebarItems = sidebarItemsGenerator(
+        userPaths,
+        userRole.USER
+      ) as MenuProps["items"];
       break;
 
     default:
@@ -47,7 +45,7 @@ const DashboardSidebar = () => {
       breakpoint="lg"
       collapsedWidth={55}
       collapsible
-      width={302}
+      width={260}
       theme="light"
       className="h-screen sticky top-0 left-0 bg-four"
     >

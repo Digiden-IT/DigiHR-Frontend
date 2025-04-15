@@ -2,6 +2,7 @@ import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // registration api
     userRegistration: builder.mutation({
       query: (data) => ({
         url: "auth/register",
@@ -9,26 +10,22 @@ const userApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    // get single user api
     getSingleUser: builder.query({
       query: (userId) => ({
-        url: `/user/${userId}`,
+        url: `/users/${userId}`,
         method: "GET",
       }),
     }),
+    // get all user api
     getAllUser: builder.query({
       query: () => ({
-        url: "/user",
+        url: "/users",
         method: "GET",
       }),
       providesTags: ["allUsers"],
     }),
-    toggleBlockStatus: builder.mutation({
-      query: (userId) => ({
-        url: `/user/${userId}/toggle-block`,
-        method: "PUT",
-      }),
-      invalidatesTags: ["allUsers"],
-    }),
+    // delete user api
     toggleDeleteStatus: builder.mutation({
       query: (userId) => ({
         url: `/user/${userId}/toggle-delete`,
@@ -43,6 +40,5 @@ export const {
   useUserRegistrationMutation,
   useGetSingleUserQuery,
   useGetAllUserQuery,
-  useToggleBlockStatusMutation,
   useToggleDeleteStatusMutation,
 } = userApi;

@@ -5,7 +5,6 @@ export const routeGenerator = (items: TUserPath[], role: string) => {
     if (item.path && item.element) {
       acc.push({
         path: "/" + role + item?.path,
-        // path: item.path,
         element: item?.element,
       });
     }
@@ -14,7 +13,6 @@ export const routeGenerator = (items: TUserPath[], role: string) => {
       item.children.forEach((child) => {
         acc.push({
           path: "/" + role + child?.path,
-          // path: child.path!,
           element: child?.element,
         });
       });

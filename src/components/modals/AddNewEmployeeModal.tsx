@@ -1,37 +1,20 @@
 import React from "react";
 import type { FormProps } from "antd";
 import { Form, Input, Select, DatePicker, Button, Modal } from "antd";
+import {
+  AddNewEmployeeFieldType,
+  AddNewEmployeeProps,
+} from "../../types/props.type";
 
 const { Option } = Select;
 
-type FieldType = {
-  name?: string;
-  phoneNumber?: string;
-  dateOfBirth?: string;
-  gender?: string;
-  bloodGroup?: string;
-  email?: string;
-  role?: string;
-  employeeType?: string;
-  department?: string;
-  dateOfJoining?: string;
-  designation?: string;
-  address?: string;
-  password?: string;
-};
-
-interface EmployeeManagementProps {
-  visible: boolean;
-  onCancel: () => void;
-}
-
-const AddNewEmployeeModal: React.FC<EmployeeManagementProps> = ({
+const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
   visible,
   onCancel,
 }) => {
   const [form] = Form.useForm();
 
-  const handleSubmit = (values: FieldType) => {
+  const handleSubmit = (values: AddNewEmployeeFieldType) => {
     console.log("Success:", values);
     form.resetFields();
     onCancel();
@@ -41,7 +24,7 @@ const AddNewEmployeeModal: React.FC<EmployeeManagementProps> = ({
     onCancel();
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<AddNewEmployeeFieldType>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);

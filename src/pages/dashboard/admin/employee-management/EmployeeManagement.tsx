@@ -2,76 +2,25 @@ import React, { useState } from "react";
 import { Space, Table, Button } from "antd";
 import { PiEye } from "react-icons/pi";
 import { CiTrash } from "react-icons/ci";
-
-import { BsFilterLeft } from "react-icons/bs";
-
+import { VscSettings } from "react-icons/vsc";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
+import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
+import { EmployeeManagementDataType } from "../../../../types/props.type";
 const { Column } = Table;
 
-interface DataType {
-  key: React.Key;
-  EmployeeName: string;
-  Email: string;
-  Department: string;
-  Role: string;
-  JoiningDate: string;
-}
-
-const initialData: DataType[] = [
-  {
-    key: "1",
-    EmployeeName: "Aktaruzzaman",
-    Email: "opu@gmail.com",
-    Department: "Frontend",
-    Role: "Employee",
-    JoiningDate: "01/01/2024",
-  },
-  {
-    key: "2",
-    EmployeeName: "osman",
-    Email: "antor@gmail.com",
-    Department: "Frontend",
-    Role: "Intern",
-    JoiningDate: "08/02/2024",
-  },
-  {
-    key: "3",
-    EmployeeName: "fahim",
-    Email: "fahim@gmail.com",
-    Department: "Frontend",
-    Role: "Employee",
-    JoiningDate: "01/01/2025",
-  },
-  {
-    key: "4",
-    EmployeeName: "Rahat",
-    Email: "Rahat@gmail.com",
-    Department: "backend",
-    Role: "Intern",
-    JoiningDate: "08/02/2025",
-  },
-  {
-    key: "5",
-    EmployeeName: "Nahid",
-    Email: "Nahid@gmail.com",
-    Department: "Manager",
-    Role: "CTO",
-    JoiningDate: "01/01/2024",
-  },
-  {
-    key: "6",
-    EmployeeName: "Javed",
-    Email: "Javed@gmail.com",
-    Department: "Manager",
-    Role: "CEO",
-    JoiningDate: "01/01/2025",
-  },
-];
-
 const EmployeeManagement = () => {
-  const [data, setData] = useState<DataType[]>(initialData);
+  const { data: usersData, isLoading } = useGetAllUserQuery(undefined);
+  // todo: make action according to loading and remove console
+  console.log(isLoading, usersData?.data);
+
+  const user = useSelector(selectCurrentUser);
+
+  // todo: make action according to loading and remove console
+  console.log(isLoading, usersData?.data);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -81,15 +30,15 @@ const EmployeeManagement = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleDelete = (key: React.Key) => {
-    setData((prevData) => prevData.filter((item) => item.key !== key));
+    console.log("delete data: ", key);
   };
 
   return (
-    <>
+    <div className="p-6 min-h-screen">
       <Space className="mb-4 flex justify-between">
         <div>
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
+            className="btn-1 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
             onClick={() => showModal()}
           >
             + Add Employee
@@ -99,35 +48,37 @@ const EmployeeManagement = () => {
           <input
             type="text"
             placeholder="Search by Date"
-            className="w-full px-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <Button>
-            <BsFilterLeft size={20} />
+          <Button className="rounded-md">
+            <VscSettings size={20} />
             Filter
           </Button>
         </div>
       </Space>
-      <Table<DataType> dataSource={data} pagination={{ pageSize: 5 }}>
-        <Column
-          title="Employee Name"
-          dataIndex="EmployeeName"
-          key="EmployeeName"
-        />
-        <Column title="Email" dataIndex="Email" key="Email" />
-        <Column title="Department" dataIndex="Department" key="Department" />
-        <Column title="Role" dataIndex="Role" key="Role" />
+      <Table<EmployeeManagementDataType>
+        dataSource={usersData?.data}
+        pagination={false}
+        loading={isLoading}
+      >
+        <Column title="Employee Name" dataIndex="name" key="name" />
+        <Column title="Email" dataIndex="email" key="email" />
+        <Column title="Department" dataIndex="department" key="department" />
+        <Column title="Role" dataIndex="role" key="role" />
         <Column
           title="Joining Date"
-          dataIndex="JoiningDate"
-          key="JoiningDate"
+          dataIndex="dateOfJoining"
+          key="dateOfJoining"
         />
         <Column
           title="Action"
           key="Action"
-          render={(_, record: DataType) => (
+          render={(_, record: EmployeeManagementDataType) => (
             <Space size="middle">
               <Link
-                to={`/admin/employee-management/user-details/${record.key}`}
+                to={`/${user?.role.toLowerCase()}/employee-management/user-details/${
+                  record.key
+                }`}
               >
                 <PiEye size={20} />
               </Link>
@@ -143,7 +94,7 @@ const EmployeeManagement = () => {
       </Table>
 
       <AddNewEmployeeModal visible={isModalOpen} onCancel={closeModal} />
-    </>
+    </div>
   );
 };
 
