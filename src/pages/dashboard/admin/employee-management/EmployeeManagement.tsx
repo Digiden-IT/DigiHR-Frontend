@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Space, Table, Modal, Button } from "antd";
+import { Space, Table, Button } from "antd";
 import { PiEye } from "react-icons/pi";
 import { CiTrash } from "react-icons/ci";
 
@@ -73,7 +73,12 @@ const initialData: DataType[] = [
 const EmployeeManagement = () => {
   const [data, setData] = useState<DataType[]>(initialData);
 
-  const [newEmployee, setnewEmployee] = useState(false); // state name changed as they are newEmployee
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
 
   const handleDelete = (key: React.Key) => {
     setData((prevData) => prevData.filter((item) => item.key !== key));
@@ -85,7 +90,7 @@ const EmployeeManagement = () => {
         <div>
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-            onClick={() => setnewEmployee(true)} // function Name changed since its adding a newEmployee
+            onClick={() => showModal()}
           >
             + Add Employee
           </button>
@@ -136,24 +141,8 @@ const EmployeeManagement = () => {
           )}
         />
       </Table>
-      <Modal
-        title="Add New Employee"
-        okText={"Apply"}
-        closeIcon={null}
-        open={newEmployee}
-        onOk={() => setnewEmployee(false)}
-        onCancel={() => setnewEmployee(false)}
-        width={{
-          xs: "90%",
-          sm: "80%",
-          md: "70%",
-          lg: "60%",
-          xl: "50%",
-          xxl: "40%",
-        }}
-      >
-        <AddNewEmployeeModal />
-      </Modal>
+
+      <AddNewEmployeeModal visible={isModalOpen} onCancel={closeModal} />
     </>
   );
 };
