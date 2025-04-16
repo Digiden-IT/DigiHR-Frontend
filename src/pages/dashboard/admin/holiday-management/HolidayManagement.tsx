@@ -1,3 +1,4 @@
+// HolidayManagement.tsx
 import { Button, Table, Pagination, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
@@ -5,88 +6,32 @@ import { FaPlus } from "react-icons/fa";
 import type { TableColumnsType, PaginationProps } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
+import { useGetAllHolidaysQuery } from "../../../../redux/api/holidayManagementApi";
+import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const HolidayManagement: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(3);
 
-  const [holidaysData, setHolidaysData] = useState<HolidayType[]>([
-    {
-      key: "1",
-      date: "January 01, 2025",
-      day: "Tuesday",
-      holidayName: "New Year",
-    },
-    {
-      key: "2",
-      date: "January 07, 2025",
-      day: "Saturday",
-      holidayName: "International Programmers' Day",
-    },
-    {
-      key: "3",
-      date: "February 04, 2025",
-      day: "Saturday",
-      holidayName: "World Cancer Day",
-    },
-    {
-      key: "4",
-      date: "April 01, 2025",
-      day: "Saturday",
-      holidayName: "April Fool Day",
-    },
-    {
-      key: "5",
-      date: "May 07, 2025",
-      day: "Monday",
-      holidayName: "International Programmers' Day",
-    },
-    {
-      key: "6",
-      date: "May 22, 2025",
-      day: "Tuesday",
-      holidayName: "International Day for Biological Diversity",
-    },
-    {
-      key: "7",
-      date: "June 05, 2025",
-      day: "Monday",
-      holidayName: "International Day for Biological Diversity",
-    },
-    {
-      key: "8",
-      date: "August 07, 2025",
-      day: "Monday",
-      holidayName: "International Friendship Day",
-    },
-    {
-      key: "9",
-      date: "September 15, 2025",
-      day: "Friday",
-      holidayName: "International Day of Democracy",
-    },
-    {
-      key: "10",
-      date: "November 14, 2025",
-      day: "Tuesday",
-      holidayName: "World Diabetes Day",
-    },
-    {
-      key: "11",
-      date: "December 25, 2025",
-      day: "Monday",
-      holidayName: "Merry Chrismas",
-    },
-  ]);
+  // Pass pagination parameters to the query
+  const { data, isLoading } = useGetAllHolidaysQuery({
+    page: currentPage - 1, // API uses 0-indexed pagination
+    size: pageSize,
+    sort: "date",
+  });
 
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
-    };
+  const holidaysData: HolidayType[] = data?.data || [];
+  const totalElements = data?.totalElements || 0;
 
-    const handleNewHoliday = (newHoliday: HolidayType) => {
-      setHolidaysData([newHoliday, ...holidaysData]);
-    };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
+  const handleNewHoliday = (holiday: HolidayType) => {
+    // Will be implemented with mutation
+    console.log("New holiday to add:", holiday);
+  };
 
   const columns: TableColumnsType<HolidayType> = [
     {
@@ -106,8 +51,8 @@ const HolidayManagement: React.FC = () => {
     },
     {
       title: "Day",
-      dataIndex: "day",
-      key: "day",
+      dataIndex: "dayOfWeek",
+      key: "dayOfWeek",
     },
     {
       title: "Holiday Name",
@@ -121,19 +66,20 @@ const HolidayManagement: React.FC = () => {
         <CiTrash
           className="text-red-500"
           size={20}
-          onClick={() => console.log(record.key)}
+          onClick={() => console.log(record.id)}
         />
       ),
     },
   ];
 
-  const getCurrentData = (): HolidayType[] => {
-    return holidaysData.slice((currentPage - 1) * 10, currentPage * 10);
+  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
+    setCurrentPage(page);
+    if (pageSize) setPageSize(pageSize);
   };
 
-  const handlePageChange: PaginationProps["onChange"] = (page) => {
-    setCurrentPage(page);
-  };
+  if (isLoading) {
+    return <BasicLoader />;
+  }
 
   return (
     <div className="p-6 min-h-screen">
@@ -147,7 +93,7 @@ const HolidayManagement: React.FC = () => {
 
       <Table<HolidayType>
         columns={columns}
-        dataSource={getCurrentData()}
+        dataSource={holidaysData}
         pagination={false}
         className="mb-6"
       />
@@ -170,7 +116,8 @@ const HolidayManagement: React.FC = () => {
 
         <Pagination
           current={currentPage}
-          total={holidaysData.length}
+          total={totalElements}
+          pageSize={pageSize}
           onChange={handlePageChange}
           showSizeChanger={false}
           itemRender={(page, type, originalElement) => {
@@ -191,7 +138,11 @@ const HolidayManagement: React.FC = () => {
           }}
         />
       </div>
-      <AddNewHoliday visible={isModalOpen} onAdd={handleNewHoliday} onCancel={handleCloseModal}/>
+      <AddNewHoliday
+        visible={isModalOpen}
+        onAdd={handleNewHoliday}
+        onCancel={handleCloseModal}
+      />
     </div>
   );
 };
