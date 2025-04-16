@@ -12,14 +12,14 @@ import BasicLoader from "../../../../components/shared/BasicLoader";
 const HolidayManagement: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(3);
+  const [pageSize, setPageSize] = useState<number>(2);
 
-  // Pass pagination parameters to the query
-  const { data, isLoading } = useGetAllHolidaysQuery({
-    page: currentPage - 1, // API uses 0-indexed pagination
-    size: pageSize,
-    sort: "date",
-  });
+  const { data, isLoading} = useGetAllHolidaysQuery([
+    { name: "page", value: currentPage - 1 }, // API uses 0-indexed pagination
+    { name: "size", value: pageSize },
+    { name: "sort", value: "date" },
+    
+  ]);
 
   const holidaysData: HolidayType[] = data?.data || [];
   const totalElements = data?.totalElements || 0;

@@ -1,4 +1,3 @@
-import { Pagination } from 'antd';
 export type ServiceCardProps = {
   icon: string;
   text: string;
@@ -17,7 +16,6 @@ export interface AnnouncementType {
   authorName: string;
   announcementDate: string;
 }
-
 export interface AnnouncementProps {
   visible: boolean;
   onCancel: () => void;
@@ -32,23 +30,14 @@ export interface HolidayType {
   holidayName: string;
   // Add any other properties that might be needed
 }
-
 export interface HolidayProps {
   visible: boolean;
   onCancel: () => void;
   onAdd: (newHoliday: HolidayType) => void;
 }
-
 export interface HolidayManagementApiResponse {
   currentPage: number;
   totalPages: number;
   totalElements: number;
   data: HolidayType[];
 }
-
-export interface Pagination {
-  page?: number;
-  size?: number;
-  sort?: string;
-}
-

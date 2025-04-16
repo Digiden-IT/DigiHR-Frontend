@@ -20,8 +20,8 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
         date: values.date.format("MMMM DD, YYYY"),
         day: values.date.format("dddd"),
       };
-
-      onAdd(newHoliday);
+      //onAdd(newHoliday);
+      console.log(newHoliday);
       form.resetFields();
       setIsLoading(false);
       onCancel();

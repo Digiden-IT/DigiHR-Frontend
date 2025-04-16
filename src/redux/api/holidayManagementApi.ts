@@ -1,27 +1,24 @@
 import { baseApi } from "./baseApi";
-import { HolidayManagementApiResponse,Pagination } from "../../types/props.type";
+import { TQueryParam } from "../../types/api.type";
 
 const holidayManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllHolidays: builder.query<
-      HolidayManagementApiResponse,
-      Pagination | void
-    >({
-      query: (params) => {
-        // Handle the case where params might be undefined (void)
-        const pagination: Pagination = params || {};
+    getAllHolidays: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        console.log(args);
 
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
         return {
           url: "/holidays",
           method: "GET",
-          params: {
-            page: pagination.page !== undefined ? pagination.page : 0,
-            size: pagination.size !== undefined ? pagination.size : 10,
-            sort: pagination.sort || "date",
-          },
+          params: params,
         };
       },
-      providesTags: ["allholidays"],
     }),
   }),
 });
