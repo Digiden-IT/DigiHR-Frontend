@@ -6,19 +6,18 @@ import { FaPlus } from "react-icons/fa";
 import type { TableColumnsType, PaginationProps } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
-import { useGetAllHolidaysQuery } from "../../../../redux/api/holidayManagementApi";
+import { useGetAllHolidaysQuery,useDeleteHolidayMutation } from "../../../../redux/api/holidayManagementApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const HolidayManagement: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(2);
+  const [pageSize, setPageSize] = useState<number>(10);
 
-  const { data, isLoading} = useGetAllHolidaysQuery([
+  const { data, isLoading, refetch} = useGetAllHolidaysQuery([
     { name: "page", value: currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pageSize },
     { name: "sort", value: "date" },
-    
   ]);
 
   const holidaysData: HolidayType[] = data?.data || [];
@@ -26,11 +25,6 @@ const HolidayManagement: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-
-  const handleNewHoliday = (holiday: HolidayType) => {
-    // Will be implemented with mutation
-    console.log("New holiday to add:", holiday);
   };
 
   const columns: TableColumnsType<HolidayType> = [
@@ -140,8 +134,8 @@ const HolidayManagement: React.FC = () => {
       </div>
       <AddNewHoliday
         visible={isModalOpen}
-        onAdd={handleNewHoliday}
         onCancel={handleCloseModal}
+        refetchHolidays={refetch}
       />
     </div>
   );

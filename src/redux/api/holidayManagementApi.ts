@@ -6,8 +6,6 @@ const holidayManagementApi = baseApi.injectEndpoints({
     getAllHolidays: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
-        console.log(args);
-
         if (args) {
           args.forEach((item: TQueryParam) => {
             params.append(item.name, item.value as string);
@@ -17,10 +15,26 @@ const holidayManagementApi = baseApi.injectEndpoints({
           url: "/holidays",
           method: "GET",
           params: params,
+          providesTags: ["allholidays"],
         };
       },
+    }),
+    addNewHoliday: builder.mutation({
+      query: (data) => ({
+        url: "/holidays",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["allholidays"],
+    }),
+    deleteHoliday: builder.mutation({
+      query: (id) => ({
+        url: `/holidays/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["allholidays"],
     }),
   }),
 });
 
-export const { useGetAllHolidaysQuery } = holidayManagementApi;
+export const { useGetAllHolidaysQuery, useAddNewHolidayMutation,useDeleteHolidayMutation } = holidayManagementApi;

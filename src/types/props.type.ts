@@ -33,7 +33,7 @@ export interface HolidayType {
 export interface HolidayProps {
   visible: boolean;
   onCancel: () => void;
-  onAdd: (newHoliday: HolidayType) => void;
+  refetchHolidays: () => void;
 }
 export interface HolidayManagementApiResponse {
   currentPage: number;

@@ -1,33 +1,46 @@
 import { Button, DatePicker, Form, Input, Modal } from "antd";
 import { HolidayProps } from "../../types/props.type";
-import { useState } from "react";
+import { useAddNewHolidayMutation } from "../../redux/api/holidayManagementApi";
+import { toast } from "sonner";
 
 const AddNewHoliday: React.FC<HolidayProps> = ({
   visible,
   onCancel,
-  onAdd,
+  refetchHolidays,
 }) => {
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
+  const [addNewHoliday, { isLoading }] = useAddNewHolidayMutation();
 
-  const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      setIsLoading(true);
-      
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+
       const newHoliday = {
-        key: Date.now().toString(), 
         holidayName: values.holidayName,
-        date: values.date.format("MMMM DD, YYYY"),
-        day: values.date.format("dddd"),
+        date: values.date.format("YYYY-MM-DD"),
       };
-      //onAdd(newHoliday);
-      console.log(newHoliday);
-      form.resetFields();
-      setIsLoading(false);
-      onCancel();
-    });
-  };
 
+      const response = await addNewHoliday(newHoliday).unwrap();
+
+      if (response) {
+        toast.success("New holiday added successfully!");
+        form.resetFields();
+
+        if (refetchHolidays) {
+          refetchHolidays();
+        }
+        onCancel();
+      }
+    } catch (err: any) {
+      if (err.errorFields) {
+        // Form validation error
+        toast.error(err);
+      } else {
+        //  API error
+        toast.error("Failed to add new holiday");
+      }
+    }
+  };
   const handleCancel = () => {
     form.resetFields();
     onCancel();
