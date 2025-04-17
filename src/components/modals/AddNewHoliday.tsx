@@ -25,10 +25,7 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
       if (response) {
         toast.success("New holiday added successfully!");
         form.resetFields();
-
-        if (refetchHolidays) {
-          refetchHolidays();
-        }
+        refetchHolidays();
         onCancel();
       }
     } catch (err: any) {

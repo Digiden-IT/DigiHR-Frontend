@@ -28,12 +28,12 @@ export interface HolidayType {
   date: string;
   dayOfWeek: string;
   holidayName: string;
-  // Add any other properties that might be needed
 }
 export interface HolidayProps {
   visible: boolean;
   onCancel: () => void;
   refetchHolidays: () => void;
+  id?: number;
 }
 export interface HolidayManagementApiResponse {
   currentPage: number;
