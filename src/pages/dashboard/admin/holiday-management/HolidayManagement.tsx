@@ -1,19 +1,23 @@
-import { Button, Table, Pagination, Tag } from "antd";
+import { Button, Modal, Table, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
 import type { TableColumnsType, PaginationProps } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
-import DeleteHoliday from "../../../../components/modals/DeleteHoliday";
-import { useGetAllHolidaysQuery } from "../../../../redux/api/holidayManagementApi";
+import {
+  useGetAllHolidaysQuery,
+  useDeleteHolidayMutation,
+} from "../../../../redux/api/holidayManagementApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
+import PageNavigation from "../../../../components/shared/PageNavigation";
+import { toast } from "sonner";
 
 const HolidayManagement: React.FC = () => {
-  // State hooks
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
+  const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -38,6 +42,7 @@ const HolidayManagement: React.FC = () => {
   const handleCloseModals = () => {
     setIsAddModalOpen(false);
     setIsDeleteModalOpen(false);
+    setSelectedHolidayId(0);
   };
 
   const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
@@ -45,6 +50,18 @@ const HolidayManagement: React.FC = () => {
       currentPage: page,
       pageSize: pageSize || pagination.pageSize,
     });
+  };
+  const handleOk = async () => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteHoliday(selectedHolidayId);
+      toast.success("Holiday deleted successfully", { id: toastId });
+      refetch();
+      handleCloseModals();
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete holiday", { id: toastId });
+    }
   };
 
   const columns: TableColumnsType<HolidayType> = [
@@ -77,10 +94,10 @@ const HolidayManagement: React.FC = () => {
       title: "",
       key: "action",
       render: (_, record: HolidayType) => (
-        <Button
-          icon={<CiTrash />}
-          onClick={() => handleOpenDeleteModal(record.id)}
+        <CiTrash
+          size={20}
           className="text-red-500 hover:text-red-700 border-none shadow-none"
+          onClick={() => handleOpenDeleteModal(record.id)}
         />
       ),
     },
@@ -89,44 +106,6 @@ const HolidayManagement: React.FC = () => {
   if (isLoading || isFetching) {
     return <BasicLoader />;
   }
-
-  const renderLegend = () => (
-    <div className="flex items-center">
-      <div className="mr-2">
-        <Tag color="purple" className="flex items-center">
-          <div className="w-2 h-2 bg-one rounded-full mr-1"></div>
-          Upcoming
-        </Tag>
-      </div>
-      <div>
-        <Tag color="default" className="flex items-center">
-          <div className="w-2 h-2 bg-three rounded-full mr-1"></div>
-          Past Holidays
-        </Tag>
-      </div>
-    </div>
-  );
-
-  const paginationItemRender = (
-    page: number,
-    type: string,
-    originalElement: React.ReactNode
-  ) => {
-    if (type === "page") {
-      return (
-        <div
-          className={`flex items-center justify-center w-8 h-8 rounded ${
-            page === pagination.currentPage
-              ? "btn-1 text-white"
-              : "bg-white text-black border border-purple-500"
-          }`}
-        >
-          {page}
-        </div>
-      );
-    }
-    return originalElement;
-  };
 
   return (
     <div className="p-6 min-h-screen">
@@ -147,15 +126,26 @@ const HolidayManagement: React.FC = () => {
       />
 
       <div className="flex justify-between items-center mt-4">
-        {renderLegend()}
+        <div className="flex items-center">
+          <div className="mr-2">
+            <Tag color="purple" className="flex items-center">
+              <div className="w-2 h-2 bg-one rounded-full mr-1"></div>
+              Upcoming
+            </Tag>
+          </div>
+          <div>
+            <Tag color="default" className="flex items-center">
+              <div className="w-2 h-2 bg-three rounded-full mr-1"></div>
+              Past Holidays
+            </Tag>
+          </div>
+        </div>
 
-        <Pagination
-          current={pagination.currentPage}
-          total={totalElements}
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
           pageSize={pagination.pageSize}
           onChange={handlePageChange}
-          showSizeChanger={false}
-          itemRender={paginationItemRender}
         />
       </div>
 
@@ -166,11 +156,32 @@ const HolidayManagement: React.FC = () => {
         refetchHolidays={refetch}
       />
 
-      <DeleteHoliday
-        visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
-        refetchHolidays={refetch}
-        id={selectedHolidayId}
+      <Modal
+        open={isDeleteModalOpen}
+        okText="Ok"
+        cancelText="Cancel"
+        centered
+        closable={false}
+        className="rounded-xl"
+        title={
+          <div className="text-xl font-semibold mb-6 text-center text-red-500">
+            Delete Holiday?
+          </div>
+        }
+        footer={
+          <div className="flex justify-center gap-4 mt-8">
+            <Button
+              className="py-2 border rounded-md"
+              onClick={handleCloseModals}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button className="btn-1" onClick={handleOk} loading={isDeleting}>
+              Ok
+            </Button>
+          </div>
+        }
       />
     </div>
   );

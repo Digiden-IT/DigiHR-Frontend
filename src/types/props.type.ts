@@ -35,9 +35,3 @@ export interface HolidayProps {
   refetchHolidays: () => void;
   id?: number;
 }
-export interface HolidayManagementApiResponse {
-  currentPage: number;
-  totalPages: number;
-  totalElements: number;
-  data: HolidayType[];
-}

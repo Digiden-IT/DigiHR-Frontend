@@ -12,29 +12,27 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
   const [addNewHoliday, { isLoading }] = useAddNewHolidayMutation();
 
   const handleSubmit = async () => {
+    const toastId = toast.loading("Adding new holiday");
     try {
       const values = await form.validateFields();
-
       const newHoliday = {
         holidayName: values.holidayName,
         date: values.date.format("YYYY-MM-DD"),
       };
-
+      
       const response = await addNewHoliday(newHoliday).unwrap();
 
       if (response) {
-        toast.success("New holiday added successfully!");
+        toast.success("New holiday added successfully!", { id: toastId });
         form.resetFields();
         refetchHolidays();
         onCancel();
       }
     } catch (err: any) {
       if (err.errorFields) {
-        // Form validation error
-        toast.error(err);
+        toast.error("Please check form inputs.", { id: toastId });
       } else {
-        //  API error
-        toast.error("Failed to add new holiday");
+        toast.error("Failed to add new holiday", { id: toastId });
       }
     }
   };
