@@ -1,18 +1,23 @@
 import React, { useEffect } from "react";
 import { Button, Modal, Input, Form } from "antd";
 import { AnnouncementProps } from "../../types/props.type";
-import { useAddAnnouncementsMutation } from "../../redux/api/announcementApi";
+import {
+  useAddAnnouncementsMutation,
+  useUpdateAnnouncementMutation,
+} from "../../redux/api/announcementApi";
 import { toast } from "sonner";
 
-const AddAnnouncement: React.FC<AnnouncementProps> = ({
+const AddEditAnnouncement: React.FC<AnnouncementProps> = ({
   visible,
   onCancel,
-  // onAdd,
-  initialData = null,
-  isEditing = false,
+  initialData,
+  isEditing,
+  refetchAnnouncements,
 }) => {
-  const [addAnnouncement, { error, isLoading }] = useAddAnnouncementsMutation();
-  console.log(error);
+  const [addAnnouncement, { isLoading: isAdding }] =
+    useAddAnnouncementsMutation();
+  const [updateAnnouncement, { isLoading: isUpdating }] =
+    useUpdateAnnouncementMutation();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -28,22 +33,33 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then(async (values) => {
+      const toastId = toast.loading("Updating Announcement...");
       const announcementData = {
         title: values.topic,
         description: values.message,
       };
       try {
-        const response = await addAnnouncement(announcementData).unwrap();
-        if (response) {
-          toast.success("Announcement added successfully!");
+        if (isEditing && initialData) {
+          await updateAnnouncement({
+            id: initialData.id,
+            ...announcementData,
+          }).unwrap();
+          toast.success("Announcement updated successfully!", { id: toastId });
+        } else {
+          await addAnnouncement(announcementData).unwrap();
+          toast.success("Announcement added successfully!", { id: toastId });
         }
+        refetchAnnouncements();
         form.resetFields();
+        onCancel();
       } catch (err) {
-        console.log(err);
-        toast.error("Failed to add announcement");
+        toast.error(
+          isEditing
+            ? "Failed to update announcement"
+            : "Failed to add announcement",
+          { id: toastId }
+        );
       }
-
-      onCancel();
     });
   };
 
@@ -89,9 +105,7 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
         </Form.Item>
 
         <Form.Item
-          label={
-            <span className="text-lg font-medium"> Give Announcement </span>
-          }
+          label={<span className="text-lg font-medium">Give Announcement</span>}
           name="message"
           rules={[
             { required: true, message: "Please enter an announcement message" },
@@ -105,15 +119,16 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
             rows={4}
           />
         </Form.Item>
+
         <div className="flex justify-center gap-4 mt-8">
           <Button className="py-2 border rounded-md" onClick={handleCancel}>
             Cancel
           </Button>
           <Button
             type="primary"
-            htmlType="submit"
             className="btn-1"
-            loading={isLoading}
+            loading={isAdding || isUpdating}
+            onClick={handleSubmit}
           >
             {isEditing ? "Update" : "Add"}
           </Button>
@@ -122,4 +137,5 @@ const AddAnnouncement: React.FC<AnnouncementProps> = ({
     </Modal>
   );
 };
-export default AddAnnouncement;
+
+export default AddEditAnnouncement;

@@ -22,6 +22,7 @@ export interface AnnouncementProps {
   onAdd?: (announcement: AnnouncementType) => void;
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
+  refetchAnnouncements: ()=>void;
 };
 export interface HolidayType {
   id: number;
@@ -34,4 +35,11 @@ export interface HolidayProps {
   onCancel: () => void;
   refetchHolidays: () => void;
   id?: number;
+}
+
+export interface DeleteModalProps {
+  visible: boolean;
+  onCancel: () => void;
+  onOk: () => void;
+  deleteModalMessage: string;
 }

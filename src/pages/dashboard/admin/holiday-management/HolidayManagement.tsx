@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import type { TableColumnsType, PaginationProps } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
+import DeleteModal from "../../../../components/modals/DeleteModal";
 import {
   useGetAllHolidaysQuery,
   useDeleteHolidayMutation,
@@ -17,7 +18,7 @@ const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
-  const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
+  const [deleteHoliday] = useDeleteHolidayMutation();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -156,32 +157,11 @@ const HolidayManagement: React.FC = () => {
         refetchHolidays={refetch}
       />
 
-      <Modal
-        open={isDeleteModalOpen}
-        okText="Ok"
-        cancelText="Cancel"
-        centered
-        closable={false}
-        className="rounded-xl"
-        title={
-          <div className="text-xl font-semibold mb-6 text-center text-red-500">
-            Delete Holiday?
-          </div>
-        }
-        footer={
-          <div className="flex justify-center gap-4 mt-8">
-            <Button
-              className="py-2 border rounded-md"
-              onClick={handleCloseModals}
-              disabled={isDeleting}
-            >
-              Cancel
-            </Button>
-            <Button className="btn-1" onClick={handleOk} loading={isDeleting}>
-              Ok
-            </Button>
-          </div>
-        }
+      <DeleteModal
+        visible={isDeleteModalOpen}
+        onCancel={handleCloseModals}
+        onOk={handleOk}
+        deleteModalMessage="Delete Holiday?"
       />
     </div>
   );

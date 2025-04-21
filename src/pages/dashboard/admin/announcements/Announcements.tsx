@@ -1,130 +1,78 @@
-import { Card, Button, Avatar, Dropdown } from "antd";
+import { Card, Button, Avatar, Dropdown, Modal } from "antd";
 import { AiOutlineMore } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
-import AddAnnouncement from "../../../../components/modals/AddAnnouncement";
+import AddEditAnnouncement from "../../../../components/modals/AddEditAnnouncement";
+import DeleteModal from "../../../../components/modals/DeleteModal";
 import { AnnouncementType } from "../../../../types/props.type";
-import { useGetAllAnnouncementsQuery } from "../../../../redux/api/announcementApi";
+import {
+  useGetAllAnnouncementsQuery,
+  useDeleteAnnouncementMutation,
+} from "../../../../redux/api/announcementApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
+import { toast } from "sonner";
 
 const Announcements: React.FC = () => {
-  const { data: announcements, isLoading } =
-    useGetAllAnnouncementsQuery(undefined);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedAnnouncementId, setSelectedAnnouncementId] =
+    useState<number>(0);
+  const [announcementModal, setAnnouncementModal] = useState<{
+    visible: boolean;
+    mode: "add" | "edit";
+    data: AnnouncementType | null;
+  }>({
+    visible: false,
+    mode: "add",
+    data: null,
+  });
+  const {
+    data: announcements,
+    isLoading,
+    refetch,
+  } = useGetAllAnnouncementsQuery([
+    { name: "sort", value: "announcementDate,desc" },
+  ]);
+  const [deleteAnnouncement, { isLoading: isDeleting }] =
+    useDeleteAnnouncementMutation();
 
-  console.log(announcements?.data, isLoading);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingAnnouncement, setEditingAnnouncement] =
-    useState<AnnouncementType | null>(null);
-  // const [announcements, setAnnouncements] = useState<AnnouncementType[]>([
-  //   {
-  //     id: 1,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas ertum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor t consectetur. Lorem tortor dolor elLorem ipsum dolor sit amet consectetur. Lorem tortor Lorem ipsum dolor sit amet consectetur. Lorem tortor it tincidunt cursus tincidunt amet varius. Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager2",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas  Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager3",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager4",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager3",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum dolor sit amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Darlene Robertson",
-  //     role: "Project Manager4",
-  //     time: "Mar 16, 09:00 pm",
-  //     topic: "Announcement Topic",
-  //     content:
-  //       "Lorem ipsum dolor sit Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas Lorem ipsum dolor sit ameLorem ipssdf  adfar ar Lorem aetfas eftaerft aer gas  amet consectetur. Lorem tortor dolor elit tincidunt cursus tincidunt amet varius.",
-  //     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-  //   },
-  // ]);
-
-  // const handleAddAnnouncement = (newAnnouncement: AnnouncementType) => {
-  //   if (editingAnnouncement) {
-  //     // Update existing announcement
-  //     setAnnouncements(
-  //       announcements.map((announcement) =>
-  //         announcement.id === editingAnnouncement.id
-  //           ? newAnnouncement
-  //           : announcement
-  //       )
-  //     );
-  //     setEditingAnnouncement(null);
-  //   } else {
-  //     // Add new announcement to the beginning of the array
-  //     setAnnouncements([newAnnouncement, ...announcements]);
-  //   }
-  // };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingAnnouncement(null);
+  const openAddModal = () => {
+    setAnnouncementModal({ visible: true, mode: "add", data: null });
   };
 
-  // const handleEdit = (id: number) => {
-  //   const announcementToEdit = announcements.find(
-  //     (announcement) => announcement.id === id
-  //   );
-  //   if (announcementToEdit) {
-  //     setEditingAnnouncement(announcementToEdit);
-  //     setIsModalOpen(true);
-  //   }
-  // };
+  const openEditModal = (announcement: AnnouncementType) => {
+    setAnnouncementModal({ visible: true, mode: "edit", data: announcement });
+  };
 
-  // const handleDelete = (id: number) => {
-  //   setAnnouncements(
-  //     announcements.filter((announcement) => announcement.id !== id)
-  //   );
-  // };
+  const handleCloseModals = () => {
+    setAnnouncementModal({ visible: false, mode: "add", data: null });
+    setIsDeleteModalOpen(false);
+    setSelectedAnnouncementId(0);
+  };
 
-  // Menu items for the dropdown
-  const getDropdownItems = (id: number) => [
+  const handleOpenDeleteModal = (id: number) => {
+    setIsDeleteModalOpen(true);
+    setSelectedAnnouncementId(id);
+  };
+  const handleOk = async () => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteAnnouncement(selectedAnnouncementId);
+      toast.success("Announcement deleted successfully", { id: toastId });
+      refetch();
+      handleCloseModals();
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete holiday", { id: toastId });
+    }
+  };
+
+  const getDropdownItems = (announcement: AnnouncementType) => [
     {
       key: "edit",
       label: (
         <div
           className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-          onClick={() => console.log(id)}
+          onClick={() => openEditModal(announcement)}
         >
           Edit
         </div>
@@ -135,7 +83,7 @@ const Announcements: React.FC = () => {
       label: (
         <div
           className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-          // onClick={() => handleDelete(id)}
+          onClick={() => handleOpenDeleteModal(announcement.id)}
         >
           Delete
         </div>
@@ -147,17 +95,11 @@ const Announcements: React.FC = () => {
     <div className="p-6 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Recent Announcements</h1>
-        <Button
-          className="btn-1"
-          icon={<FaPlus />}
-          onClick={() => {
-            setEditingAnnouncement(null);
-            setIsModalOpen(true);
-          }}
-        >
+        <Button className="btn-1" icon={<FaPlus />} onClick={openAddModal}>
           Add Announcement
         </Button>
       </div>
+
       {isLoading ? (
         <BasicLoader />
       ) : (
@@ -179,7 +121,7 @@ const Announcements: React.FC = () => {
                   </h6>
                 </div>
                 <Dropdown
-                  menu={{ items: getDropdownItems(announcement.id) }}
+                  menu={{ items: getDropdownItems(announcement) }}
                   placement="bottomRight"
                   trigger={["click"]}
                 >
@@ -194,12 +136,19 @@ const Announcements: React.FC = () => {
           ))}
         </div>
       )}
-      <AddAnnouncement
-        visible={isModalOpen}
-        onCancel={handleCloseModal}
-        // onAdd={handleAddAnnouncement}
-        initialData={editingAnnouncement}
-        isEditing={!!editingAnnouncement}
+
+      <AddEditAnnouncement
+        visible={announcementModal.visible}
+        onCancel={handleCloseModals}
+        initialData={announcementModal.data}
+        isEditing={announcementModal.mode === "edit"}
+        refetchAnnouncements={refetch}
+      />
+      <DeleteModal
+        visible={isDeleteModalOpen}
+        onCancel={handleCloseModals}
+        onOk={handleOk}
+        deleteModalMessage="Delete Announcements?"
       />
     </div>
   );
