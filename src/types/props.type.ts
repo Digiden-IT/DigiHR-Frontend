@@ -16,18 +16,18 @@ export interface AnnouncementType {
   authorName: string;
   announcementDate: string;
 }
-
 export interface AnnouncementProps {
   visible: boolean;
   onCancel: () => void;
   onAdd?: (announcement: AnnouncementType) => void;
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
-}
-export interface Holiday {
-  key: string;
+  refetchAnnouncements: ()=>void;
+};
+export interface HolidayType {
+  id: number;
   date: string;
-  day: string;
+  dayOfWeek: string;
   holidayName: string;
 }
 export interface EmployeeManagementDataType {
@@ -57,4 +57,18 @@ export type AddNewEmployeeFieldType = {
 export interface AddNewEmployeeProps {
   visible: boolean;
   onCancel: () => void;
+}
+
+export interface HolidayProps {
+  visible: boolean;
+  onCancel: () => void;
+  refetchHolidays: () => void;
+  id?: number;
+}
+
+export interface DeleteModalProps {
+  visible: boolean;
+  onCancel: () => void;
+  onOk: () => void;
+  deleteModalMessage: string;
 }
