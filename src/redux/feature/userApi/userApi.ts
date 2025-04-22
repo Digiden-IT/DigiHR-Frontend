@@ -1,3 +1,4 @@
+import { TQueryParam } from './../../../types/api.type';
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -17,21 +18,28 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
-    // get all user api
     getAllUser: builder.query({
-      query: () => ({
-        url: "/users",
-        method: "GET",
-      }),
-      providesTags: ["allUsers"],
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/users",
+          method: "GET",
+          params: params,
+          providesTags: ["allusers"],
+        };
+      },
     }),
-    // delete user api
     toggleDeleteStatus: builder.mutation({
       query: (userId) => ({
-        url: `/user/${userId}/toggle-delete`,
-        method: "PUT",
+        url: `/users/${userId}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ["allUsers"],
+      invalidatesTags: ["allusers"],
     }),
   }),
 });

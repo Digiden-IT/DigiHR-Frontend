@@ -11,6 +11,7 @@ const { Option } = Select;
 const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
   visible,
   onCancel,
+  refetchUsers,
 }) => {
   const [form] = Form.useForm();
 

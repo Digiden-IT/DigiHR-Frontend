@@ -1,4 +1,4 @@
-import { Button, Modal, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";

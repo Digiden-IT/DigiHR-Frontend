@@ -31,12 +31,12 @@ export interface HolidayType {
   holidayName: string;
 }
 export interface EmployeeManagementDataType {
-  key: React.Key;
-  EmployeeName: string;
-  Email: string;
-  Department: string;
-  Role: string;
-  JoiningDate: string;
+  id: number;
+  name: string;
+  email: string;
+  department: string;
+  role: string;
+  dateOfJoining: string;
 }
 export type AddNewEmployeeFieldType = {
   name?: string;
@@ -57,6 +57,7 @@ export type AddNewEmployeeFieldType = {
 export interface AddNewEmployeeProps {
   visible: boolean;
   onCancel: () => void;
+  refetchUsers: () =>void;
 }
 
 export interface HolidayProps {
