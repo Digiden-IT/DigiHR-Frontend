@@ -1,8 +1,8 @@
 import { baseApi } from "./baseApi";
+import { TQueryParam } from "../../types/api.type";
 
 const announcementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // registration api
     addAnnouncements: builder.mutation({
       query: (data) => ({
         url: "/announcements",
@@ -11,16 +11,43 @@ const announcementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["allannouncements"],
     }),
-    // get all user api
     getAllAnnouncements: builder.query({
-      query: () => ({
-        url: "/announcements?sort=announcementDate,desc",
-        method: "GET",
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/announcements",
+          method: "GET",
+          params: params,
+          providesTags: ["allannouncements"],
+        };
+      },
+    }),
+    updateAnnouncement: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/announcements/${id}`,
+        method: "PATCH",
+        body,
       }),
-      providesTags: ["allannouncements"],
+      invalidatesTags: ["allannouncements"],
+    }),
+    deleteAnnouncement: builder.mutation({
+      query: (id) => ({
+        url: `/announcements/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["allannouncements"],
     }),
   }),
 });
 
-export const { useAddAnnouncementsMutation, useGetAllAnnouncementsQuery } =
-  announcementApi;
+export const {
+  useAddAnnouncementsMutation,
+  useGetAllAnnouncementsQuery,
+  useUpdateAnnouncementMutation,
+  useDeleteAnnouncementMutation
+} = announcementApi;

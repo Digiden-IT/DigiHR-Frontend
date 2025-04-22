@@ -1,103 +1,90 @@
-import { Button, Table, Pagination, Tag } from "antd";
+import { Button, Modal, Table, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
 import type { TableColumnsType, PaginationProps } from "antd";
-import { Holiday } from "../../../../types/props.type";
+import { HolidayType } from "../../../../types/props.type";
+import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
+import DeleteModal from "../../../../components/modals/DeleteModal";
+import {
+  useGetAllHolidaysQuery,
+  useDeleteHolidayMutation,
+} from "../../../../redux/api/holidayManagementApi";
+import BasicLoader from "../../../../components/shared/BasicLoader";
+import PageNavigation from "../../../../components/shared/PageNavigation";
+import { toast } from "sonner";
 
 const HolidayManagement: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  console.log(isModalOpen);
-  const holidaysData: Holiday[] = [
-    {
-      key: "1",
-      date: "January 01, 2025",
-      day: "Tuesday",
-      holidayName: "New Year",
-    },
-    {
-      key: "2",
-      date: "January 07, 2025",
-      day: "Saturday",
-      holidayName: "International Programmers' Day",
-    },
-    {
-      key: "3",
-      date: "February 04, 2025",
-      day: "Saturday",
-      holidayName: "World Cancer Day",
-    },
-    {
-      key: "4",
-      date: "April 01, 2025",
-      day: "Saturday",
-      holidayName: "April Fool Day",
-    },
-    {
-      key: "5",
-      date: "May 07, 2025",
-      day: "Monday",
-      holidayName: "International Programmers' Day",
-    },
-    {
-      key: "6",
-      date: "May 22, 2025",
-      day: "Tuesday",
-      holidayName: "International Day for Biological Diversity",
-    },
-    {
-      key: "7",
-      date: "June 05, 2025",
-      day: "Monday",
-      holidayName: "International Day for Biological Diversity",
-    },
-    {
-      key: "8",
-      date: "August 07, 2025",
-      day: "Monday",
-      holidayName: "International Friendship Day",
-    },
-    {
-      key: "9",
-      date: "September 15, 2025",
-      day: "Friday",
-      holidayName: "International Day of Democracy",
-    },
-    {
-      key: "10",
-      date: "November 14, 2025",
-      day: "Tuesday",
-      holidayName: "World Diabetes Day",
-    },
-    {
-      key: "11",
-      date: "December 25, 2025",
-      day: "Monday",
-      holidayName: "Merry Chrismas",
-    },
-  ];
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
+  const [deleteHoliday] = useDeleteHolidayMutation();
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 10,
+  });
 
-  const columns: TableColumnsType<Holiday> = [
+  const { data, isLoading, refetch, isFetching } = useGetAllHolidaysQuery([
+    { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
+    { name: "size", value: pagination.pageSize },
+    { name: "sort", value: "date" },
+  ]);
+
+  const holidaysData: HolidayType[] = data?.data || [];
+  const totalElements = data?.totalElements || 0;
+
+  const handleOpenAddModal = () => setIsAddModalOpen(true);
+
+  const handleOpenDeleteModal = (id: number) => {
+    setIsDeleteModalOpen(true);
+    setSelectedHolidayId(id);
+  };
+
+  const handleCloseModals = () => {
+    setIsAddModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setSelectedHolidayId(0);
+  };
+
+  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
+    setPagination({
+      currentPage: page,
+      pageSize: pageSize || pagination.pageSize,
+    });
+  };
+  const handleOk = async () => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await deleteHoliday(selectedHolidayId);
+      toast.success("Holiday deleted successfully", { id: toastId });
+      refetch();
+      handleCloseModals();
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete holiday", { id: toastId });
+    }
+  };
+
+  const columns: TableColumnsType<HolidayType> = [
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: (text: string, record: Holiday) => (
+      render: (text: string, record: HolidayType) => (
         <div className="flex items-center">
-          {new Date(record.date) > new Date() ? (
-            <div className="w-1 h-7 bg-one mr-2"></div>
-          ) : (
-            <div className="w-1 h-7 bg-three mr-2"></div>
-          )}
+          <div
+            className={`w-1 h-7 ${
+              new Date(record.date) > new Date() ? "bg-one" : "bg-three"
+            } mr-2`}
+          />
           <span>{text}</span>
         </div>
       ),
     },
     {
       title: "Day",
-      dataIndex: "day",
-      key: "day",
+      dataIndex: "dayOfWeek",
+      key: "dayOfWeek",
     },
     {
       title: "Holiday Name",
@@ -107,39 +94,36 @@ const HolidayManagement: React.FC = () => {
     {
       title: "",
       key: "action",
-      render: (_: unknown, record: Holiday) => (
+      render: (_, record: HolidayType) => (
         <CiTrash
-          className="text-red-500"
           size={20}
-          onClick={() => console.log(record.key)}
+          className="text-red-500 hover:text-red-700 border-none shadow-none"
+          onClick={() => handleOpenDeleteModal(record.id)}
         />
       ),
     },
   ];
 
-  const getCurrentData = (): Holiday[] => {
-    return holidaysData.slice((currentPage - 1) * 10, currentPage * 10);
-  };
-
-  const handlePageChange: PaginationProps["onChange"] = (page) => {
-    setCurrentPage(page);
-  };
+  if (isLoading || isFetching) {
+    return <BasicLoader />;
+  }
 
   return (
     <div className="p-6 min-h-screen">
       <Button
         icon={<FaPlus />}
         className="btn-1 mb-4"
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleOpenAddModal}
       >
         Add New Holiday
       </Button>
 
-      <Table<Holiday>
+      <Table<HolidayType>
         columns={columns}
-        dataSource={getCurrentData()}
+        dataSource={holidaysData}
         pagination={false}
         className="mb-6"
+        rowKey="id"
       />
 
       <div className="flex justify-between items-center mt-4">
@@ -158,29 +142,27 @@ const HolidayManagement: React.FC = () => {
           </div>
         </div>
 
-        <Pagination
-          current={currentPage}
-          total={holidaysData.length}
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
+          pageSize={pagination.pageSize}
           onChange={handlePageChange}
-          showSizeChanger={false}
-          itemRender={(page, type, originalElement) => {
-            if (type === "page") {
-              return (
-                <div
-                  className={`flex items-center justify-center w-8 h-8 rounded ${
-                    page === currentPage
-                      ? "btn-1 text-white"
-                      : "bg-white text-black border border-purple-500"
-                  }`}
-                >
-                  {page}
-                </div>
-              );
-            }
-            return originalElement;
-          }}
         />
       </div>
+
+      {/* Modals */}
+      <AddNewHoliday
+        visible={isAddModalOpen}
+        onCancel={handleCloseModals}
+        refetchHolidays={refetch}
+      />
+
+      <DeleteModal
+        visible={isDeleteModalOpen}
+        onCancel={handleCloseModals}
+        onOk={handleOk}
+        deleteModalMessage="Delete Holiday?"
+      />
     </div>
   );
 };
