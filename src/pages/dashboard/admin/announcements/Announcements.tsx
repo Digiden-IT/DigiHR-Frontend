@@ -148,7 +148,7 @@ const Announcements: React.FC = () => {
         visible={isDeleteModalOpen}
         onCancel={handleCloseModals}
         onOk={handleOk}
-        deleteModalMessage="Delete Announcements?"
+        deleteModalMessage="Delete Announcement?"
       />
     </div>
   );

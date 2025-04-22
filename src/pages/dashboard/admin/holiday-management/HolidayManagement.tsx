@@ -96,6 +96,7 @@ const HolidayManagement: React.FC = () => {
       key: "action",
       render: (_, record: HolidayType) => (
         <CiTrash
+          style={{ cursor: "pointer" }}
           size={20}
           className="text-red-500 hover:text-red-700 border-none shadow-none"
           onClick={() => handleOpenDeleteModal(record.id)}
