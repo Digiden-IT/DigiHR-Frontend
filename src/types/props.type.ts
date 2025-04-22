@@ -39,19 +39,19 @@ export interface EmployeeManagementDataType {
   dateOfJoining: string;
 }
 export type AddNewEmployeeFieldType = {
-  name?: string;
-  phoneNumber?: string;
-  dateOfBirth?: string;
-  gender?: string;
-  bloodGroup?: string;
-  email?: string;
-  role?: string;
-  employeeType?: string;
-  department?: string;
-  dateOfJoining?: string;
-  designation?: string;
-  address?: string;
-  password?: string;
+  name: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  gender: string;
+  bloodGroup: string;
+  email: string;
+  role: string;
+  employeeType: string;
+  department: string;
+  dateOfJoining: string;
+  designation: string;
+  address: string;
+  password: string;
 };
 
 export interface AddNewEmployeeProps {

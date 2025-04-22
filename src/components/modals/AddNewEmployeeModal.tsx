@@ -1,10 +1,10 @@
 import React from "react";
-import type { FormProps } from "antd";
 import { Form, Input, Select, DatePicker, Button, Modal } from "antd";
 import {
-  AddNewEmployeeFieldType,
   AddNewEmployeeProps,
 } from "../../types/props.type";
+import { useAddUserMutation } from "../../redux/feature/userApi/userApi";
+import { toast } from "sonner";
 
 const { Option } = Select;
 
@@ -14,22 +14,42 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
   refetchUsers,
 }) => {
   const [form] = Form.useForm();
+  const [addUser, { isLoading }] = useAddUserMutation();
 
-  const handleSubmit = (values: AddNewEmployeeFieldType) => {
-    console.log("Success:", values);
-    form.resetFields();
-    onCancel();
+  const handleSubmit = async () => {
+    const toastId = toast.loading("Adding employee...");
+
+    try {
+      const values = await form.validateFields();
+      const formattedValues = {
+        ...values,
+        dateOfBirth: values.dateOfBirth.format("YYYY-MM-DD"),
+        dateOfJoining: values.dateOfJoining.format("YYYY-MM-DD"),
+      };
+
+      const { confirmPassword, ...dataToSubmit } = formattedValues;
+
+      if (values.password !== confirmPassword) {
+        toast.error("Passwords do not match", { id: toastId });
+        return;
+      }
+      await addUser(dataToSubmit).unwrap();
+      toast.success("Employee added successfully", { id: toastId });
+      form.resetFields();
+      refetchUsers();
+      onCancel();
+    } catch (error) {
+      console.error("Failed to add employee:", error);
+      toast.error("Failed to add employee", { id: toastId });
+    }
   };
+
   const handleCancel = () => {
     form.resetFields();
     onCancel();
   };
 
-  const onFinishFailed: FormProps<AddNewEmployeeFieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
+
 
   return (
     <Modal
@@ -37,14 +57,10 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
       open={visible}
       footer={null}
       onCancel={onCancel}
-      width={{
-        xs: "90%",
-        sm: "80%",
-        md: "70%",
-        lg: "60%",
-        xl: "50%",
-        xxl: "60%",
-      }}
+      className=""
+      width={"60%"}
+      height={"100%"}
+      centered
     >
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-6">Add New Employee</h2>
@@ -53,14 +69,13 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           layout="vertical"
           requiredMark={false}
           onFinish={handleSubmit}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
           className="grid grid-cols-1 md:grid-cols-2 gap-x-6"
         >
           <Form.Item
             label="Enter Employee Name"
             name="name"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input name" }]}
             className="w-full"
           >
             <Input placeholder="john watson" />
@@ -69,7 +84,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           <Form.Item
             label="Enter Mobile Number"
             name="phoneNumber"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input mobile number" }]}
             className="w-full"
           >
             <Input placeholder="0246576" />
@@ -78,7 +93,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           <Form.Item
             label="Date of Birth"
             name="dateOfBirth"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input birthdate" }]}
             className="w-full"
           >
             <DatePicker className="w-full" placeholder="dd/mm/year" />
@@ -87,62 +102,66 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           <Form.Item
             label="Select Gender"
             name="gender"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input gender" }]}
             className="w-full"
           >
             <Select placeholder="Choose Gender">
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-              <Option value="other">Other</Option>
+              <Option value="MALE">Male</Option>
+              <Option value="FEMALE">Female</Option>
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Select Blood Group"
             name="bloodGroup"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input blood group" }]}
             className="w-full"
           >
             <Select placeholder="Choose Group">
-              <Option value="A+">A+</Option>
-              <Option value="B+">B+</Option>
-              <Option value="O+">O+</Option>
-              <Option value="AB+">AB+</Option>
+              <Option value="A_POSITIVE">A+</Option>
+              <Option value="A_NEGATIVE">A-</Option>
+              <Option value="B_POSITIVE">B+</Option>
+              <Option value="B_NEGATIVE">B-</Option>
+              <Option value="O_POSITIVE">O+</Option>
+              <Option value="O_NEGATIVE">O-</Option>
+              <Option value="AB_POSITIVE">AB+</Option>
+              <Option value="AB_NEGATIVE">AB-</Option>
             </Select>
           </Form.Item>
-
           <Form.Item
             label="Enter Email Address"
             name="email"
-            rules={[{ required: true }]}
+            rules={[
+              { type: "email" },
+              { required: true, message: "Please input Email!" },
+            ]}
             className="w-full"
           >
-            <Input placeholder="abc@gmail.com" />
+            <Input placeholder="abc@digidenit.com" />
           </Form.Item>
 
           <Form.Item
             label="Select Role"
             name="role"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input role" }]}
             className="w-full"
           >
             <Select placeholder="Select Role">
-              <Option value="admin">Admin</Option>
-              <Option value="manager">Manager</Option>
-              <Option value="staff">Staff</Option>
+              <Option value="ADMIN">Admin</Option>
+              <Option value="USER">User</Option>
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Select Employee Type"
             name="employeeType"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input type" }]}
             className="w-full"
           >
             <Select placeholder="Select Type">
-              <Option value="full-time">Full Time</Option>
-              <Option value="part-time">Part Time</Option>
-              <Option value="contract">Contract</Option>
+              <Option value="FULL_TIME">Full Time</Option>
+              <Option value="PART_TIME">Part Time</Option>
+              <Option value="CONTRACTUAL">Contractual</Option>
             </Select>
           </Form.Item>
 
@@ -153,16 +172,21 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Department name">
-              <Option value="hr">HR</Option>
-              <Option value="sales">Sales</Option>
-              <Option value="engineering">Engineering</Option>
+              <Option value="HR">HR</Option>
+              <Option value="SALES">Sales</Option>
+              <Option value="ENGINEERING">Engineering</Option>
+              <Option value="MARKETING">Marketing</Option>
+              <Option value="ADMIN">Admin</Option>
+              <Option value="TECHNOLOGY">Technology</Option>
+              <Option value="FINANACE">Finance</Option>
+              <Option value="OTHER">Other</Option>
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Select Joining Date"
             name="dateOfJoining"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input joining date" }]}
             className="w-full"
           >
             <DatePicker className="w-full" placeholder="dd/mm/year" />
@@ -171,20 +195,20 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           <Form.Item
             label="Select Designation"
             name="designation"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input designation" }]}
             className="w-full"
           >
             <Select placeholder="Designation">
-              <Option value="developer">Developer</Option>
-              <Option value="designer">Designer</Option>
-              <Option value="analyst">Analyst</Option>
+              <Option value="DEVELOPER">Developer</Option>
+              <Option value="DESIGNER">Designer</Option>
+              <Option value="ANALYST">Analyst</Option>
             </Select>
           </Form.Item>
 
           <Form.Item
             label="Enter Address"
             name="address"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input address" }]}
             className="w-full"
           >
             <Input placeholder="street, district etc.." />
@@ -193,10 +217,10 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
           <Form.Item
             label="Enter Password"
             name="password"
-            rules={[{ required: true }]}
+            rules={[{ required: true, message: "Please input password" }]}
             className="w-full"
           >
-            <Input.Password placeholder="6 digit password" />
+            <Input.Password placeholder="Abc@1234@3#" />
           </Form.Item>
 
           <Form.Item
@@ -208,10 +232,9 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             <Input.Password placeholder="Retype password" />
           </Form.Item>
 
-          {/* Submit and Cancel Buttons */}
           <div className="col-span-1 md:col-span-2 flex justify-center gap-4 mt-4">
             <Button onClick={handleCancel}>Cancel</Button>
-            <Button className="btn-1" htmlType="submit">
+            <Button className="btn-1" htmlType="submit" loading={isLoading}>
               Apply
             </Button>
           </div>

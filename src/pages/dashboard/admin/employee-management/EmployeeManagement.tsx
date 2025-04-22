@@ -23,7 +23,7 @@ const EmployeeManagement = () => {
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    pageSize: 3,
+    pageSize: 5,
   });
 
   const {
