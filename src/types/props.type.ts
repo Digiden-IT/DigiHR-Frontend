@@ -56,20 +56,20 @@ export type AddNewEmployeeFieldType = {
 
 export interface AddNewEmployeeProps {
   visible: boolean;
-  onCancel: () => void;
+  onCloseModal: () => void;
   refetchUsers: () => void;
 }
 
 export interface HolidayProps {
   visible: boolean;
-  onCancel: () => void;
+  onCloseModal: () => void;
   refetchHolidays: () => void;
   id?: number;
 }
 
 export interface DeleteModalProps {
   visible: boolean;
-  onCancel: () => void;
+  onCloseModal: () => void;
   onOk: () => void;
   deleteModalMessage: string;
 }

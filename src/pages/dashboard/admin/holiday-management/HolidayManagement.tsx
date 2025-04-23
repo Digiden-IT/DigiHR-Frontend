@@ -155,13 +155,13 @@ const HolidayManagement: React.FC = () => {
       {/* Modals */}
       <AddNewHoliday
         visible={isAddModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         refetchHolidays={refetch}
       />
 
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
         deleteModalMessage="Delete Holiday?"
       />

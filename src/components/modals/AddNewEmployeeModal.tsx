@@ -15,7 +15,7 @@ const { Option } = Select;
 
 const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
   visible,
-  onCancel,
+  onCloseModal,
   refetchUsers,
 }) => {
   const [form] = Form.useForm();
@@ -64,7 +64,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
       toast.success("Employee added successfully", { id: toastId });
       form.resetFields();
       refetchUsers();
-      onCancel();
+      onCloseModal();
     } catch (error) {
       toast.error("Failed to add employee", { id: toastId });
     }
@@ -72,7 +72,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
 
   const handleCancel = () => {
     form.resetFields();
-    onCancel();
+    onCloseModal();
   };
 
   return (
@@ -80,7 +80,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
       closeIcon={null}
       open={visible}
       footer={null}
-      onCancel={onCancel}
+      onCancel={onCloseModal}
       className=""
       width={"60%"}
       height={"100%"}

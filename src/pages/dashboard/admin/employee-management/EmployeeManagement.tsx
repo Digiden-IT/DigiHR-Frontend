@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { Space, Table, Button, TableColumnsType, PaginationProps } from "antd";
-import { PiEye } from "react-icons/pi";
-import { CiTrash } from "react-icons/ci";
+import { Space, Table, Button, PaginationProps } from "antd";
 import { VscSettings } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
 import DeleteModal from "../../../../components/modals/DeleteModal";
-import { Link } from "react-router-dom";
 import {
   useGetAllUserQuery,
   useToggleDeleteStatusMutation,
 } from "../../../../redux/feature/userApi/userApi";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 import { EmployeeManagementDataType } from "../../../../types/props.type";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
+import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns" 
 
 const EmployeeManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -36,7 +34,7 @@ const EmployeeManagement = () => {
   ]);
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
-  const user = useSelector(selectCurrentUser);
+  const user = useAppSelector(selectCurrentUser);
 
   const handleAddUser = () => {
     setIsAddModalOpen(true);
@@ -71,58 +69,7 @@ const EmployeeManagement = () => {
     }
   };
 
-  const columns: TableColumnsType<EmployeeManagementDataType> = [
-    {
-      title: "Employee Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Department",
-      dataIndex: "department",
-      key: "department",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-    },
-    {
-      title: "Joining Date",
-      dataIndex: "dateOfJoining",
-      key: "dateOfJoining",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record: EmployeeManagementDataType) => (
-        <Space size="middle">
-          <Link
-            to={`/${user?.role.toLowerCase()}/employee-management/user-details/${
-              record.id
-            }`}
-          >
-            <PiEye
-              size={20}
-              className="text-blue-500 hover:text-blue-700 border-none shadow-none"
-            />
-          </Link>
-
-          <CiTrash
-            size={20}
-            className="text-red-500 hover:text-red-700 border-none shadow-none"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleOpenDeleteModal(record.id)}
-          />
-        </Space>
-      ),
-    },
-  ];
+  const columns = EmployeeTableColumns(user?.role, handleOpenDeleteModal);
 
   return (
     <div className="p-6 min-h-screen">
@@ -165,12 +112,12 @@ const EmployeeManagement = () => {
 
       <AddNewEmployeeModal
         visible={isAddModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         refetchUsers={refetch}
       />
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
         deleteModalMessage="Delete User?"
       />
