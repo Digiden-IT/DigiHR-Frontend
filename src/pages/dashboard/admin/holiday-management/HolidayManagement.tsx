@@ -18,7 +18,7 @@ const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
-  const [deleteHoliday] = useDeleteHolidayMutation();
+  const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -53,6 +53,8 @@ const HolidayManagement: React.FC = () => {
     });
   };
   const handleOk = async () => {
+    if(isDeleting) return;
+    
     const toastId = toast.loading("Deleting...");
     try {
       await deleteHoliday(selectedHolidayId);
