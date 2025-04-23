@@ -22,8 +22,8 @@ export interface AnnouncementProps {
   onAdd?: (announcement: AnnouncementType) => void;
   initialData?: AnnouncementType | null;
   isEditing?: boolean;
-  refetchAnnouncements: ()=>void;
-};
+  refetchAnnouncements: () => void;
+}
 export interface HolidayType {
   id: number;
   date: string;
@@ -57,7 +57,7 @@ export type AddNewEmployeeFieldType = {
 export interface AddNewEmployeeProps {
   visible: boolean;
   onCancel: () => void;
-  refetchUsers: () =>void;
+  refetchUsers: () => void;
 }
 
 export interface HolidayProps {
@@ -72,4 +72,18 @@ export interface DeleteModalProps {
   onCancel: () => void;
   onOk: () => void;
   deleteModalMessage: string;
+}
+
+export interface AddNewEmployeeFormOptionItem {
+  name: string;
+  constant: string;
+}
+
+export interface AddNewEmployeeFormOptionsType {
+  departments: AddNewEmployeeFormOptionItem[];
+  roles: AddNewEmployeeFormOptionItem[];
+  employeeTypes: AddNewEmployeeFormOptionItem[];
+  bloodGroups: AddNewEmployeeFormOptionItem[];
+  genders: AddNewEmployeeFormOptionItem[];
+  [key: string]: AddNewEmployeeFormOptionItem[];
 }

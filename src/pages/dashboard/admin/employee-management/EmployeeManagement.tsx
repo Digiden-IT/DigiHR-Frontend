@@ -67,7 +67,6 @@ const EmployeeManagement = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete user", { id: toastId });
     }
   };

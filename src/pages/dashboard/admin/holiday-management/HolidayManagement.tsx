@@ -62,7 +62,6 @@ const HolidayManagement: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };

@@ -1,9 +1,8 @@
-import { TQueryParam } from './../../../types/api.type';
+import { TQueryParam } from "./../../../types/api.type";
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // registration api
     addUser: builder.mutation({
       query: (data) => ({
         url: "/users",
@@ -11,7 +10,6 @@ const userApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-    // get single user api
     getSingleUser: builder.query({
       query: (userId) => ({
         url: `/users/${userId}`,
@@ -41,6 +39,14 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["allusers"],
     }),
+    getUserFilerOptions: builder.query<any, void>({
+      // Explicitly type as void argument
+      query: () => ({
+        url: "users/filter-options",
+        method: "GET",
+      }),
+      providesTags: ["filterOptions"],
+    }),
   }),
 });
 
@@ -49,4 +55,5 @@ export const {
   useGetSingleUserQuery,
   useGetAllUserQuery,
   useToggleDeleteStatusMutation,
+  useGetUserFilerOptionsQuery,
 } = userApi;

@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Select, DatePicker, Button, Modal } from "antd";
 import {
   AddNewEmployeeProps,
+  AddNewEmployeeFormOptionsType,
 } from "../../types/props.type";
-import { useAddUserMutation } from "../../redux/feature/userApi/userApi";
+import {
+  useAddUserMutation,
+  useGetUserFilerOptionsQuery,
+} from "../../redux/feature/userApi/userApi";
+
 import { toast } from "sonner";
 
 const { Option } = Select;
@@ -15,6 +20,28 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [addUser, { isLoading }] = useAddUserMutation();
+  const { data: filterOptionsData } = useGetUserFilerOptionsQuery(undefined);
+  const [formOptions, setFormOptions] = useState<AddNewEmployeeFormOptionsType>(
+    {
+      departments: [],
+      roles: [],
+      employeeTypes: [],
+      bloodGroups: [],
+      genders: [],
+    }
+  );
+
+  useEffect(() => {
+    if (filterOptionsData && visible) {
+      setFormOptions({
+        departments: filterOptionsData.departments || [],
+        roles: filterOptionsData.roles || [],
+        employeeTypes: filterOptionsData.employeeTypes || [],
+        bloodGroups: filterOptionsData.bloodGroups || [],
+        genders: filterOptionsData.genders || [],
+      });
+    }
+  }, [filterOptionsData, visible]);
 
   const handleSubmit = async () => {
     const toastId = toast.loading("Adding employee...");
@@ -39,7 +66,6 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
       refetchUsers();
       onCancel();
     } catch (error) {
-      console.error("Failed to add employee:", error);
       toast.error("Failed to add employee", { id: toastId });
     }
   };
@@ -48,8 +74,6 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
     form.resetFields();
     onCancel();
   };
-
-
 
   return (
     <Modal
@@ -106,8 +130,11 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Choose Gender">
-              <Option value="MALE">Male</Option>
-              <Option value="FEMALE">Female</Option>
+              {formOptions?.genders.map((gender) => (
+                <Option key={gender.constant} value={gender.constant}>
+                  {gender.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -118,16 +145,14 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Choose Group">
-              <Option value="A_POSITIVE">A+</Option>
-              <Option value="A_NEGATIVE">A-</Option>
-              <Option value="B_POSITIVE">B+</Option>
-              <Option value="B_NEGATIVE">B-</Option>
-              <Option value="O_POSITIVE">O+</Option>
-              <Option value="O_NEGATIVE">O-</Option>
-              <Option value="AB_POSITIVE">AB+</Option>
-              <Option value="AB_NEGATIVE">AB-</Option>
+              {formOptions?.bloodGroups.map((bloodGroup) => (
+                <Option key={bloodGroup.constant} value={bloodGroup.constant}>
+                  {bloodGroup.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
+
           <Form.Item
             label="Enter Email Address"
             name="email"
@@ -147,8 +172,11 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Select Role">
-              <Option value="ADMIN">Admin</Option>
-              <Option value="USER">User</Option>
+              {formOptions?.roles.map((role) => (
+                <Option key={role.constant} value={role.constant}>
+                  {role.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -159,9 +187,11 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Select Type">
-              <Option value="FULL_TIME">Full Time</Option>
-              <Option value="PART_TIME">Part Time</Option>
-              <Option value="CONTRACTUAL">Contractual</Option>
+              {formOptions?.employeeTypes.map((type) => (
+                <Option key={type.constant} value={type.constant}>
+                  {type.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -172,14 +202,11 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             className="w-full"
           >
             <Select placeholder="Department name">
-              <Option value="HR">HR</Option>
-              <Option value="SALES">Sales</Option>
-              <Option value="ENGINEERING">Engineering</Option>
-              <Option value="MARKETING">Marketing</Option>
-              <Option value="ADMIN">Admin</Option>
-              <Option value="TECHNOLOGY">Technology</Option>
-              <Option value="FINANACE">Finance</Option>
-              <Option value="OTHER">Other</Option>
+              {formOptions?.departments.map((department) => (
+                <Option key={department.constant} value={department.constant}>
+                  {department.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -198,11 +225,7 @@ const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
             rules={[{ required: true, message: "Please input designation" }]}
             className="w-full"
           >
-            <Select placeholder="Designation">
-              <Option value="DEVELOPER">Developer</Option>
-              <Option value="DESIGNER">Designer</Option>
-              <Option value="ANALYST">Analyst</Option>
-            </Select>
+            <Input placeholder="street, district etc.." />
           </Form.Item>
 
           <Form.Item

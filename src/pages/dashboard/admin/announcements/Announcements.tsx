@@ -63,7 +63,6 @@ const Announcements: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete announcement", { id: toastId }); // Fixed "holiday" to "announcement"
     }
   };
