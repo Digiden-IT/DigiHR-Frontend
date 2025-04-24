@@ -13,16 +13,15 @@ import {
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
+import { usePagination } from "../../../../hooks/usePagination";
 
 const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
+  const { pagination, handlePageChange } = usePagination();
+
   const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: 10,
-  });
 
   const { data, isLoading, refetch, isFetching } = useGetAllHolidaysQuery([
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
@@ -46,12 +45,6 @@ const HolidayManagement: React.FC = () => {
     setSelectedHolidayId(0);
   };
 
-  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
-    setPagination({
-      currentPage: page,
-      pageSize: pageSize || pagination.pageSize,
-    });
-  };
   const handleOk = async () => {
     if(isDeleting) return;
     
