@@ -1,233 +1,269 @@
-import { Button } from "antd";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Select, DatePicker, Button, Modal } from "antd";
+import {
+  AddNewEmployeeProps,
+  AddNewEmployeeFormOptionsType,
+} from "../../types/props.type";
+import {
+  useAddUserMutation,
+  useGetUserFilerOptionsQuery,
+} from "../../redux/feature/userApi/userApi";
 
-type AddNewEmployeeModalProps = {
-  closeModal: () => void;
-};
+import { toast } from "sonner";
 
-const defaultFormData = {
-  name: "",
-  number: "",
-  birth: "",
-  gender: "",
-  group: "",
-  email: "",
-  role: "",
-  type: "",
-  department: "",
-  join: "",
-  designation: "",
-  address: "",
-};
+const { Option } = Select;
 
-const AddNewEmployeeModal = ({ closeModal }: AddNewEmployeeModalProps) => {
-  const [formData, setformData] = useState(defaultFormData);
-  const {
-    name,
-    number,
-    birth,
-    gender,
-    group,
-    email,
-    role,
-    type,
-    department,
-    join,
-    designation,
-    address,
-  } = formData;
+const AddNewEmployeeModal: React.FC<AddNewEmployeeProps> = ({
+  visible,
+  onCloseModal,
+  refetchUsers,
+}) => {
+  const [form] = Form.useForm();
+  const [addUser, { isLoading }] = useAddUserMutation();
+  const { data: filterOptionsData } = useGetUserFilerOptionsQuery(undefined);
+  const [formOptions, setFormOptions] = useState<AddNewEmployeeFormOptionsType>(
+    {
+      departments: [],
+      roles: [],
+      employeeTypes: [],
+      bloodGroups: [],
+      genders: [],
+    }
+  );
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setformData((prevState) => ({
-      ...prevState,
-      [e.target.id]: e.target.value,
-    }));
+  useEffect(() => {
+    if (filterOptionsData && visible) {
+      setFormOptions({
+        departments: filterOptionsData.departments || [],
+        roles: filterOptionsData.roles || [],
+        employeeTypes: filterOptionsData.employeeTypes || [],
+        bloodGroups: filterOptionsData.bloodGroups || [],
+        genders: filterOptionsData.genders || [],
+      });
+    }
+  }, [filterOptionsData, visible]);
+
+  const handleSubmit = async () => {
+    const toastId = toast.loading("Adding employee...");
+
+    try {
+      const values = await form.validateFields();
+      const formattedValues = {
+        ...values,
+        dateOfBirth: values.dateOfBirth.format("YYYY-MM-DD"),
+        dateOfJoining: values.dateOfJoining.format("YYYY-MM-DD"),
+      };
+
+      const { confirmPassword, ...dataToSubmit } = formattedValues;
+
+      if (values.password !== confirmPassword) {
+        toast.error("Passwords do not match", { id: toastId });
+        return;
+      }
+      await addUser(dataToSubmit).unwrap();
+      toast.success("Employee added successfully", { id: toastId });
+      form.resetFields();
+      refetchUsers();
+      onCloseModal();
+    } catch (error) {
+      toast.error("Failed to add employee", { id: toastId });
+    }
   };
 
-  const onChangeDropdown = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setformData((prevState) => ({
-      ...prevState,
-      [e.target.id]: e.target.value,
-    }));
+  const handleCancel = () => {
+    form.resetFields();
+    onCloseModal();
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData);
-    setformData(defaultFormData);
-    closeModal();
-  };
   return (
-    <div className="p-8">
-      <form
-        onSubmit={onSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        <div>
-          <label className="block text-sm mb-1">Enter Employee Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => onChange(e)}
-            className="w-full border rounded p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Enter Mobile Number</label>
-          <input
-            type="text"
-            id="number"
-            value={number}
-            onChange={onChange}
-            className="w-full border rounded p-2"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1">Date of Birth</label>
-          <input
-            type="date"
-            id="birth"
-            value={birth}
-            onChange={onChange}
-            className="w-full border rounded p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Select Gender</label>
-          <select
-            id="gender"
-            value={gender}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+    <Modal
+      closeIcon={null}
+      open={visible}
+      footer={null}
+      onCancel={onCloseModal}
+      className=""
+      width={"60%"}
+      height={"100%"}
+      centered
+    >
+      <div className="p-6">
+        <h2 className="text-xl font-semibold mb-6">Add New Employee</h2>
+        <Form
+          form={form}
+          layout="vertical"
+          requiredMark={false}
+          onFinish={handleSubmit}
+          autoComplete="off"
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-6"
+        >
+          <Form.Item
+            label="Enter Employee Name"
+            name="name"
+            rules={[{ required: true, message: "Please input name" }]}
+            className="w-full"
           >
-            <option>Choose Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </div>
+            <Input placeholder="john watson" />
+          </Form.Item>
 
-        <div>
-          <label className="block text-sm mb-1">Select Blood Group</label>
-          <select
-            id="group"
-            value={group}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+          <Form.Item
+            label="Enter Mobile Number"
+            name="phoneNumber"
+            rules={[{ required: true, message: "Please input mobile number" }]}
+            className="w-full"
           >
-            <option>Choose Group</option>
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-            <option>O+</option>
-            <option>O-</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Enter Email Address</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={onChange}
-            placeholder="abc@gmail.com"
-            className="w-full border rounded p-2"
-          />
-        </div>
+            <Input placeholder="0246576" />
+          </Form.Item>
 
-        <div>
-          <label className="block text-sm mb-1">Select Role</label>
-          <select
-            id="role"
-            value={role}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+          <Form.Item
+            label="Date of Birth"
+            name="dateOfBirth"
+            rules={[{ required: true, message: "Please input birthdate" }]}
+            className="w-full"
           >
-            <option>Select Role</option>
-            <option>Frontend</option>
-            <option>Backend</option>
-            <option>Full Stact</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Select Employee Type</label>
-          <select
-            id="type"
-            value={type}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+            <DatePicker className="w-full" placeholder="dd/mm/year" />
+          </Form.Item>
+
+          <Form.Item
+            label="Select Gender"
+            name="gender"
+            rules={[{ required: true, message: "Please input gender" }]}
+            className="w-full"
           >
-            <option>Select Type</option>
+            <Select placeholder="Choose Gender">
+              {formOptions?.genders.map((gender) => (
+                <Option key={gender.constant} value={gender.constant}>
+                  {gender.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-            <option>Employee</option>
-            <option>Intern</option>
-            <option>Manager</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1">Select Department</label>
-          <select
-            id="department"
-            value={department}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+          <Form.Item
+            label="Select Blood Group"
+            name="bloodGroup"
+            rules={[{ required: true, message: "Please input blood group" }]}
+            className="w-full"
           >
-            <option>Department name</option>
-            <option>HR</option>
-            <option>Management</option>
-            <option>Client</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Select Joining Date</label>
-          <input
-            type="date"
-            id="join"
-            value={join}
-            onChange={onChange}
-            className="w-full border rounded p-2"
-          />
-        </div>
+            <Select placeholder="Choose Group">
+              {formOptions?.bloodGroups.map((bloodGroup) => (
+                <Option key={bloodGroup.constant} value={bloodGroup.constant}>
+                  {bloodGroup.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-        <div>
-          <label className="block text-sm mb-1">Select Designation</label>
-          <select
-            id="designation"
-            value={designation}
-            onChange={onChangeDropdown}
-            className="w-full border rounded p-2 bg-white"
+          <Form.Item
+            label="Enter Email Address"
+            name="email"
+            rules={[
+              { type: "email" },
+              { required: true, message: "Please input Email!" },
+            ]}
+            className="w-full"
           >
-            <option>Designation</option>
-            <option>Senior Employee</option>
-            <option>junior Employee</option>
-            <option>Mid Level</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm mb-1">Enter Address</label>
-          <input
-            type="text"
-            id="address"
-            value={address}
-            onChange={onChange}
-            placeholder="street, district etc.."
-            className="w-full border rounded p-2"
-          />
-        </div>
+            <Input placeholder="abc@digidenit.com" />
+          </Form.Item>
 
-        <div className="col-span-1 md:col-span-2 flex justify-end gap-4 mt-4">
-          <Button onClick={closeModal}>Cancel</Button>
-          <Button htmlType="submit" className="btn-1">
-            Apply
-          </Button>
-        </div>
-      </form>
-    </div>
+          <Form.Item
+            label="Select Role"
+            name="role"
+            rules={[{ required: true, message: "Please input role" }]}
+            className="w-full"
+          >
+            <Select placeholder="Select Role">
+              {formOptions?.roles.map((role) => (
+                <Option key={role.constant} value={role.constant}>
+                  {role.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Select Employee Type"
+            name="employeeType"
+            rules={[{ required: true, message: "Please input type" }]}
+            className="w-full"
+          >
+            <Select placeholder="Select Type">
+              {formOptions?.employeeTypes.map((type) => (
+                <Option key={type.constant} value={type.constant}>
+                  {type.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Select Department"
+            name="department"
+            rules={[{ required: true }]}
+            className="w-full"
+          >
+            <Select placeholder="Department name">
+              {formOptions?.departments.map((department) => (
+                <Option key={department.constant} value={department.constant}>
+                  {department.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Select Joining Date"
+            name="dateOfJoining"
+            rules={[{ required: true, message: "Please input joining date" }]}
+            className="w-full"
+          >
+            <DatePicker className="w-full" placeholder="dd/mm/year" />
+          </Form.Item>
+
+          <Form.Item
+            label="Select Designation"
+            name="designation"
+            rules={[{ required: true, message: "Please input designation" }]}
+            className="w-full"
+          >
+            <Input placeholder="street, district etc.." />
+          </Form.Item>
+
+          <Form.Item
+            label="Enter Address"
+            name="address"
+            rules={[{ required: true, message: "Please input address" }]}
+            className="w-full"
+          >
+            <Input placeholder="street, district etc.." />
+          </Form.Item>
+
+          <Form.Item
+            label="Enter Password"
+            name="password"
+            rules={[{ required: true, message: "Please input password" }]}
+            className="w-full"
+          >
+            <Input.Password placeholder="Abc@1234@3#" />
+          </Form.Item>
+
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            rules={[{ required: true }]}
+            className="w-full"
+          >
+            <Input.Password placeholder="Retype password" />
+          </Form.Item>
+
+          <div className="col-span-1 md:col-span-2 flex justify-center gap-4 mt-4">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button className="btn-1" htmlType="submit" loading={isLoading}>
+              Apply
+            </Button>
+          </div>
+        </Form>
+      </div>
+    </Modal>
   );
 };
 

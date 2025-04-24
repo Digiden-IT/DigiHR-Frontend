@@ -1,4 +1,4 @@
-import { Card, Button, Avatar, Dropdown, Modal } from "antd";
+import { Card, Button, Avatar, Dropdown } from "antd";
 import { AiOutlineMore } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
@@ -54,6 +54,8 @@ const Announcements: React.FC = () => {
     setSelectedAnnouncementId(id);
   };
   const handleOk = async () => {
+    if (isDeleting) return;
+
     const toastId = toast.loading("Deleting...");
     try {
       await deleteAnnouncement(selectedAnnouncementId);
@@ -61,8 +63,7 @@ const Announcements: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
-      toast.error("Failed to delete holiday", { id: toastId });
+      toast.error("Failed to delete announcement", { id: toastId }); // Fixed "holiday" to "announcement"
     }
   };
 
@@ -146,9 +147,9 @@ const Announcements: React.FC = () => {
       />
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
-        deleteModalMessage="Delete Announcements?"
+        deleteModalMessage="Delete Announcement?"
       />
     </div>
   );

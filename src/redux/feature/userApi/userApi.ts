@@ -1,44 +1,59 @@
+import { TQueryParam } from "./../../../types/api.type";
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // registration api
-    userRegistration: builder.mutation({
+    addUser: builder.mutation({
       query: (data) => ({
-        url: "auth/register",
+        url: "/users",
         method: "POST",
         body: data,
       }),
     }),
-    // get single user api
     getSingleUser: builder.query({
       query: (userId) => ({
         url: `/users/${userId}`,
         method: "GET",
       }),
     }),
-    // get all user api
     getAllUser: builder.query({
-      query: () => ({
-        url: "/users",
-        method: "GET",
-      }),
-      providesTags: ["allUsers"],
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/users",
+          method: "GET",
+          params: params,
+          providesTags: ["allusers"],
+        };
+      },
     }),
-    // delete user api
     toggleDeleteStatus: builder.mutation({
       query: (userId) => ({
-        url: `/user/${userId}/toggle-delete`,
-        method: "PUT",
+        url: `/users/${userId}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ["allUsers"],
+      invalidatesTags: ["allusers"],
+    }),
+    getUserFilerOptions: builder.query<any, void>({
+      // Explicitly type as void argument
+      query: () => ({
+        url: "users/filter-options",
+        method: "GET",
+      }),
+      providesTags: ["filterOptions"],
     }),
   }),
 });
 
 export const {
-  useUserRegistrationMutation,
+  useAddUserMutation,
   useGetSingleUserQuery,
   useGetAllUserQuery,
   useToggleDeleteStatusMutation,
+  useGetUserFilerOptionsQuery,
 } = userApi;

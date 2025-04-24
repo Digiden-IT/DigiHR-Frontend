@@ -1,58 +1,87 @@
-import React, { useState } from "react";
-import { Space, Table, Button, Modal } from "antd";
-import { PiEye } from "react-icons/pi";
-import { CiTrash } from "react-icons/ci";
+import { useState } from "react";
+import { Space, Table, Button, PaginationProps } from "antd";
 import { VscSettings } from "react-icons/vsc";
+import { FaPlus } from "react-icons/fa";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
-
-import { Link } from "react-router-dom";
-import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
-import { useSelector } from "react-redux";
+import DeleteModal from "../../../../components/modals/DeleteModal";
+import {
+  useGetAllUserQuery,
+  useToggleDeleteStatusMutation,
+} from "../../../../redux/feature/userApi/userApi";
+import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
-
-const { Column } = Table;
-
-interface DataType {
-  key: React.Key;
-  EmployeeName: string;
-  Email: string;
-  Department: string;
-  Role: string;
-  JoiningDate: string;
-}
+import { EmployeeManagementDataType } from "../../../../types/props.type";
+import PageNavigation from "../../../../components/shared/PageNavigation";
+import { toast } from "sonner";
+import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns" 
 
 const EmployeeManagement = () => {
-  const { data: usersData, isLoading } = useGetAllUserQuery(undefined);
-  // todo: make action according to loading and remove console
-  console.log(isLoading, usersData?.data);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number>(0);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 5,
+  });
 
-  const user = useSelector(selectCurrentUser);
+  const {
+    data: usersData,
+    isLoading,
+    refetch,
+  } = useGetAllUserQuery([
+    { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
+    { name: "size", value: pagination.pageSize },
+  ]);
+  const totalElements = usersData?.totalElements || 0;
+  const [toggleDeleteUser] = useToggleDeleteStatusMutation();
+  const user = useAppSelector(selectCurrentUser);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
+  const handleAddUser = () => {
+    setIsAddModalOpen(true);
   };
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const handleCloseModals = () => {
+    setIsAddModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setSelectedUserId(0);
   };
 
-  const handleDelete = (key: React.Key) => {
-    console.log("delete data: ", key);
+  const handleOpenDeleteModal = (id: number) => {
+    setIsDeleteModalOpen(true);
+    setSelectedUserId(id);
   };
+
+  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
+    setPagination({
+      currentPage: page,
+      pageSize: pageSize || pagination.pageSize,
+    });
+  };
+
+  const handleOk = async () => {
+    const toastId = toast.loading("Deleting...");
+    try {
+      await toggleDeleteUser(selectedUserId);
+      toast.success("User deleted successfully", { id: toastId });
+      refetch();
+      handleCloseModals();
+    } catch (error) {
+      toast.error("Failed to delete user", { id: toastId });
+    }
+  };
+
+  const columns = EmployeeTableColumns(user?.role, handleOpenDeleteModal);
 
   return (
     <div className="p-6 min-h-screen">
       <Space className="mb-4 flex justify-between">
         <div>
-          <button
-            className="btn-1 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-            onClick={showModal}
+          <Button
+            className="btn-1"
+            icon={<FaPlus />}
+            onClick={() => handleAddUser()}
           >
-            + Add Employee
-          </button>
+            Add Employee
+          </Button>
         </div>
         <div className="flex gap-4">
           <input
@@ -66,53 +95,32 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<DataType>
+      <Table<EmployeeManagementDataType>
+        columns={columns}
         dataSource={usersData?.data}
         pagination={false}
+        className="mb-6"
         loading={isLoading}
-      >
-        <Column title="Employee Name" dataIndex="name" key="name" />
-        <Column title="Email" dataIndex="email" key="email" />
-        <Column title="Department" dataIndex="department" key="department" />
-        <Column title="Role" dataIndex="role" key="role" />
-        <Column
-          title="Joining Date"
-          dataIndex="dateOfJoining"
-          key="dateOfJoining"
-        />
-        <Column
-          title="Action"
-          key="Action"
-          render={(_, record: DataType) => (
-            <Space size="middle">
-              <Link
-                to={`/${user?.role.toLowerCase()}/employee-management/user-details/${
-                  record.key
-                }`}
-              >
-                <PiEye size={20} />
-              </Link>
+        rowKey="id"
+      />
+      <PageNavigation
+        currentPage={pagination.currentPage}
+        totalElements={totalElements}
+        pageSize={pagination.pageSize}
+        onChange={handlePageChange}
+      />
 
-              <CiTrash
-                size={20}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleDelete(record.key)}
-              />
-            </Space>
-          )}
-        />
-      </Table>
-      <Modal
-        title="Add New Employee"
-        open={isModalOpen}
+      <AddNewEmployeeModal
+        visible={isAddModalOpen}
+        onCloseModal={handleCloseModals}
+        refetchUsers={refetch}
+      />
+      <DeleteModal
+        visible={isDeleteModalOpen}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
-        onCancel={closeModal}
-        width="70%"
-        footer={null}
-        closable={false}
-      >
-        <AddNewEmployeeModal closeModal={closeModal} />
-      </Modal>
+        deleteModalMessage="Delete User?"
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Button, Modal, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
@@ -18,7 +18,7 @@ const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
-  const [deleteHoliday] = useDeleteHolidayMutation();
+  const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     pageSize: 10,
@@ -53,6 +53,8 @@ const HolidayManagement: React.FC = () => {
     });
   };
   const handleOk = async () => {
+    if(isDeleting) return;
+    
     const toastId = toast.loading("Deleting...");
     try {
       await deleteHoliday(selectedHolidayId);
@@ -60,7 +62,6 @@ const HolidayManagement: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };
@@ -96,6 +97,7 @@ const HolidayManagement: React.FC = () => {
       key: "action",
       render: (_, record: HolidayType) => (
         <CiTrash
+          style={{ cursor: "pointer" }}
           size={20}
           className="text-red-500 hover:text-red-700 border-none shadow-none"
           onClick={() => handleOpenDeleteModal(record.id)}
@@ -153,13 +155,13 @@ const HolidayManagement: React.FC = () => {
       {/* Modals */}
       <AddNewHoliday
         visible={isAddModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         refetchHolidays={refetch}
       />
 
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
         deleteModalMessage="Delete Holiday?"
       />
