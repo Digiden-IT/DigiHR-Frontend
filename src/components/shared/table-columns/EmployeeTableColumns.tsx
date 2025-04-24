@@ -6,10 +6,11 @@ import { EmployeeManagementDataType } from "../../../types/props.type";
 
 export const EmployeeTableColumns = (
   currentUserRole: string | undefined,
-  handleOpenDeleteModal: (id: number) => void
+  handleOpenDeleteModal?: (id: number) => void
 ): TableColumnsType<EmployeeManagementDataType> => {
+  const role = currentUserRole?.toLowerCase();
 
-  const commonColumns: TableColumnsType<EmployeeManagementDataType> = [
+  const baseColumns: TableColumnsType<EmployeeManagementDataType> = [
     {
       title: "Employee Name",
       dataIndex: "name",
@@ -20,6 +21,22 @@ export const EmployeeTableColumns = (
       dataIndex: "email",
       key: "email",
     },
+  ];
+
+  const userColumns: TableColumnsType<EmployeeManagementDataType> = [
+    {
+      title: "Mobile Number",
+      dataIndex: "mobileNumber",
+      key: "mobileNumber",
+    },
+    {
+      title: "Designation",
+      dataIndex: "designation",
+      key: "designation",
+    },
+  ];
+
+  const adminColumns: TableColumnsType<EmployeeManagementDataType> = [
     {
       title: "Department",
       dataIndex: "department",
@@ -30,6 +47,9 @@ export const EmployeeTableColumns = (
       dataIndex: "role",
       key: "role",
     },
+  ];
+
+  const joiningDateColumn: TableColumnsType<EmployeeManagementDataType> = [
     {
       title: "Joining Date",
       dataIndex: "dateOfJoining",
@@ -37,35 +57,36 @@ export const EmployeeTableColumns = (
     },
   ];
 
-  if (currentUserRole?.toLowerCase() === "admin") {
-    commonColumns.push({
+  const actionColumn: TableColumnsType<EmployeeManagementDataType> = [
+    {
       title: "Action",
       key: "action",
-      render: (_, record: EmployeeManagementDataType) => (
+      render: (_, record) => (
         <Space size="middle">
-          <Link
-            to={`/${currentUserRole?.toLowerCase()}/employee-management/user-details/${
-              record.id
-            }`}
-          >
+          <Link to={`/${role}/employee-management/user-details/${record.id}`}>
             <PiEye
               size={20}
               className="text-blue-500 hover:text-blue-700 border-none shadow-none"
             />
           </Link>
-
           <CiTrash
             size={20}
             className="text-red-500 hover:text-red-700 border-none shadow-none"
             style={{ cursor: "pointer" }}
-            onClick={() => handleOpenDeleteModal(record.id)}
+            onClick={() => handleOpenDeleteModal?.(record.id)}
           />
         </Space>
       ),
-    });
-  }
+    },
+  ];
 
-  return commonColumns;
+  return [
+    ...baseColumns,
+    ...(role === "user" ? userColumns : []),
+    ...(role === "admin" ? adminColumns : []),
+    ...joiningDateColumn,
+    ...(role === "admin" ? actionColumn : []),
+  ];
 };
 
 export default EmployeeTableColumns;

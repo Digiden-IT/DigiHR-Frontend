@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Space, Table, Button, PaginationProps } from "antd";
+import { Space, Table, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
@@ -13,16 +13,14 @@ import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 import { EmployeeManagementDataType } from "../../../../types/props.type";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
-import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns" 
+import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns";
+import { usePagination } from "../../../../hooks/usePagination";
 
 const EmployeeManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: 5,
-  });
+  const { pagination, handlePageChange } = usePagination();
 
   const {
     data: usersData,
@@ -32,6 +30,7 @@ const EmployeeManagement = () => {
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
   ]);
+
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
   const user = useAppSelector(selectCurrentUser);
@@ -39,25 +38,8 @@ const EmployeeManagement = () => {
   const handleAddUser = () => {
     setIsAddModalOpen(true);
   };
-  const handleCloseModals = () => {
-    setIsAddModalOpen(false);
-    setIsDeleteModalOpen(false);
-    setSelectedUserId(0);
-  };
 
-  const handleOpenDeleteModal = (id: number) => {
-    setIsDeleteModalOpen(true);
-    setSelectedUserId(id);
-  };
-
-  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
-    setPagination({
-      currentPage: page,
-      pageSize: pageSize || pagination.pageSize,
-    });
-  };
-
-  const handleOk = async () => {
+  const handleDeleteUser = async () => {
     const toastId = toast.loading("Deleting...");
     try {
       await toggleDeleteUser(selectedUserId);
@@ -67,6 +49,17 @@ const EmployeeManagement = () => {
     } catch (error) {
       toast.error("Failed to delete user", { id: toastId });
     }
+  };
+
+  const handleCloseModals = () => {
+    setIsAddModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setSelectedUserId(0);
+  };
+
+  const handleOpenDeleteModal = (id: number) => {
+    setIsDeleteModalOpen(true);
+    setSelectedUserId(id);
   };
 
   const columns = EmployeeTableColumns(user?.role, handleOpenDeleteModal);
@@ -118,7 +111,7 @@ const EmployeeManagement = () => {
       <DeleteModal
         visible={isDeleteModalOpen}
         onCloseModal={handleCloseModals}
-        onOk={handleOk}
+        onOk={handleDeleteUser}
         deleteModalMessage="Delete User?"
       />
     </div>
