@@ -1,26 +1,37 @@
-import { useState } from "react";
-import { Form, Input, Button, InputNumber } from "antd";
+import { Form, Button, InputNumber } from "antd";
+import { useLeaveCountSettingMutation } from "../../../../redux/api/announcementApi";
+import { toast } from "sonner";
+import { useWatch } from "antd/es/form/Form";
 
 const LeaveCountSetting = () => {
+  const [LeaveCountSetting, { isLoading, error }] =
+    useLeaveCountSettingMutation();
   const [form] = Form.useForm();
-  const [formChanged, setFormChanged] = useState(false);
 
-  const initialValues = {
-    sickLeaves: "7 days",
-    casualLeaves: "15 days",
-    otherLeaves: "7 days",
-    yearlyLeave: "25 days",
-    leavesPerMonth: "5 days",
-  };
+  if (error) {
+    console.log(error);
+  }
 
-  const handleValuesChange = () => {
-    setFormChanged(true);
-  };
+  const totalSickLeaves = useWatch("totalSickLeaves", form) || 0;
+  const totalCasualLeaves = useWatch("totalCasualLeaves", form) || 0;
+  const totalVacationLeaves = useWatch("totalVacationLeaves", form) || 0;
+
+  const totalLeaves = totalSickLeaves + totalCasualLeaves + totalVacationLeaves;
 
   const handleSubmit = () => {
     form.validateFields().then(async (values) => {
-      console.log("Form values:", values);
-      setFormChanged(false);
+      const toastId = toast.loading("Updating Leave Count Settings");
+
+      try {
+        await LeaveCountSetting(values).unwrap();
+        toast.success("Leave Count Settings updated", { id: toastId });
+        form.resetFields();
+      } catch (err) {
+        toast.error(`Failed to update, try again. Error:`, {
+          id: toastId,
+        });
+        console.log("Error", err);
+      }
     });
   };
 
@@ -30,59 +41,68 @@ const LeaveCountSetting = () => {
 
       <Form
         form={form}
-        initialValues={initialValues}
-        onValuesChange={handleValuesChange}
         onFinish={handleSubmit}
-        layout="horizontal"
         labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        className="w-1/2 space-y-5 mb-5"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+        <div className="grid grid-cols-1 gap-y-6">
           <Form.Item
-            name="sickLeaves"
+            name="totalSickLeaves"
             label="Total Sick Leaves"
             labelAlign="left"
+            rules={[
+              {
+                type: "number",
+                min: 0,
+                message: "Value must be a positive number",
+              },
+            ]}
           >
-            <InputNumber min={1} max={50}/>
+            <InputNumber className="rounded-md w-full" addonAfter="Days" />
           </Form.Item>
 
           <Form.Item
-            name="yearlyLeave"
-            label="Total Yearly Leave"
-            labelAlign="left"
-          >
-            <Input className="rounded-md" />
-          </Form.Item>
-
-          <Form.Item
-            name="casualLeaves"
+            name="totalCasualLeaves"
             label="Total Casual Leaves"
             labelAlign="left"
+            rules={[
+              {
+                type: "number",
+                min: 0,
+                message: "Value must be a positive number",
+              },
+            ]}
           >
-            <Input className="rounded-md" />
+            <InputNumber className="rounded-md w-full" addonAfter="Days" />
           </Form.Item>
 
           <Form.Item
-            name="leavesPerMonth"
-            label="Leaves Per Month"
+            name="totalVacationLeaves"
+            label="Other Leaves"
             labelAlign="left"
+            rules={[
+              {
+                type: "number",
+                min: 0,
+                message: "Value must be a positive number",
+              },
+            ]}
           >
-            <Input className="rounded-md" />
-          </Form.Item>
-
-          <Form.Item name="otherLeaves" label="Other Leaves" labelAlign="left">
-            <Input className="rounded-md" />
+            <InputNumber className="rounded-md w-full" addonAfter="Days" />
           </Form.Item>
         </div>
-
-        <div className="flex justify-end mt-6">
+        <div className="flex justify-between">
+          <p>
+            Total Yearly Leave:{" "}
+            <span className="ml-20 font-bold text-lg text-[#7152F3]">
+              {totalLeaves}
+            </span>
+          </p>
           <Button
             type="primary"
             htmlType="submit"
-            disabled={!formChanged}
-            className={`px-8 ${
-              !formChanged ? "bg-gray-200 text-gray-400" : "btn-1"
-            }`}
+            className="btn-1"
+            disabled={isLoading}
           >
             Apply
           </Button>
