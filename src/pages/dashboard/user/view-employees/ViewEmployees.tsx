@@ -1,70 +1,24 @@
 import { Table, Space, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
-
-interface DataType {
-  key: string;
-  name: string;
-  designation: string;
-  joining_date: string;
-  email: string;
-  mobile_number: string;
-}
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    designation: "UI/UX Designer",
-    joining_date: "July 14, 2024",
-    email: "something@gmail.com",
-    mobile_number: "01234546",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    designation: "Sales manager",
-    joining_date: "August 14, 2024",
-    email: "antor@gmail.com",
-    mobile_number: "01234546",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    designation: "Full Stack",
-    joining_date: "July 14, 2024",
-    email: "something@gmail.com",
-    mobile_number: "01234546",
-  },
-];
+import { EmployeeManagementDataType } from "../../../../types/props.type";
+import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
+import EmployeeTableColumns from "../../../../components/shared/table-columns/EmployeeTableColumns";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
+import PageNavigation from "../../../../components/shared/PageNavigation";
+import { usePagination } from "../../../../hooks/usePagination";
 
 const ViewEmployees: React.FC = () => {
-  const columns = [
-    {
-      title: "Employee Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
-    },
-    {
-      title: "Joining Date",
-      dataIndex: "joining_date",
-      key: "joining_date",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Mobile Number",
-      dataIndex: "mobile_number",
-      key: "mobile_number",
-    },
-  ];
+  const { pagination, handlePageChange } = usePagination(7);
+
+  const { data: usersData, isLoading } = useGetAllUserQuery([
+    { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
+    { name: "size", value: pagination.pageSize },
+  ]);
+
+  const user = useAppSelector(selectCurrentUser);
+  const columns = EmployeeTableColumns(user?.role);
+  const totalElements = usersData?.totalElements || 0;
 
   return (
     <div className="p-6 min-h-screen">
@@ -84,7 +38,22 @@ const ViewEmployees: React.FC = () => {
           </Button>
         </div>
       </Space>
-      <Table<DataType> columns={columns} dataSource={data} />
+      <Table<EmployeeManagementDataType>
+        columns={columns}
+        dataSource={usersData?.data}
+        pagination={false}
+        className="mb-6"
+        loading={isLoading}
+        rowKey="id"
+      />
+      {totalElements !== 0 && (
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
+          pageSize={pagination.pageSize}
+          onChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

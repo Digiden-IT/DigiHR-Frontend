@@ -9,6 +9,7 @@ export type FeatureCardProps = {
   image: string;
   bgColor: string;
 };
+
 export interface AnnouncementType {
   id: number;
   title: string;
@@ -16,6 +17,7 @@ export interface AnnouncementType {
   authorName: string;
   announcementDate: string;
 }
+
 export interface AnnouncementProps {
   visible: boolean;
   onCancel: () => void;
@@ -24,12 +26,14 @@ export interface AnnouncementProps {
   isEditing?: boolean;
   refetchAnnouncements: () => void;
 }
+
 export interface HolidayType {
   id: number;
   date: string;
   dayOfWeek: string;
   holidayName: string;
 }
+
 export interface EmployeeManagementDataType {
   id: number;
   name: string;
@@ -38,6 +42,7 @@ export interface EmployeeManagementDataType {
   role: string;
   dateOfJoining: string;
 }
+
 export type AddNewEmployeeFieldType = {
   name: string;
   phoneNumber: string;
