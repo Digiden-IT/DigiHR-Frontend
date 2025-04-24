@@ -2,7 +2,7 @@ import { Button, Table, Tag } from "antd";
 import { useState } from "react";
 import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
-import type { TableColumnsType, PaginationProps } from "antd";
+import type { TableColumnsType } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
 import DeleteModal from "../../../../components/modals/DeleteModal";
