@@ -26,8 +26,8 @@ export const EmployeeTableColumns = (
   const userColumns: TableColumnsType<EmployeeManagementDataType> = [
     {
       title: "Mobile Number",
-      dataIndex: "mobileNumber",
-      key: "mobileNumber",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Designation",

@@ -14,7 +14,9 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  console.log(error);
+  if (error) {
+    console.log(error);
+  }
 
   const onFinish = async (values: { email: string; password: string }) => {
     const toastId = toast.loading("Logging in");
