@@ -42,14 +42,6 @@ const announcementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["allannouncements"],
     }),
-    // todo: remove it from here
-    leaveCountSetting: builder.mutation({
-      query: (data) => ({
-        url: "/leavecountsetting",
-        method: "POST",
-        body: data,
-      }),
-    }),
   }),
 });
 
@@ -58,5 +50,4 @@ export const {
   useGetAllAnnouncementsQuery,
   useUpdateAnnouncementMutation,
   useDeleteAnnouncementMutation,
-  useLeaveCountSettingMutation,
 } = announcementApi;
