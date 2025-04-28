@@ -10,7 +10,7 @@ import {
 } from "../../../../redux/feature/userApi/userApi";
 import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
-import { EmployeeManagementDataType } from "../../../../types/props.type";
+import { EmployeeRecord } from "../../../../types/props.type";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
 import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns";
@@ -20,7 +20,7 @@ const EmployeeManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
-  const { pagination, handlePageChange } = usePagination();
+  const { pagination, handlePageChange } = usePagination(8);
 
   const {
     data: usersData,
@@ -88,7 +88,7 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<EmployeeManagementDataType>
+      <Table<EmployeeRecord>
         columns={columns}
         dataSource={usersData?.data}
         pagination={false}

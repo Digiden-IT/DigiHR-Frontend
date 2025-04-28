@@ -19,7 +19,7 @@ const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
-  const { pagination, handlePageChange } = usePagination();
+  const { pagination, handlePageChange } = usePagination(8);
 
   const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
 

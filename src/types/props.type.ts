@@ -1,4 +1,3 @@
-
 export type ServiceCardProps = {
   icon: string;
   text: string;
@@ -35,30 +34,21 @@ export interface HolidayType {
   holidayName: string;
 }
 
-export interface EmployeeManagementDataType {
+export type EmployeeRecord = {
   id: number;
   name: string;
-  email: string;
-  department: string;
-  role: string;
-  dateOfJoining: string;
-}
-
-export type AddNewEmployeeFieldType = {
-  id ?: number;
-  name: string;
-  phoneNumber: string;
-  dateOfBirth: string;
-  gender: string;
-  bloodGroup: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  bloodGroup?: string;
   email: string;
   role: string;
-  employeeType: string;
+  employeeType?: string;
   department: string;
   dateOfJoining: string;
-  designation: string;
-  address: string;
-  password: string;
+  designation?: string;
+  address?: string;
+  password?: string;
 };
 
 export interface AddEmployeeModalProps {
@@ -96,10 +86,11 @@ export interface AddNewEmployeeFormOptionsType {
 }
 
 export interface EmployeeFormProps {
-  form :any;
+  form: any;
   isEditMode: boolean;
   isViewMode: boolean;
-  onSubmit: ()=>void;
+  onSubmit: () => void;
   onCancel: () => void;
   showButtons: boolean;
+  initialValues?: EmployeeRecord;
 }

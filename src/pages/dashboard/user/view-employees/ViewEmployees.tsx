@@ -1,6 +1,6 @@
 import { Table, Space, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
-import { EmployeeManagementDataType } from "../../../../types/props.type";
+import { EmployeeRecord } from "../../../../types/props.type";
 import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
 import EmployeeTableColumns from "../../../../components/shared/table-columns/EmployeeTableColumns";
 import { useAppSelector } from "../../../../redux/hooks";
@@ -38,7 +38,7 @@ const ViewEmployees: React.FC = () => {
           </Button>
         </div>
       </Space>
-      <Table<EmployeeManagementDataType>
+      <Table<EmployeeRecord>
         columns={columns}
         dataSource={usersData?.data}
         pagination={false}
