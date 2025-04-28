@@ -1,3 +1,4 @@
+
 export type ServiceCardProps = {
   icon: string;
   text: string;
@@ -44,6 +45,7 @@ export interface EmployeeManagementDataType {
 }
 
 export type AddNewEmployeeFieldType = {
+  id ?: number;
   name: string;
   phoneNumber: string;
   dateOfBirth: string;
@@ -59,7 +61,7 @@ export type AddNewEmployeeFieldType = {
   password: string;
 };
 
-export interface AddNewEmployeeProps {
+export interface AddEmployeeModalProps {
   visible: boolean;
   onCloseModal: () => void;
   refetchUsers: () => void;
@@ -79,16 +81,25 @@ export interface DeleteModalProps {
   deleteModalMessage: string;
 }
 
-export interface AddNewEmployeeFormOptionItem {
+export interface EmployeeFormFieldFilterOptions {
   name: string;
   constant: string;
 }
 
 export interface AddNewEmployeeFormOptionsType {
-  departments: AddNewEmployeeFormOptionItem[];
-  roles: AddNewEmployeeFormOptionItem[];
-  employeeTypes: AddNewEmployeeFormOptionItem[];
-  bloodGroups: AddNewEmployeeFormOptionItem[];
-  genders: AddNewEmployeeFormOptionItem[];
-  [key: string]: AddNewEmployeeFormOptionItem[];
+  departments: EmployeeFormFieldFilterOptions[];
+  roles: EmployeeFormFieldFilterOptions[];
+  employeeTypes: EmployeeFormFieldFilterOptions[];
+  bloodGroups: EmployeeFormFieldFilterOptions[];
+  genders: EmployeeFormFieldFilterOptions[];
+  [key: string]: EmployeeFormFieldFilterOptions[];
+}
+
+export interface EmployeeFormProps {
+  form :any;
+  isEditMode: boolean;
+  isViewMode: boolean;
+  onSubmit: ()=>void;
+  onCancel: () => void;
+  showButtons: boolean;
 }

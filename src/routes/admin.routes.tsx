@@ -30,7 +30,7 @@ export const adminPaths = [
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
     icon: <LuLayoutDashboard size={18} />,
-    element: <EmployeeDetails />,
+    element: <EmployeeDetails/>,
     show: false,
   },
   {
