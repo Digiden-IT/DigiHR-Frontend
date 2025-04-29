@@ -93,4 +93,5 @@ export interface EmployeeFormProps {
   onCancel: () => void;
   showButtons: boolean;
   initialValues?: EmployeeRecord;
+  currentUserRole?: string;
 }

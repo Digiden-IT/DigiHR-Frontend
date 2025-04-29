@@ -2,8 +2,8 @@ import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
 import { LuLayoutDashboard } from "react-icons/lu";
 import ViewEmployees from "../pages/dashboard/user/view-employees/ViewEmployees";
 import { RxPerson } from "react-icons/rx";
-import MyProfile from "../pages/dashboard/user/my-profile/MyProfile";
 import { BsFilePerson } from "react-icons/bs";
+import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
 
 export const userPaths = [
   {
@@ -24,7 +24,7 @@ export const userPaths = [
     name: "My Profile",
     path: "/my-profile",
     icon: <RxPerson size={18} />,
-    element: <MyProfile />,
+    element: <EmployeeDetails />,
     show: true,
   },
 ];

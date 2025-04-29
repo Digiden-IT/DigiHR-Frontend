@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Button, Spin, Form } from "antd";
+import { useState } from "react";
+import { Button, Form } from "antd";
 import { PiPencilSimpleLineThin } from "react-icons/pi";
 import { MdOutlineSubdirectoryArrowLeft } from "react-icons/md";
 import { IoSaveOutline } from "react-icons/io5";
@@ -11,11 +11,17 @@ import {
 import EmployeeForm from "../../../../components/forms/EmployeeForm";
 import { toast } from "sonner";
 import BasicLoader from "../../../../components/shared/BasicLoader";
+import { TUser } from "../../../../types/user.type";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 
 
 const EmployeeDetails = () => {
+  const user =  useAppSelector(selectCurrentUser) as TUser;
   const { userId } = useParams();
-  const employeeId = userId ? parseInt(userId, 10) : undefined;
+  const routeEmployeeId = userId ? parseInt(userId, 10) : undefined;
+  const employeeId = user?.id ?? routeEmployeeId;
+  const currentUserRole = user?.role.toLowerCase() ?? "admin";
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [isEditMode, setIsEditMode] = useState(false);
@@ -28,13 +34,6 @@ const EmployeeDetails = () => {
 
   const [updateUser, { isLoading: isUpdateLoading }] = useUpdateUserMutation();
 
-  // Reset form when toggling edit mode or when data changes
-  // useEffect(() => {
-  //   if (employeeData) {
-  //     form.resetFields(); // Clear any previous form data
-  //   }
-  // }, [isEditMode, employeeData, form]);
-
   const handleEditClick = () => {
     setIsEditMode(true);
   };
@@ -45,7 +44,6 @@ const EmployeeDetails = () => {
 
   const handleSubmit = async () => {
     const toastId = toast.loading("Updating employee...");
-
     try {
       const values = await form.validateFields();
       const formattedValues = {
@@ -69,15 +67,12 @@ const EmployeeDetails = () => {
 
   const handleCancel = () => {
     setIsEditMode(false);
-    form.resetFields(); // This will reset the form to the initialValues
+    form.resetFields(); 
   };
 
   if (isLoading) {
-    return (
-      <BasicLoader/>
-    );
+    return <BasicLoader />;
   }
-
 
   return (
     <div className="p-6 min-h-screen">
@@ -93,7 +88,7 @@ const EmployeeDetails = () => {
               {employeeData?.name || "Loading..."}
             </h2>
             <p className="text-gray-600">
-              {employeeData?.department || "Loading..."}
+              {employeeData?.designation || "Loading..."}
             </p>
             <p className="text-gray-500">
               {employeeData?.email || "Loading..."}
@@ -138,7 +133,8 @@ const EmployeeDetails = () => {
         onSubmit={handleSubmit}
         onCancel={handleCancel}
         showButtons={false}
-        initialValues={employeeData} 
+        initialValues={employeeData}
+        currentUserRole={currentUserRole}
       />
     </div>
   );

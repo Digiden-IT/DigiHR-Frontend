@@ -13,6 +13,7 @@ const AddNewEmployeeModal: React.FC<AddEmployeeModalProps> = ({
   const [form] = Form.useForm();
   const [addUser, { isLoading: isAddLoading }] = useAddUserMutation();
   const handleSubmit = async () => {
+    if (isAddLoading) return;
     const toastId = toast.loading("Adding employee...");
 
     try {
@@ -34,8 +35,10 @@ const AddNewEmployeeModal: React.FC<AddEmployeeModalProps> = ({
       form.resetFields();
       refetchUsers();
       onCloseModal();
-    } catch (error) {
-      toast.error("Failed to add employee", { id: toastId });
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add employee", {
+        id: toastId,
+      });
     }
   };
 

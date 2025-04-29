@@ -38,7 +38,6 @@ const LoginForm = () => {
           replace: true,
         });
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // message.error(err?.data?.message as string);
       toast.error(

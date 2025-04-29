@@ -96,12 +96,14 @@ const EmployeeManagement = () => {
         loading={isLoading}
         rowKey="id"
       />
-      <PageNavigation
-        currentPage={pagination.currentPage}
-        totalElements={totalElements}
-        pageSize={pagination.pageSize}
-        onChange={handlePageChange}
-      />
+      {totalElements !== 0 && (
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
+          pageSize={pagination.pageSize}
+          onChange={handlePageChange}
+        />
+      )}
 
       <AddNewEmployeeModal
         visible={isAddModalOpen}

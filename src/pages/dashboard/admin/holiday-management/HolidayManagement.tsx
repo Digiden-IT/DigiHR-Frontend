@@ -46,8 +46,8 @@ const HolidayManagement: React.FC = () => {
   };
 
   const handleOk = async () => {
-    if(isDeleting) return;
-    
+    if (isDeleting) return;
+
     const toastId = toast.loading("Deleting...");
     try {
       await deleteHoliday(selectedHolidayId);
@@ -136,13 +136,14 @@ const HolidayManagement: React.FC = () => {
             </Tag>
           </div>
         </div>
-
-        <PageNavigation
-          currentPage={pagination.currentPage}
-          totalElements={totalElements}
-          pageSize={pagination.pageSize}
-          onChange={handlePageChange}
-        />
+        {totalElements !== 0 && (
+          <PageNavigation
+            currentPage={pagination.currentPage}
+            totalElements={totalElements}
+            pageSize={pagination.pageSize}
+            onChange={handlePageChange}
+          />
+        )}
       </div>
 
       {/* Modals */}

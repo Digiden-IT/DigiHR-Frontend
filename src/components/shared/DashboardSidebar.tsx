@@ -26,13 +26,13 @@ const DashboardSidebar = () => {
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(
         adminPaths,
-        "admin"
+        userRole.ADMIN.toLowerCase(),
       ) as MenuProps["items"];
       break;
     case userRole.USER:
       sidebarItems = sidebarItemsGenerator(
         userPaths,
-        userRole.USER
+        userRole.USER.toLowerCase(),
       ) as MenuProps["items"];
       break;
 
