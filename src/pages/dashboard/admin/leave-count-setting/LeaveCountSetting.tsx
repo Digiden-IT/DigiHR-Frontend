@@ -5,7 +5,7 @@ import { useWatch } from "antd/es/form/Form";
 import {
   useGetAllLeaveCountQuery,
   useLeaveCountSettingMutation,
-} from "../../../../redux/api/leaveManagementApi";
+} from "../../../../redux/api/leaveCountSettingsApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const LeaveCountSetting = () => {

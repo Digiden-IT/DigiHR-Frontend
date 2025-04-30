@@ -4,6 +4,8 @@ import ViewEmployees from "../pages/dashboard/user/view-employees/ViewEmployees"
 import { RxPerson } from "react-icons/rx";
 import { BsFilePerson } from "react-icons/bs";
 import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
+import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
+import LeaveScheduler from "../pages/dashboard/user/leave-scheduler/LeaveScheduler";
 
 export const userPaths = [
   {
@@ -11,6 +13,13 @@ export const userPaths = [
     path: "/dashboard",
     icon: <LuLayoutDashboard size={18} />,
     element: <HomeDashboard />,
+    show: true,
+  },
+  {
+    name: "Leave Management",
+    path: "/leave-management",
+    icon: <FaPersonWalkingDashedLineArrowRight size={20} />,
+    element: <LeaveScheduler />,
     show: true,
   },
   {

@@ -3,6 +3,7 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { GrAnnounce } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
+import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
 import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
 import LeaveManagement from "../pages/dashboard/admin/leave-management/LeaveManagement";
 import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
@@ -30,13 +31,13 @@ export const adminPaths = [
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
     icon: <LuLayoutDashboard size={18} />,
-    element: <EmployeeDetails/>,
+    element: <EmployeeDetails />,
     show: false,
   },
   {
     name: "Leave Management",
     path: "/leave-management",
-    icon: <RxPerson size={18} />,
+    icon: <FaPersonWalkingDashedLineArrowRight size={20} />,
     element: <LeaveManagement />,
     show: true,
   },

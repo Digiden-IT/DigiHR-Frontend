@@ -23,6 +23,7 @@ export const baseApi = createApi({
     "allholidays",
     "filterOptions",
     "allLeaveCount",
+    "allLeaveManagement",
   ],
   endpoints: () => ({}),
 });

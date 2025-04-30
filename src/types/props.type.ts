@@ -95,3 +95,14 @@ export interface EmployeeFormProps {
   initialValues?: EmployeeRecord;
   currentUserRole?: string;
 }
+
+export interface LeaveRecord {
+  id: number;
+  employeeName: string;
+  requestDate: string;
+  startDate: string;
+  endDate: string;
+  leaveReason: string;
+  requestStatus: string;
+  numberOfDays: number;
+}
