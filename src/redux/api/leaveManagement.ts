@@ -19,7 +19,28 @@ const leaveManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
+    updateLeave: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/leaves/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["allLeaveManagement"],
+    }),
+    getLeaveSummary: builder.query({
+      query: () => {
+        return {
+          url: "/leaves/leave-summary",
+          method: "GET",
+          providesTags: ["allLeaveManagement"],
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllLeavesQuery } = leaveManagementApi;
+export const {
+  useGetAllLeavesQuery,
+  useUpdateLeaveMutation,
+  useGetLeaveSummaryQuery,
+} = leaveManagementApi;

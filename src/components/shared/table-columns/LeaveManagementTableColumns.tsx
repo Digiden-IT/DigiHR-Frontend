@@ -16,18 +16,31 @@ export const LeaveManagementTableColumns = (
     },
     {
       title: "Duration",
+      key: "duration",
+      render: (_: string, record: LeaveRecord) => {
+        const startDate = new Date(record.startDate);
+        const endDate = new Date(record.endDate);
+
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "2-digit",
+        });
+
+        const startFormatted = formatter.format(startDate);
+        const endFormatted = formatter.format(endDate);
+
+        return `${startFormatted} - ${endFormatted}`;
+      },
+    },
+    {
+      title: "Days",
       dataIndex: "numberOfDays",
       key: "numberOfDays",
     },
     {
       title: "Leave Reason",
-      dataIndex: "leaveReason",
+      dataIndex: ["leaveReason","name"],
       key: "leaveReason",
-    },
-    {
-      title: "Duration",
-      dataIndex: "",
-      key: "",
     },
   ];
 
@@ -43,25 +56,29 @@ export const LeaveManagementTableColumns = (
       dataIndex: "action",
       render: (_: string, record: LeaveRecord) => (
         <>
-          {record.requestStatus === "Approved" && (
-            <Tag color="green">Approved</Tag>
+          {record.requestStatus.constant === "APPROVED" && (
+            <Tag color="green" className="text-base">
+              {record.requestStatus.name}
+            </Tag>
           )}
-          {record.requestStatus === "Rejected" && (
-            <Tag color="red"> Rejected</Tag>
+          {record.requestStatus.constant === "REJECTED" && (
+            <Tag color="red" className="text-base">
+              {record.requestStatus.name}
+            </Tag>
           )}
-          {record.requestStatus === "Pending" && (
+          {record.requestStatus.constant === "PENDING" && (
             <div className="flex gap-1">
               <Tag
                 color="#108ee9"
                 onClick={() => handleApprove?.(record.id)}
-                className="cursor-pointer"
+                className="cursor-pointer text-base"
               >
                 Approve
               </Tag>
               <Tag
                 color="red"
                 onClick={() => handleReject?.(record.id)}
-                className="cursor-pointer"
+                className="cursor-pointer text-base"
               >
                 Reject
               </Tag>
@@ -78,19 +95,31 @@ export const LeaveManagementTableColumns = (
       dataIndex: "status",
       render: (_: string, record: LeaveRecord) => (
         <>
-          {record.requestStatus === "Approved" && <Tag color="green">Approved</Tag>}
-          {record.requestStatus === "Rejected" && <Tag color="red"> Rejected</Tag>}
-          {record.requestStatus === "Pending" && <Tag color="yellow">Pending</Tag>}
+          {record.requestStatus.constant === "APPROVED" && (
+            <Tag color="green" className="text-base">
+              {record.requestStatus.name}
+            </Tag>
+          )}
+          {record.requestStatus.constant === "REJECTED" && (
+            <Tag color="red" className="text-base">
+              {record.requestStatus.name}
+            </Tag>
+          )}
+          {record.requestStatus.constant === "PENDING" && (
+            <Tag color="yellow" className="text-base">
+              {record.requestStatus.name}
+            </Tag>
+          )}
         </>
       ),
     },
   ];
 
-  return [
-    ...commonColumns,
-    ...(role === "user" ? userColumns : []),
-    ...(role === "admin" ? adminColumns : []),
-  ];
+  if (role === "admin") {
+    return [adminColumns[0], ...commonColumns, adminColumns[1]];
+  } else {
+    return [...commonColumns, ...(role === "user" ? userColumns : [])];
+  }
 };
 
 export default LeaveManagementTableColumns;

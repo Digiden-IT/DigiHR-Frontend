@@ -20,7 +20,7 @@ const EmployeeDetails = () => {
   const user =  useAppSelector(selectCurrentUser) as TUser;
   const { userId } = useParams();
   const routeEmployeeId = userId ? parseInt(userId, 10) : undefined;
-  const employeeId = user?.id ?? routeEmployeeId;
+  const employeeId = routeEmployeeId?? user?.id;
   const currentUserRole = user?.role.toLowerCase() ?? "admin";
   const navigate = useNavigate();
   const [form] = Form.useForm();

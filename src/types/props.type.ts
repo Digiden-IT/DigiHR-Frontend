@@ -34,7 +34,7 @@ export interface HolidayType {
   holidayName: string;
 }
 
-export type EmployeeRecord = {
+export type EmployeeFormValues = {
   id: number;
   name: string;
   phoneNumber?: string;
@@ -45,6 +45,23 @@ export type EmployeeRecord = {
   role: string;
   employeeType?: string;
   department: string;
+  dateOfJoining: string;
+  designation?: string;
+  address?: string;
+  password?: string;
+};
+
+export type EmployeeRecord = {
+  id: number;
+  name: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  gender?: FormFieldFilterType; 
+  bloodGroup?: FormFieldFilterType;
+  email: string;
+  role: FormFieldFilterType; 
+  employeeType?: FormFieldFilterType; 
+  department: FormFieldFilterType;
   dateOfJoining: string;
   designation?: string;
   address?: string;
@@ -71,18 +88,18 @@ export interface DeleteModalProps {
   deleteModalMessage: string;
 }
 
-export interface EmployeeFormFieldFilterOptions {
+export interface FormFieldFilterType {
   name: string;
   constant: string;
 }
 
 export interface AddNewEmployeeFormOptionsType {
-  departments: EmployeeFormFieldFilterOptions[];
-  roles: EmployeeFormFieldFilterOptions[];
-  employeeTypes: EmployeeFormFieldFilterOptions[];
-  bloodGroups: EmployeeFormFieldFilterOptions[];
-  genders: EmployeeFormFieldFilterOptions[];
-  [key: string]: EmployeeFormFieldFilterOptions[];
+  departments: FormFieldFilterType[];
+  roles: FormFieldFilterType[];
+  employeeTypes: FormFieldFilterType[];
+  bloodGroups: FormFieldFilterType[];
+  genders: FormFieldFilterType[];
+  [key: string]: FormFieldFilterType[];
 }
 
 export interface EmployeeFormProps {
@@ -92,7 +109,7 @@ export interface EmployeeFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   showButtons: boolean;
-  initialValues?: EmployeeRecord;
+  initialValues?: EmployeeFormValues;
   currentUserRole?: string;
 }
 
@@ -102,7 +119,25 @@ export interface LeaveRecord {
   requestDate: string;
   startDate: string;
   endDate: string;
-  leaveReason: string;
-  requestStatus: string;
+  leaveReason: FormFieldFilterType;
+  requestStatus: FormFieldFilterType;
   numberOfDays: number;
+}
+
+export interface LeaveStatsCardProps {
+  totalLeave: number;
+  usedLeave: number;
+  pendingLeave: number;
+  availableLeave: number;
+}
+
+export interface LeaveRequestModalProps {
+  visible: boolean;
+  onCloseModal: () => void;
+  refetchLeave: () => void;
+}
+export interface AddLeaveRequestFormOptionsType {
+  departments: FormFieldFilterType[];
+  leaveReason: FormFieldFilterType[];
+  requestStatus: FormFieldFilterType[];
 }

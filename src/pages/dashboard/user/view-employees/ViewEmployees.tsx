@@ -1,6 +1,6 @@
 import { Table, Space, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
-import { EmployeeRecord } from "../../../../types/props.type";
+import { EmployeeFormValues } from "../../../../types/props.type";
 import { useGetAllUserQuery } from "../../../../redux/feature/userApi/userApi";
 import EmployeeTableColumns from "../../../../components/shared/table-columns/EmployeeTableColumns";
 import { useAppSelector } from "../../../../redux/hooks";
@@ -15,7 +15,6 @@ const ViewEmployees: React.FC = () => {
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
   ]);
-
   const user = useAppSelector(selectCurrentUser);
   const columns = EmployeeTableColumns(user?.role);
   const totalElements = usersData?.totalElements || 0;
@@ -38,7 +37,7 @@ const ViewEmployees: React.FC = () => {
           </Button>
         </div>
       </Space>
-      <Table<EmployeeRecord>
+      <Table<EmployeeFormValues>
         columns={columns}
         dataSource={usersData?.data}
         pagination={false}

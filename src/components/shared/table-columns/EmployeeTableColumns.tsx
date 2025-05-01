@@ -2,15 +2,15 @@ import { TableColumnsType, Space } from "antd";
 import { PiEye } from "react-icons/pi";
 import { CiTrash } from "react-icons/ci";
 import { Link } from "react-router-dom";
-import { EmployeeRecord } from "../../../types/props.type";
+import { EmployeeFormValues } from "../../../types/props.type";
 
 export const EmployeeTableColumns = (
   currentUserRole: string | undefined,
   handleOpenDeleteModal?: (id: number) => void
-): TableColumnsType<EmployeeRecord> => {
+): TableColumnsType<EmployeeFormValues> => {
   const role = currentUserRole?.toLowerCase();
 
-  const baseColumns: TableColumnsType<EmployeeRecord> = [
+  const baseColumns: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Employee Name",
       dataIndex: "name",
@@ -23,7 +23,7 @@ export const EmployeeTableColumns = (
     },
   ];
 
-  const userColumns: TableColumnsType<EmployeeRecord> = [
+  const userColumns: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Mobile Number",
       dataIndex: "phoneNumber",
@@ -36,20 +36,20 @@ export const EmployeeTableColumns = (
     },
   ];
 
-  const adminColumns: TableColumnsType<EmployeeRecord> = [
+  const adminColumns: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Department",
-      dataIndex: "department",
+      dataIndex: ["department", "name"],
       key: "department",
     },
     {
       title: "Role",
-      dataIndex: "role",
+      dataIndex: ["role", "name"],
       key: "role",
     },
   ];
 
-  const joiningDateColumn: TableColumnsType<EmployeeRecord> = [
+  const joiningDateColumn: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Joining Date",
       dataIndex: "dateOfJoining",
@@ -57,7 +57,7 @@ export const EmployeeTableColumns = (
     },
   ];
 
-  const actionColumn: TableColumnsType<EmployeeRecord> = [
+  const actionColumn: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Action",
       key: "action",

@@ -24,6 +24,7 @@ export const baseApi = createApi({
     "filterOptions",
     "allLeaveCount",
     "allLeaveManagement",
+    "allLeaveSchedule",
   ],
   endpoints: () => ({}),
 });

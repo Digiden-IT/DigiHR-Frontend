@@ -3,6 +3,7 @@ import { Form, Input, Select, DatePicker, Button, InputNumber } from "antd";
 import {
   EmployeeFormProps,
   AddNewEmployeeFormOptionsType,
+  FormFieldFilterType,
 } from "../../types/props.type";
 import { useGetUserFilerOptionsQuery } from "../../redux/feature/userApi/userApi";
 import dayjs from "dayjs";
@@ -19,6 +20,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   initialValues,
   currentUserRole,
 }) => {
+  console.log("initialValues", initialValues);
   const { data: filterOptionsData } = useGetUserFilerOptionsQuery(undefined);
   const [formOptions, setFormOptions] = useState<AddNewEmployeeFormOptionsType>(
     {
@@ -32,15 +34,26 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue({
+      console.log("Setting initial values:", initialValues);
+
+      // Create a modified version of initialValues that extracts constants from objects
+      const formValues = {
         ...initialValues,
+        gender: initialValues.gender,
+        bloodGroup: initialValues.bloodGroup,
+        role: initialValues.role,
+        department: initialValues.department,
+        employeeType: initialValues.employeeType,
         dateOfBirth: initialValues.dateOfBirth
           ? dayjs(initialValues.dateOfBirth)
           : undefined,
         dateOfJoining: initialValues.dateOfJoining
           ? dayjs(initialValues.dateOfJoining)
           : undefined,
-      });
+      };
+
+      console.log("Form values being set:", formValues);
+      form.setFieldsValue(formValues);
     }
   }, [initialValues, form]);
 
@@ -55,6 +68,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       });
     }
   }, [filterOptionsData, isViewMode]);
+
   const isUserRestricted = currentUserRole === "user" || isViewMode;
   const isDisabledForEdit = isViewMode || isEditMode;
 
@@ -124,7 +138,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         className="w-full"
       >
         <Select placeholder="Choose Gender" disabled={isDisabledForEdit}>
-          {formOptions.genders.map((gender) => (
+          {formOptions.genders.map((gender: FormFieldFilterType) => (
             <Option key={gender.constant} value={gender.constant}>
               {gender.name}
             </Option>
@@ -139,7 +153,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         className="w-full"
       >
         <Select placeholder="Choose Group" disabled={isDisabledForEdit}>
-          {formOptions.bloodGroups.map((bloodGroup) => (
+          {formOptions.bloodGroups.map((bloodGroup: FormFieldFilterType) => (
             <Option key={bloodGroup.constant} value={bloodGroup.constant}>
               {bloodGroup.name}
             </Option>
@@ -165,11 +179,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true, message: "Please input role" }]}
         className="w-full"
       >
-        <Select
-          placeholder="Select Role"
-          disabled={isUserRestricted}
-        >
-          {formOptions.roles.map((role) => (
+        <Select placeholder="Select Role" disabled={isUserRestricted}>
+          {formOptions.roles.map((role: FormFieldFilterType) => (
             <Option key={role.constant} value={role.constant}>
               {role.name}
             </Option>
@@ -183,11 +194,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true, message: "Please input type" }]}
         className="w-full"
       >
-        <Select
-          placeholder="Select Type"
-          disabled={isUserRestricted}
-        >
-          {formOptions.employeeTypes.map((type) => (
+        <Select placeholder="Select Type" disabled={isUserRestricted}>
+          {formOptions.employeeTypes.map((type: FormFieldFilterType) => (
             <Option key={type.constant} value={type.constant}>
               {type.name}
             </Option>
@@ -201,11 +209,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true }]}
         className="w-full"
       >
-        <Select
-          placeholder="Department name"
-          disabled={isUserRestricted}
-        >
-          {formOptions.departments.map((department) => (
+        <Select placeholder="Department name" disabled={isUserRestricted}>
+          {formOptions.departments.map((department: FormFieldFilterType) => (
             <Option key={department.constant} value={department.constant}>
               {department.name}
             </Option>
@@ -232,10 +237,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true, message: "Please input designation" }]}
         className="w-full"
       >
-        <Input
-          placeholder="Enter designation"
-          disabled={isUserRestricted}
-        />
+        <Input placeholder="Enter designation" disabled={isUserRestricted} />
       </Form.Item>
 
       <Form.Item

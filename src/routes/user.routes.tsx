@@ -2,7 +2,7 @@ import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
 import { LuLayoutDashboard } from "react-icons/lu";
 import ViewEmployees from "../pages/dashboard/user/view-employees/ViewEmployees";
 import { RxPerson } from "react-icons/rx";
-import { BsFilePerson } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
 import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
 import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
 import LeaveScheduler from "../pages/dashboard/user/leave-scheduler/LeaveScheduler";
@@ -25,7 +25,7 @@ export const userPaths = [
   {
     name: "View Employees",
     path: "/view-employees",
-    icon: <BsFilePerson size={18} />,
+    icon: <FaUsers size={18} />,
     element: <ViewEmployees />,
     show: true,
   },

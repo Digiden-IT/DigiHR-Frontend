@@ -10,7 +10,7 @@ import {
 } from "../../../../redux/feature/userApi/userApi";
 import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
-import { EmployeeRecord } from "../../../../types/props.type";
+import { EmployeeFormValues } from "../../../../types/props.type";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
 import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns";
@@ -30,7 +30,7 @@ const EmployeeManagement = () => {
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
   ]);
-
+  console.log(usersData);
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
   const user = useAppSelector(selectCurrentUser);
@@ -88,7 +88,7 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<EmployeeRecord>
+      <Table<EmployeeFormValues>
         columns={columns}
         dataSource={usersData?.data}
         pagination={false}
