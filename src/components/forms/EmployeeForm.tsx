@@ -20,7 +20,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   initialValues,
   currentUserRole,
 }) => {
-  console.log("initialValues", initialValues);
   const { data: filterOptionsData } = useGetUserFilerOptionsQuery(undefined);
   const [formOptions, setFormOptions] = useState<AddNewEmployeeFormOptionsType>(
     {
@@ -33,17 +32,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   );
 
   useEffect(() => {
-    if (initialValues) {
-      console.log("Setting initial values:", initialValues);
-
-      // Create a modified version of initialValues that extracts constants from objects
+    if (initialValues ) {
       const formValues = {
         ...initialValues,
-        gender: initialValues.gender,
-        bloodGroup: initialValues.bloodGroup,
-        role: initialValues.role,
-        department: initialValues.department,
-        employeeType: initialValues.employeeType,
+        gender: initialValues.gender?.constant,
+        bloodGroup: initialValues.bloodGroup?.constant,
+        role: initialValues.role?.constant,
+        department: initialValues.department?.constant,
+        employeeType: initialValues.employeeType?.constant,
         dateOfBirth: initialValues.dateOfBirth
           ? dayjs(initialValues.dateOfBirth)
           : undefined,
@@ -51,14 +47,16 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           ? dayjs(initialValues.dateOfJoining)
           : undefined,
       };
-
-      console.log("Form values being set:", formValues);
       form.setFieldsValue(formValues);
-    }
-  }, [initialValues, form]);
+
+      console.log("formValues", formValues);
+    } 
+  }, [initialValues, form ]);
+
+
 
   useEffect(() => {
-    if (filterOptionsData && !isViewMode) {
+    if (filterOptionsData) {
       setFormOptions({
         departments: filterOptionsData.departments || [],
         roles: filterOptionsData.roles || [],
@@ -67,7 +65,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         genders: filterOptionsData.genders || [],
       });
     }
-  }, [filterOptionsData, isViewMode]);
+  }, [filterOptionsData]);
 
   const isUserRestricted = currentUserRole === "user" || isViewMode;
   const isDisabledForEdit = isViewMode || isEditMode;
@@ -82,7 +80,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       className="grid grid-cols-1 md:grid-cols-2 gap-x-6"
     >
       <Form.Item
-        label="Enter Employee Name"
+        label=" Employee Name"
         name="name"
         rules={[{ required: true, message: "Please input name" }]}
         className="w-full"
@@ -100,7 +98,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         </Form.Item>
       ) : null}
       <Form.Item
-        label="Enter Mobile Number"
+        label="Mobile Number"
         name="phoneNumber"
         rules={[
           {
@@ -162,7 +160,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       </Form.Item>
 
       <Form.Item
-        label="Enter Email Address"
+        label="Email Address"
         name="email"
         rules={[
           { type: "email" },
@@ -170,7 +168,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         ]}
         className="w-full"
       >
-        <Input placeholder="abc@digidenit.com" disabled={isViewMode} />
+        <Input placeholder="abc@digidenit.com" disabled={isUserRestricted} />
       </Form.Item>
 
       <Form.Item

@@ -109,7 +109,7 @@ export interface EmployeeFormProps {
   onSubmit: () => void;
   onCancel: () => void;
   showButtons: boolean;
-  initialValues?: EmployeeFormValues;
+  initialValues?: EmployeeRecord;
   currentUserRole?: string;
 }
 
