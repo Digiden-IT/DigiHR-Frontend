@@ -19,8 +19,15 @@ const userLeaveScheduleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["allLeaveSchedule"],
     }),
+    getAllLeaveOptions: builder.query<any, void>({
+      query: () => ({
+        url: "leaves/filter-options",
+        method: "GET",
+      }),
+      providesTags: ["allLeaveOptions"],
+    }),
   }),
 });
 
-export const { useGetLeaveSummaryQuery, useAddLeaveRequestMutation } =
+export const { useGetLeaveSummaryQuery, useAddLeaveRequestMutation, useGetAllLeaveOptionsQuery } =
   userLeaveScheduleApi;

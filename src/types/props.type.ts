@@ -125,10 +125,10 @@ export interface LeaveRecord {
 }
 
 export interface LeaveStatsCardProps {
-  totalLeave: number;
-  usedLeave: number;
-  pendingLeave: number;
-  availableLeave: number;
+  totalLeaves: number;
+  usedLeaves: number;
+  pendingLeaves: number;
+  availableLeaves: number;
 }
 
 export interface LeaveRequestModalProps {
@@ -141,3 +141,17 @@ export interface AddLeaveRequestFormOptionsType {
   leaveReason: FormFieldFilterType[];
   requestStatus: FormFieldFilterType[];
 }
+export interface LeaveStatsCardProps {
+  totalLeaves: number;
+  availableLeaves: number;
+  pendingLeaves: number;
+  usedLeaves: number;
+}
+
+export type LeaveCardTypes = {
+  bgColor: string;
+  textColor: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
