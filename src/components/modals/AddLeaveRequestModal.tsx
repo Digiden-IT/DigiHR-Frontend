@@ -7,7 +7,7 @@ import {
   AddLeaveRequestFormOptionsType,
   FormFieldFilterType,
 } from "../../types/props.type";
-import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import { Button, DatePicker, Form, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 const { Option } = Select;
