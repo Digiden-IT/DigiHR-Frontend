@@ -30,7 +30,6 @@ const EmployeeManagement = () => {
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
   ]);
-  console.log(usersData);
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
   const user = useAppSelector(selectCurrentUser);

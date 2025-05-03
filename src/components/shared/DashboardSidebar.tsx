@@ -55,7 +55,7 @@ const DashboardSidebar = () => {
 
       <Menu
         mode="inline"
-        defaultSelectedKeys={["Dashboard"]}
+        defaultSelectedKeys={["Announcements"]}
         items={sidebarItems}
         className="bg-four"
       />

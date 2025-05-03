@@ -7,13 +7,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetSingleUserQuery,
   useUpdateUserMutation,
-} from "../../../../redux/feature/userApi/userApi";
-import EmployeeForm from "../../../../components/forms/EmployeeForm";
+} from "../../redux/feature/userApi/userApi"; ;
+import EmployeeForm from "../../components/forms/EmployeeForm";
 import { toast } from "sonner";
-import BasicLoader from "../../../../components/shared/BasicLoader";
-import { TUser } from "../../../../types/user.type";
-import { useAppSelector } from "../../../../redux/hooks";
-import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
+import BasicLoader from "../../components/shared/BasicLoader";
+import { TUser } from "../../types/user.type";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from   "../../redux/feature/auth/authSlice";
 
 
 const EmployeeDetails = () => {

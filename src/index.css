@@ -103,3 +103,15 @@
   background-color: var(--color-type-one) !important;
   color: #ffffff !important;
 }
+
+.noScrollbarStyle {
+    @layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+}

@@ -39,7 +39,7 @@ export const LeaveManagementTableColumns = (
     },
     {
       title: "Leave Reason",
-      dataIndex: ["leaveReason","name"],
+      dataIndex: ["leaveReason", "name"],
       key: "leaveReason",
     },
   ];
@@ -117,8 +117,10 @@ export const LeaveManagementTableColumns = (
 
   if (role === "admin") {
     return [adminColumns[0], ...commonColumns, adminColumns[1]];
-  } else {
+  } else if (role === "user") {
     return [...commonColumns, ...(role === "user" ? userColumns : [])];
+  } else {
+    return [adminColumns[0], commonColumns[1], commonColumns[2]];
   }
 };
 

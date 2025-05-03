@@ -1,8 +1,6 @@
 import { Button, Table, Tag } from "antd";
 import { useState } from "react";
-import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
-import type { TableColumnsType } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
 import DeleteModal from "../../../../components/modals/DeleteModal";
@@ -14,12 +12,16 @@ import BasicLoader from "../../../../components/shared/BasicLoader";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
 import { usePagination } from "../../../../hooks/usePagination";
+import HolidayTableColumns from "../../../../components/shared/table-columns/HolidayTableColumns";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 
 const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
   const { pagination, handlePageChange } = usePagination(8);
+  const user = useAppSelector(selectCurrentUser);
 
   const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
 
@@ -58,47 +60,7 @@ const HolidayManagement: React.FC = () => {
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };
-
-  const columns: TableColumnsType<HolidayType> = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (text: string, record: HolidayType) => (
-        <div className="flex items-center">
-          <div
-            className={`w-1 h-7 ${
-              new Date(record.date) > new Date() ? "bg-one" : "bg-three"
-            } mr-2`}
-          />
-          <span>{text}</span>
-        </div>
-      ),
-    },
-    {
-      title: "Day",
-      dataIndex: "dayOfWeek",
-      key: "dayOfWeek",
-    },
-    {
-      title: "Holiday Name",
-      dataIndex: "holidayName",
-      key: "holidayName",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (_, record: HolidayType) => (
-        <CiTrash
-          style={{ cursor: "pointer" }}
-          size={20}
-          className="text-red-500 hover:text-red-700 border-none shadow-none"
-          onClick={() => handleOpenDeleteModal(record.id)}
-        />
-      ),
-    },
-  ];
-
+  const columns = HolidayTableColumns(user?.role, handleOpenDeleteModal);
   if (isLoading || isFetching) {
     return <BasicLoader />;
   }

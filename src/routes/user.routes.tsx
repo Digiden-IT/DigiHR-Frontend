@@ -1,11 +1,11 @@
-import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
+import HomeDashboard from "../pages/dashboard/user/dashboard/HomeDashboard";
 import { LuLayoutDashboard } from "react-icons/lu";
 import ViewEmployees from "../pages/dashboard/user/view-employees/ViewEmployees";
 import { RxPerson } from "react-icons/rx";
 import { FaUsers } from "react-icons/fa";
-import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
 import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
 import LeaveScheduler from "../pages/dashboard/user/leave-scheduler/LeaveScheduler";
+import SingleEmployee from "../pages/dashboard/admin/employee-management/SingleEmployee";
 
 export const userPaths = [
   {
@@ -33,7 +33,7 @@ export const userPaths = [
     name: "My Profile",
     path: "/my-profile",
     icon: <RxPerson size={18} />,
-    element: <EmployeeDetails />,
+    element: <SingleEmployee />,
     show: true,
   },
 ];

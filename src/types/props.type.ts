@@ -32,6 +32,7 @@ export interface HolidayType {
   date: string;
   dayOfWeek: string;
   holidayName: string;
+  isUpcoming: boolean;
 }
 
 export type EmployeeFormValues = {

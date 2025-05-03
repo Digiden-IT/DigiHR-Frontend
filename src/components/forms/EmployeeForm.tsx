@@ -48,8 +48,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           : undefined,
       };
       form.setFieldsValue(formValues);
-
-      console.log("formValues", formValues);
     } 
   }, [initialValues, form ]);
 
