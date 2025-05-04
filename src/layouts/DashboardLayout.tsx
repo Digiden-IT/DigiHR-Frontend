@@ -13,7 +13,7 @@ const DashboardLayout = () => {
       <Layout className="bg-[#FBF9FF]">
         <DashboardHeader />
         <Content className="mt-6 mx-4">
-          <div className="bg-white rounded-[15px] border border-[#E8DDFF]">
+          <div className="bg-[#f6f3e8] rounded-[15px] border border-[#E8DDFF]">
             <Outlet />
           </div>
         </Content>

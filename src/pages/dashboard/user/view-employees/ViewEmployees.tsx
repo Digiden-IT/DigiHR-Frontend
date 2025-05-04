@@ -20,11 +20,9 @@ const ViewEmployees: React.FC = () => {
   const totalElements = usersData?.totalElements || 0;
 
   return (
-    <div className="p-6 min-h-screen">
+    <div className="p-6 min-h-screen ">
       <Space className="mb-4 flex justify-between">
-        <div>
-          <h1 className="font-bold">All Employee List</h1>
-        </div>
+        <h1 className="text-2xl font-semibold">All Employee List</h1>
         <div className="flex gap-4">
           <input
             type="text"
@@ -44,6 +42,7 @@ const ViewEmployees: React.FC = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
+        style={{ border: "1px solid blue", borderRadius: "2px" }}
       />
       {totalElements !== 0 && (
         <PageNavigation

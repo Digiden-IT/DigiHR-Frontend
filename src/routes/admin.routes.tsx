@@ -22,35 +22,40 @@ export const adminPaths = [
   {
     name: "Employee Management",
     path: "/employee-management",
-    icon: <RxPerson size={18} />,
+    icon: <RxPerson size={18}/>,
     element: <EmployeeManagement />,
     show: true,
   },
   {
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
-    icon: <LuLayoutDashboard size={18} />,
+    icon: <LuLayoutDashboard size={18}/>,
     element: <SingleEmployee />,
     show: false,
   },
   {
     name: "Leave Management",
     path: "/leave-management",
-    icon: <FaPersonWalkingDashedLineArrowRight size={20} />,
+    icon: (
+      <FaPersonWalkingDashedLineArrowRight
+        size={20}
+        style={{ color: "white" }}
+      />
+    ),
     element: <LeaveManagement />,
     show: true,
   },
   {
     name: "Holiday Management",
     path: "/holiday-management",
-    icon: <FaRegCalendarAlt size={18} />,
+    icon: <FaRegCalendarAlt size={18}/>,
     element: <HolidayManagement />,
   },
 
   {
     name: "Leave Count Setting",
     path: "/leave-count-setting",
-    icon: <FaClockRotateLeft size={18} />,
+    icon: <FaClockRotateLeft size={18}/>,
     element: <LeaveCountSetting />,
     show: true,
   },

@@ -34,7 +34,7 @@ const HomeDashboard = () => {
     { name: "sort", value: "date" },
   ]);
   const { data: leaveData } = useGetAllLeavesQuery([]);
-  
+
   const employeeLeaveColumns = LeaveManagementTableColumns(
     user?.role + "DashboardPage"
   );
@@ -88,7 +88,7 @@ const HomeDashboard = () => {
   }
   return (
     <>
-      <div className="min-h-screen p-4 noScrollbarStyle">
+      <div className="min-h-screen p-4 noScrollbarStyle ">
         <div className="grid md:grid-cols-12 gap-2 h-screen">
           <div className="col-span-7 overflow-hidden flex flex-col">
             <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
@@ -160,9 +160,11 @@ const HomeDashboard = () => {
             </div>
           </div>
 
-          <div className="col-span-5 flex flex-col gap-4 h-full ">
-            <div className="flex-1">
-              <h2 className="text-xl mb-4 text-center">Employees on Leave</h2>
+          <div className="col-span-5 flex-col gap-4 h-full ">
+            <div className="flex-1 mb-3">
+              <div className="text-xl mb-2 font-bold text-center ">
+                Employees on Leave
+              </div>
               <Table<LeaveRecord>
                 columns={employeeLeaveColumns}
                 dataSource={currentLeaves}
@@ -173,7 +175,10 @@ const HomeDashboard = () => {
               />
             </div>
             <div className=" flex-1">
-              <h2 className="text-xl mb-4 text-center">Upcoming Holidays</h2>
+              <div className="text-xl mb-2 font-bold text-center ">
+                Upcoming Holidays
+              </div>
+
               <Table<HolidayType>
                 columns={holidayColumns}
                 dataSource={upcomingHolidays}

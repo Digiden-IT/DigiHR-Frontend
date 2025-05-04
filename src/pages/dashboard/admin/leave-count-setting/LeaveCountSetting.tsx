@@ -52,7 +52,7 @@ const LeaveCountSetting = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Leave Count Settings</h1>
       {getCountSettingsLoading ? (
         <BasicLoader />
@@ -76,6 +76,7 @@ const LeaveCountSetting = () => {
                   message: "Value must be a positive number",
                 },
               ]}
+             
             >
               <InputNumber className="rounded-md w-full" addonAfter="Days" />
             </Form.Item>
@@ -113,7 +114,7 @@ const LeaveCountSetting = () => {
           <div className="flex justify-between">
             <p>
               Total Yearly Leave:{" "}
-              <span className="ml-20 font-bold text-lg text-[#7152F3]">
+              <span className="ml-20 font-bold text-lg text-[#B0003A]">
                 {totalLeaves}
               </span>
             </p>

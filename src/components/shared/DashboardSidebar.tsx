@@ -45,11 +45,11 @@ const DashboardSidebar = () => {
       breakpoint="lg"
       collapsedWidth={55}
       collapsible
-      width={260}
+      width={250}
       theme="light"
-      className="h-screen sticky top-0 left-0 bg-four"
+      className="h-screen sticky top-0 left-0 bg-[#60032a]"
     >
-      <div className="h-[4rem] flex justify-center items-center text-gray-50 mb-5">
+      <div className="h-[4rem] flex justify-center items-center text-gray-50 mb-5 bg-white">
         <img src={logo} className="w-40" />
       </div>
 
@@ -57,7 +57,10 @@ const DashboardSidebar = () => {
         mode="inline"
         defaultSelectedKeys={["Announcements"]}
         items={sidebarItems}
-        className="bg-four"
+        className="bg-[#60032a] "
+        style={{
+          color: "#F5F5F5", // ← Text color here
+        }}
       />
     </Sider>
   );

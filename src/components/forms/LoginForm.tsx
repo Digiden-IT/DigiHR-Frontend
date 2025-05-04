@@ -34,7 +34,7 @@ const LoginForm = () => {
           id: toastId,
           duration: 2000,
         });
-        navigate(`/${decodedUser?.role.toLowerCase()}/dashboard`, {
+        navigate(`/${decodedUser?.role.toLowerCase()}/announcements`, {
           replace: true,
         });
       }

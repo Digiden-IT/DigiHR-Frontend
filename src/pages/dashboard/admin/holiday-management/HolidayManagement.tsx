@@ -81,6 +81,7 @@ const HolidayManagement: React.FC = () => {
         pagination={false}
         className="mb-6"
         rowKey="id"
+        style={{ border: "1px solid blue", borderRadius: "1px" }}
       />
 
       <div className="flex justify-between items-center mt-4">
