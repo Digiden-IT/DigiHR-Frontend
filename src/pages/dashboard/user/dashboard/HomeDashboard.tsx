@@ -91,6 +91,9 @@ const HomeDashboard = () => {
       <div className="min-h-screen p-4 noScrollbarStyle ">
         <div className="grid md:grid-cols-12 gap-2 h-screen">
           <div className="col-span-7 overflow-hidden flex flex-col">
+            <div className="text-xl mb-2 font-bold text-center ">
+              Announcements
+            </div>
             <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
               {announcements?.data.map((announcement: AnnouncementType) => (
                 <Card

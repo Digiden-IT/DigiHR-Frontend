@@ -67,13 +67,15 @@ const HolidayManagement: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <Button
-        icon={<FaPlus />}
-        className="btn-1 mb-4"
-        onClick={handleOpenAddModal}
-      >
-        Add New Holiday
-      </Button>
+      <div className="flex justify-end">
+        <Button
+          icon={<FaPlus />}
+          className="btn-1 mb-4"
+          onClick={handleOpenAddModal}
+        >
+          Add New Holiday
+        </Button>
+      </div>
 
       <Table<HolidayType>
         columns={columns}
@@ -81,7 +83,6 @@ const HolidayManagement: React.FC = () => {
         pagination={false}
         className="mb-6"
         rowKey="id"
-        style={{ border: "1px solid blue", borderRadius: "1px" }}
       />
 
       <div className="flex justify-between items-center mt-4">

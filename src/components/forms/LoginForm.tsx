@@ -1,6 +1,6 @@
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/feature/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/feature/auth/authSlice";
@@ -34,9 +34,12 @@ const LoginForm = () => {
           id: toastId,
           duration: 2000,
         });
-        navigate(`/${decodedUser?.role.toLowerCase()}/announcements`, {
-          replace: true,
-        });
+        const role = decodedUser?.role.toLowerCase();
+        if (role === "admin") {
+          navigate("/admin/announcements", { replace: true });
+        } else {
+          navigate("/user/dashboard", { replace: true });
+        }
       }
     } catch (err: any) {
       // message.error(err?.data?.message as string);
@@ -97,12 +100,6 @@ const LoginForm = () => {
           {isLoading ? "Loging..." : "Log in"}
         </Button>
       </Form.Item>
-      <p className="text-center">
-        or return to
-        <Link to={"/"} className="font-semibold uppercase mx-1">
-          Home
-        </Link>
-      </p>
     </Form>
   );
 };

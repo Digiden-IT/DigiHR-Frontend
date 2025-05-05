@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  AiFillCheckCircle,
   AiOutlineExclamationCircle,
   AiOutlineFire,
 } from "react-icons/ai";
+import { CiCircleCheck } from "react-icons/ci";
 import { LeaveCardTypes, LeaveStatsCardProps } from "../../types/props.type";
 
 const LeaveStatsCards: React.FC<LeaveStatsCardProps> = ({
@@ -18,8 +18,8 @@ const LeaveStatsCards: React.FC<LeaveStatsCardProps> = ({
 
   const cards: LeaveCardTypes[] = [
     {
-      bgColor: "bg-blue-600",
-      textColor: "text-white",
+      bgColor: "bg-sky-600/30",
+      textColor: "text-black",
       icon: <AiOutlineFire size={40} className="ml-3" />,
       title: "Total Leaves Available",
       description: `${pluralize(
@@ -28,7 +28,7 @@ const LeaveStatsCards: React.FC<LeaveStatsCardProps> = ({
       )} out of ${totalLeaves} available`,
     },
     {
-      bgColor: "bg-amber-300",
+      bgColor: "bg-amber-300/30",
       textColor: "text-black",
       icon: <AiOutlineExclamationCircle size={40} className="ml-3" />,
       title: "Pending Requests",
@@ -37,9 +37,9 @@ const LeaveStatsCards: React.FC<LeaveStatsCardProps> = ({
       } pending`,
     },
     {
-      bgColor: "bg-green-600",
-      textColor: "text-white",
-      icon: <AiFillCheckCircle size={40} className="ml-3" />,
+      bgColor: "bg-[#d6ccff]",
+      textColor: "text-black",
+      icon: <CiCircleCheck size={40} className="ml-3" />,
       title: "Used Leaves",
       description: `${pluralize(
         usedLeaves,

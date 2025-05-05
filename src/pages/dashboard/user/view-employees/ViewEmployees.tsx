@@ -42,7 +42,6 @@ const ViewEmployees: React.FC = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
-        style={{ border: "1px solid blue", borderRadius: "2px" }}
       />
       {totalElements !== 0 && (
         <PageNavigation

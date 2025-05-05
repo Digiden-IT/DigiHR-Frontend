@@ -10,6 +10,7 @@ import Announcements from "../pages/dashboard/admin/announcements/Announcements"
 import HolidayManagement from "../pages/dashboard/admin/holiday-management/HolidayManagement";
 import LeaveCountSetting from "../pages/dashboard/admin/leave-count-setting/LeaveCountSetting";
 import SingleEmployee from "../pages/dashboard/admin/employee-management/SingleEmployee";
+import MyAdminProfile from "../pages/dashboard/admin/my-profile/MyAdminProfile";
 
 export const adminPaths = [
   {
@@ -22,14 +23,14 @@ export const adminPaths = [
   {
     name: "Employee Management",
     path: "/employee-management",
-    icon: <RxPerson size={18}/>,
+    icon: <RxPerson size={18} />,
     element: <EmployeeManagement />,
     show: true,
   },
   {
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
-    icon: <LuLayoutDashboard size={18}/>,
+    icon: <LuLayoutDashboard size={18} />,
     element: <SingleEmployee />,
     show: false,
   },
@@ -48,15 +49,21 @@ export const adminPaths = [
   {
     name: "Holiday Management",
     path: "/holiday-management",
-    icon: <FaRegCalendarAlt size={18}/>,
+    icon: <FaRegCalendarAlt size={18} />,
     element: <HolidayManagement />,
   },
-
   {
     name: "Leave Count Setting",
     path: "/leave-count-setting",
-    icon: <FaClockRotateLeft size={18}/>,
+    icon: <FaClockRotateLeft size={18} />,
     element: <LeaveCountSetting />,
+    show: true,
+  },
+  {
+    name: "My Profile",
+    path: "/my-profile",
+    icon: <RxPerson size={18} />,
+    element: <MyAdminProfile />,
     show: true,
   },
 ];

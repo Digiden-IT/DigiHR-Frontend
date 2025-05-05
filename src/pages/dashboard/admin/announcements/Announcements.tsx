@@ -104,7 +104,7 @@ const Announcements: React.FC = () => {
       {isLoading ? (
         <BasicLoader />
       ) : (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-1 gap-4">
           {announcements?.data.map((announcement: AnnouncementType) => (
             <Card
               key={announcement.id}

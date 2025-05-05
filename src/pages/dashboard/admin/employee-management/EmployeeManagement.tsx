@@ -94,7 +94,6 @@ const EmployeeManagement = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
-        style={{ border: "1px solid blue", borderRadius: "1px" }}
       />
       {totalElements !== 0 && (
         <PageNavigation
