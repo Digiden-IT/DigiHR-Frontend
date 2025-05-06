@@ -7,20 +7,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetSingleUserQuery,
   useUpdateUserMutation,
-} from "../../redux/feature/userApi/userApi"; ;
+} from "../../redux/feature/userApi/userApi";
 import EmployeeForm from "../../components/forms/EmployeeForm";
 import { toast } from "sonner";
 import BasicLoader from "../../components/shared/BasicLoader";
 import { TUser } from "../../types/user.type";
 import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from   "../../redux/feature/auth/authSlice";
-
+import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
 
 const EmployeeDetails = () => {
-  const user =  useAppSelector(selectCurrentUser) as TUser;
+  const user = useAppSelector(selectCurrentUser) as TUser;
   const { userId } = useParams();
   const routeEmployeeId = userId ? parseInt(userId, 10) : undefined;
-  const employeeId = routeEmployeeId?? user?.id;
+  const employeeId = routeEmployeeId ?? user?.id;
   const currentUserRole = user?.role.toLowerCase() ?? "admin";
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -67,22 +66,30 @@ const EmployeeDetails = () => {
 
   const handleCancel = () => {
     setIsEditMode(false);
-    form.resetFields(); 
+    form.resetFields();
   };
 
   if (isLoading) {
     return <BasicLoader />;
   }
-
+  console.log("Employee Data", employeeData);
   return (
     <div className="p-6 min-h-screen bg-white">
       <div className="flex justify-between my-5">
         <div className="flex items-center gap-6 mb-8">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcMxLW5LbeJApiOdKAWdx7973rVC1iEUPtXg&s"
-            alt="Profile"
-            className="w-20 h-20 rounded-xl object-cover"
-          />
+          {employeeData?.gender.constant === "FEMALE" ? (
+            <img
+              src="https://avatar.iran.liara.run/public/girl"
+              alt="Profile"
+              className="w-20 h-20 rounded-xl object-cover"
+            />
+          ) : (
+            <img
+              src="https://avatar.iran.liara.run/public/boy"
+              alt="Profile"
+              className="w-20 h-20 rounded-xl object-cover"
+            />
+          )}
           <div>
             <h2 className="text-2xl font-bold">
               {employeeData?.name || "Loading..."}
