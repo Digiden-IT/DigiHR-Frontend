@@ -113,7 +113,7 @@ const Announcements: React.FC = () => {
               <div className="flex items-center gap-3 mb-4">
                 <Avatar
                   size={30}
-                  src={"https://avatars.githubusercontent.com/u/90123719?v=4"}
+                  src={"https://avatar.iran.liara.run/public/boy"}
                 />
                 <div>
                   <h4 className="font-medium">{announcement.authorName}</h4>
