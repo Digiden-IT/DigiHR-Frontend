@@ -10,13 +10,9 @@ import { TUser } from "../../types/user.type";
 import { toast } from "sonner";
 
 const LoginForm = () => {
-  const [login, { error, isLoading }] = useLoginMutation();
+  const [login, {isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  if (error) {
-    console.log(error);
-  }
 
   const onFinish = async (values: { email: string; password: string }) => {
     const toastId = toast.loading("Logging in");
@@ -42,7 +38,6 @@ const LoginForm = () => {
         }
       }
     } catch (err: any) {
-      // message.error(err?.data?.message as string);
       toast.error(
         err?.data?.message || "Something went wrong, try again later",
         {

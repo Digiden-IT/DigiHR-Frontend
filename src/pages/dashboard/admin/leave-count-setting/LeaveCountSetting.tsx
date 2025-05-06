@@ -9,17 +9,11 @@ import {
 import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const LeaveCountSetting = () => {
-  const [LeaveCountSetting, { isLoading, error }] =
-    useLeaveCountSettingMutation();
+  const [LeaveCountSetting, { isLoading }] = useLeaveCountSettingMutation();
   const { data: previousLeaveCount, isLoading: getCountSettingsLoading } =
     useGetAllLeaveCountQuery(undefined);
 
   const [form] = Form.useForm();
-
-  if (error) {
-    console.log(error);
-  }
-
   const totalSickLeaves = useWatch("totalSickLeaves", form) || 0;
   const totalCasualLeaves = useWatch("totalCasualLeaves", form) || 0;
   const totalVacationLeaves = useWatch("totalVacationLeaves", form) || 0;
@@ -35,12 +29,10 @@ const LeaveCountSetting = () => {
         toast.success(res?.message || "Leave Count Settings updated", {
           id: toastId,
         });
-        // form.resetFields();
-      } catch (err) {
-        toast.error(`Failed to update, try again. Error:`, {
+      } catch (err: any) {
+        toast.error(err?.data?.message || `Failed to update, try again. Error:`, {
           id: toastId,
         });
-        console.log("Error", err);
       }
     });
   };
@@ -76,7 +68,6 @@ const LeaveCountSetting = () => {
                   message: "Value must be a positive number",
                 },
               ]}
-             
             >
               <InputNumber className="rounded-md w-full" addonAfter="Days" />
             </Form.Item>

@@ -48,7 +48,6 @@ const HomeDashboard = () => {
         try {
           return new Date(dateString).toISOString().split("T")[0];
         } catch (error) {
-          console.error("Invalid date format:", dateString);
           return null;
         }
       };

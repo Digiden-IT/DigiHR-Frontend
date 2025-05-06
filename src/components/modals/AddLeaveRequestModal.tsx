@@ -48,7 +48,6 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
       startDate: values.from.format("YYYY-MM-DD"),
       endDate: values.to.format("YYYY-MM-DD"),
     };
-    console.log(formattedValues);
     if (formattedValues.startDate > formattedValues.endDate) {
       toast.error("From date cannot be greater than To date", { id: toastId });
       return;
