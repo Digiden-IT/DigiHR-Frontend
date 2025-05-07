@@ -10,7 +10,7 @@ import {
 } from "../../../../redux/feature/userApi/userApi";
 import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
-import { EmployeeManagementDataType } from "../../../../types/props.type";
+import { EmployeeFormValues } from "../../../../types/props.type";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
 import { EmployeeTableColumns } from "../../../../components/shared/table-columns/EmployeeTableColumns";
@@ -20,7 +20,7 @@ const EmployeeManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
-  const { pagination, handlePageChange } = usePagination();
+  const { pagination, handlePageChange } = usePagination(8);
 
   const {
     data: usersData,
@@ -30,7 +30,6 @@ const EmployeeManagement = () => {
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
   ]);
-
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
   const user = useAppSelector(selectCurrentUser);
@@ -88,7 +87,7 @@ const EmployeeManagement = () => {
           </Button>
         </div>
       </Space>
-      <Table<EmployeeManagementDataType>
+      <Table<EmployeeFormValues>
         columns={columns}
         dataSource={usersData?.data}
         pagination={false}
@@ -96,12 +95,14 @@ const EmployeeManagement = () => {
         loading={isLoading}
         rowKey="id"
       />
-      <PageNavigation
-        currentPage={pagination.currentPage}
-        totalElements={totalElements}
-        pageSize={pagination.pageSize}
-        onChange={handlePageChange}
-      />
+      {totalElements !== 0 && (
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
+          pageSize={pagination.pageSize}
+          onChange={handlePageChange}
+        />
+      )}
 
       <AddNewEmployeeModal
         visible={isAddModalOpen}

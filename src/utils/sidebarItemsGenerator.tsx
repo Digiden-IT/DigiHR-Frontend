@@ -3,10 +3,7 @@ import { TSidebarItem, TUserPath } from "../types/sidebar.type";
 
 export const sidebarItemsGenerator = (items: TUserPath[], role: string) => {
   const sidebarItems = items.reduce((acc: TSidebarItem[], item) => {
-    // Skip if `show` is explicitly false
     if (item.show === false) return acc;
-
-    // Render direct link items
     if (item.path && item.name) {
       acc.push({
         key: item.name,
@@ -15,7 +12,6 @@ export const sidebarItemsGenerator = (items: TUserPath[], role: string) => {
       });
     }
 
-    // Render items with children (filter out children where show is false)
     if (item.children && item.name) {
       const children = item.children
         .filter((child) => child.show !== false)

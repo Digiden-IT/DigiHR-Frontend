@@ -48,7 +48,7 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
       centered
       closable={false}
       className="rounded-xl"
-      title={<div className="text-2xl font-semibold mb-6">Add New Holiday</div>}
+      title={<div className="text-2xl font-semibold mb-6 text-center">Add New Holiday</div>}
     >
       <Form
         form={form}

@@ -5,21 +5,15 @@ import { useWatch } from "antd/es/form/Form";
 import {
   useGetAllLeaveCountQuery,
   useLeaveCountSettingMutation,
-} from "../../../../redux/api/leaveManagementApi";
+} from "../../../../redux/api/leaveCountSettingsApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 
 const LeaveCountSetting = () => {
-  const [LeaveCountSetting, { isLoading, error }] =
-    useLeaveCountSettingMutation();
+  const [LeaveCountSetting, { isLoading }] = useLeaveCountSettingMutation();
   const { data: previousLeaveCount, isLoading: getCountSettingsLoading } =
     useGetAllLeaveCountQuery(undefined);
 
   const [form] = Form.useForm();
-
-  if (error) {
-    console.log(error);
-  }
-
   const totalSickLeaves = useWatch("totalSickLeaves", form) || 0;
   const totalCasualLeaves = useWatch("totalCasualLeaves", form) || 0;
   const totalVacationLeaves = useWatch("totalVacationLeaves", form) || 0;
@@ -35,12 +29,10 @@ const LeaveCountSetting = () => {
         toast.success(res?.message || "Leave Count Settings updated", {
           id: toastId,
         });
-        // form.resetFields();
-      } catch (err) {
-        toast.error(`Failed to update, try again. Error:`, {
+      } catch (err: any) {
+        toast.error(err?.data?.message || `Failed to update, try again. Error:`, {
           id: toastId,
         });
-        console.log("Error", err);
       }
     });
   };
@@ -52,7 +44,7 @@ const LeaveCountSetting = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Leave Count Settings</h1>
       {getCountSettingsLoading ? (
         <BasicLoader />
@@ -113,7 +105,7 @@ const LeaveCountSetting = () => {
           <div className="flex justify-between">
             <p>
               Total Yearly Leave:{" "}
-              <span className="ml-20 font-bold text-lg text-[#7152F3]">
+              <span className="ml-20 font-bold text-lg text-[#B0003A]">
                 {totalLeaves}
               </span>
             </p>

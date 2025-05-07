@@ -11,7 +11,7 @@ const userApi = baseApi.injectEndpoints({
       }),
     }),
     getSingleUser: builder.query({
-      query: (userId) => ({
+      query: (userId: number) => ({
         url: `/users/${userId}`,
         method: "GET",
       }),
@@ -40,12 +40,19 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: ["allusers"],
     }),
     getUserFilerOptions: builder.query<any, void>({
-      // Explicitly type as void argument
       query: () => ({
         url: "users/filter-options",
         method: "GET",
       }),
       providesTags: ["filterOptions"],
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["allusers"],
     }),
   }),
 });
@@ -56,4 +63,5 @@ export const {
   useGetAllUserQuery,
   useToggleDeleteStatusMutation,
   useGetUserFilerOptionsQuery,
+  useUpdateUserMutation
 } = userApi;

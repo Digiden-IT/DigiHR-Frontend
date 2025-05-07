@@ -1,6 +1,6 @@
 import { baseApi } from "./baseApi";
 
-const leaveManagementApi = baseApi.injectEndpoints({
+const leaveCountSettingsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllLeaveCount: builder.query({
       query: () => {
@@ -23,4 +23,4 @@ const leaveManagementApi = baseApi.injectEndpoints({
 });
 
 export const { useLeaveCountSettingMutation, useGetAllLeaveCountQuery } =
-  leaveManagementApi;
+  leaveCountSettingsApi;

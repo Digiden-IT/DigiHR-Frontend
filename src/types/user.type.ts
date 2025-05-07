@@ -4,10 +4,10 @@ export const userRole = {
 };
 
 export type TUser = {
-  id: string;
-  name: string;
-  role: string;
-  email: string;
+  id : number;
+  name : string;
+  role : string;
+  email : string;
   iat: number;
   exp: number;
 };

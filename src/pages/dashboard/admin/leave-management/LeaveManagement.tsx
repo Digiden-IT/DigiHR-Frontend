@@ -1,125 +1,68 @@
-import React, { useState } from "react";
-import { Table, Tag, Space, Button } from "antd";
+import React from "react";
+import { Table, Space, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
-
-interface DataType {
-  key: string;
-  name: string;
-  date: string;
-  duration: string;
-  days: string;
-  reason: string;
-  action: string;
-}
-
-const initialData: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    date: "July 01, 2023",
-    duration: "July 05 - July 08",
-    days: "3 Days",
-    reason: "Sick Leave",
-    action: "NA",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    date: "April 05, 2023",
-    duration: "April 06 - April 10",
-    days: "3 Days",
-    reason: "Sick Leave",
-    action: "NA",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    date: "Mar 12, 2023",
-    duration: "Mar 14 - Mar 16",
-    days: "3 Days",
-    reason: "Sick Leave",
-    action: "NA",
-  },
-];
+import LeaveManagementTableColumns from "../../../../components/shared/table-columns/LeaveManagementTableColumns";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
+import { LeaveRecord } from "../../../../types/props.type";
+import { usePagination } from "../../../../hooks/usePagination";
+import { useGetAllLeavesQuery,useUpdateLeaveMutation } from "../../../../redux/api/leaveManagement";
+import PageNavigation from "../../../../components/shared/PageNavigation";
+import BasicLoader from "../../../../components/shared/BasicLoader";
+import { toast } from "sonner";
 
 const LeaveManagement: React.FC = () => {
-  const [data, setData] = useState<DataType[]>(initialData);
+  const { pagination, handlePageChange } = usePagination(8);
+  const user = useAppSelector(selectCurrentUser);
+  const [useUpdate, { isLoading: isUpdating }] = useUpdateLeaveMutation();
 
-  const handleApprove = (key: string) => {
-    const updatedData = data.map((item) =>
-      item.key === key ? { ...item, action: "Approved" } : item
+  const {
+    data: leaveData,
+    isLoading,
+    refetch,
+  } = useGetAllLeavesQuery([
+    { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
+    { name: "size", value: pagination.pageSize },
+    { name: "sort", value: "id,desc" },
+  ]);
+
+  const handleLeaveStatusUpdate = async (
+    id: number,
+    status: "APPROVED" | "REJECTED"
+  ) => {
+    const isApproving = status === "APPROVED";
+    const actionText = isApproving ? "approving" : "rejecting";
+    const successText = isApproving ? "approved" : "rejected";
+
+    const toastId = toast.loading(
+      `${isApproving ? "Approving" : "Rejecting"} leave request...`
     );
-    setData(updatedData);
+
+    try {
+      await useUpdate({
+        id: id,
+        requestStatus: status,
+      }).unwrap();
+
+      toast.success(`Leave ${successText} successfully!`, { id: toastId });
+      refetch();
+    } catch (err) {
+      toast.error(`Failed to ${actionText} leave`, { id: toastId });
+    }
   };
 
-  const handleReject = (key: string) => {
-    const updatedData = data.map((item) =>
-      item.key === key ? { ...item, action: "Rejected" } : item
-    );
-    setData(updatedData);
-  };
+  const handleApprove = (id: number) => handleLeaveStatusUpdate(id, "APPROVED");
+  const handleReject = (id: number) => handleLeaveStatusUpdate(id, "REJECTED");
 
-  const columns = [
-    {
-      title: "Employee Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-    },
-    {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
-    },
-    {
-      title: "Days",
-      dataIndex: "days",
-      key: "days",
-    },
-    {
-      title: "Leave Reason",
-      dataIndex: "reason",
-      key: "reason",
-    },
-    {
-      title: "Take Action",
-      key: "action",
-      dataIndex: "action",
-      render: (_: string, record: DataType) => (
-        <>
-          {record.action === "Approved" && (
-            <Tag color="green">{record.action}</Tag>
-          )}
-          {record.action === "Rejected" && (
-            <Tag color="red">{record.action}</Tag>
-          )}
-          {record.action === "NA" && (
-            <div className="flex gap-1">
-              <Tag
-                color="#108ee9"
-                onClick={() => handleApprove(record.key)}
-                className="cursor-pointer"
-              >
-                Approve
-              </Tag>
-              <Tag
-                color="red"
-                onClick={() => handleReject(record.key)}
-                className="cursor-pointer"
-              >
-                Reject
-              </Tag>
-            </div>
-          )}
-        </>
-      ),
-    },
-  ];
-
+  const totalElements = leaveData?.totalElements || 0;
+  const columns = LeaveManagementTableColumns(
+    user?.role,
+    handleApprove,
+    handleReject
+  );
+  if (isLoading || isUpdating) {
+    return <BasicLoader />;
+  }
   return (
     <div className="p-6 min-h-screen">
       <Space className="mb-4 flex justify-end">
@@ -135,7 +78,22 @@ const LeaveManagement: React.FC = () => {
           </Button>
         </div>
       </Space>
-      <Table<DataType> columns={columns} dataSource={data} />
+      <Table<LeaveRecord>
+        columns={columns}
+        dataSource={leaveData?.data}
+        pagination={false}
+        className="mb-6"
+        loading={isLoading}
+        rowKey="id"
+      />
+      {totalElements !== 0 && (
+        <PageNavigation
+          currentPage={pagination.currentPage}
+          totalElements={totalElements}
+          pageSize={pagination.pageSize}
+          onChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

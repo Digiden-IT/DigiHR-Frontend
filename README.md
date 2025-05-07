@@ -2,10 +2,13 @@
 
 ## ADMIN
 
-email: admin@gmail.com
-pass: admin123
+email: rahat@digidenit.com
+pass: admin1234
+
+email: mahmuda@digidenit.com
+pass: admin1234
 
 ## User
 
-email: user@gmail.com
-pass: 123
+email: karim@digidenit.com
+pass: admin1234

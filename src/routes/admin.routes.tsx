@@ -3,20 +3,21 @@ import { LuLayoutDashboard } from "react-icons/lu";
 import { GrAnnounce } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
-import EmployeeDetails from "../pages/dashboard/admin/employee-management/EmployeeDetails";
+import { FaPersonWalkingDashedLineArrowRight } from "react-icons/fa6";
 import LeaveManagement from "../pages/dashboard/admin/leave-management/LeaveManagement";
-import HomeDashboard from "../pages/dashboard/admin/home/HomeDashboard";
 import EmployeeManagement from "../pages/dashboard/admin/employee-management/EmployeeManagement";
 import Announcements from "../pages/dashboard/admin/announcements/Announcements";
 import HolidayManagement from "../pages/dashboard/admin/holiday-management/HolidayManagement";
-import LeaveCountSetting from "../pages/dashboard/admin/leave-count-setting/LeaveCountSetting"
+import LeaveCountSetting from "../pages/dashboard/admin/leave-count-setting/LeaveCountSetting";
+import SingleEmployee from "../pages/dashboard/admin/employee-management/SingleEmployee";
+import MyAdminProfile from "../pages/dashboard/admin/my-profile/MyAdminProfile";
 
 export const adminPaths = [
   {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: <LuLayoutDashboard size={18} />,
-    element: <HomeDashboard />,
+    name: "Announcements",
+    path: "/announcements",
+    icon: <GrAnnounce size={18} />,
+    element: <Announcements />,
     show: true,
   },
   {
@@ -30,13 +31,18 @@ export const adminPaths = [
     name: "SingleEmployeeDetails",
     path: "/employee-management/user-details/:userId",
     icon: <LuLayoutDashboard size={18} />,
-    element: <EmployeeDetails />,
+    element: <SingleEmployee />,
     show: false,
   },
   {
     name: "Leave Management",
     path: "/leave-management",
-    icon: <RxPerson size={18} />,
+    icon: (
+      <FaPersonWalkingDashedLineArrowRight
+        size={20}
+        style={{ color: "white" }}
+      />
+    ),
     element: <LeaveManagement />,
     show: true,
   },
@@ -47,17 +53,17 @@ export const adminPaths = [
     element: <HolidayManagement />,
   },
   {
-    name: "Announcements",
-    path: "/announcements",
-    icon: <GrAnnounce size={18} />,
-    element: <Announcements />,
-    show: true,
-  },
-  {
     name: "Leave Count Setting",
     path: "/leave-count-setting",
     icon: <FaClockRotateLeft size={18} />,
     element: <LeaveCountSetting />,
+    show: true,
+  },
+  {
+    name: "My Profile",
+    path: "/my-profile",
+    icon: <RxPerson size={18} />,
+    element: <MyAdminProfile />,
     show: true,
   },
 ];
