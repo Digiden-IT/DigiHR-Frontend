@@ -22,12 +22,14 @@ const ViewEmployees: React.FC = () => {
   return (
     <div className="p-6 min-h-screen ">
       <div className="mb-4 flex flex-col md:flex-row gap-4 md:justify-between">
-        <h1 className="text-2xl font-semibold">All Employee List</h1>
+        <h1 className="text-2xl font-semibold text-center">
+          All Employee List
+        </h1>
         <div className="flex gap-4 mb-6">
           <input
             type="text"
             placeholder="Search by Date"
-            className="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="hidden w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           {/* todo: show this button  */}
           <Button className="rounded-md hidden">
