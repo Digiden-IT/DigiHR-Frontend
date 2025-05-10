@@ -1,12 +1,15 @@
 import React from "react";
-import { Table, Space, Button } from "antd";
+import { Table, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
 import LeaveManagementTableColumns from "../../../../components/shared/table-columns/LeaveManagementTableColumns";
 import { useAppSelector } from "../../../../redux/hooks";
 import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 import { LeaveRecord } from "../../../../types/props.type";
 import { usePagination } from "../../../../hooks/usePagination";
-import { useGetAllLeavesQuery,useUpdateLeaveMutation } from "../../../../redux/api/leaveManagement";
+import {
+  useGetAllLeavesQuery,
+  useUpdateLeaveMutation,
+} from "../../../../redux/api/leaveManagement";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import { toast } from "sonner";
@@ -14,7 +17,8 @@ import { toast } from "sonner";
 const LeaveManagement: React.FC = () => {
   const { pagination, handlePageChange } = usePagination(8);
   const user = useAppSelector(selectCurrentUser);
-  const [useUpdate, { isLoading: isUpdating }] = useUpdateLeaveMutation();
+  const [updateLeaveStatus, { isLoading: isUpdating }] =
+    useUpdateLeaveMutation();
 
   const {
     data: leaveData,
@@ -39,7 +43,7 @@ const LeaveManagement: React.FC = () => {
     );
 
     try {
-      await useUpdate({
+      await updateLeaveStatus({
         id: id,
         requestStatus: status,
       }).unwrap();
@@ -47,6 +51,7 @@ const LeaveManagement: React.FC = () => {
       toast.success(`Leave ${successText} successfully!`, { id: toastId });
       refetch();
     } catch (err) {
+      console.log(err);
       toast.error(`Failed to ${actionText} leave`, { id: toastId });
     }
   };
@@ -65,19 +70,19 @@ const LeaveManagement: React.FC = () => {
   }
   return (
     <div className="p-6 min-h-screen">
-      <Space className="mb-4 flex justify-end">
-        <div className="flex gap-4">
-          <input
-            type="text"
-            placeholder="Search by Date"
-            className="w-full px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <Button className="rounded-md">
-            <VscSettings size={20} />
-            Filter
-          </Button>
-        </div>
-      </Space>
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by Date"
+          className="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        {/* todo: show the button  */}
+        <Button className="rounded-md hidden">
+          <VscSettings size={20} />
+          Filter
+        </Button>
+      </div>
+
       <Table<LeaveRecord>
         columns={columns}
         dataSource={leaveData?.data}
@@ -85,6 +90,7 @@ const LeaveManagement: React.FC = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
       {totalElements !== 0 && (
         <PageNavigation

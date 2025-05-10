@@ -63,7 +63,8 @@ const Announcements: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      toast.error("Failed to delete announcement", { id: toastId }); // Fixed "holiday" to "announcement"
+      console.log(error);
+      toast.error("Failed to delete announcement", { id: toastId });
     }
   };
 
@@ -94,7 +95,7 @@ const Announcements: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-col md:justify-between gap-4 md:items-center mb-6">
         <h1 className="text-2xl font-semibold">Recent Announcements</h1>
         <Button className="btn-1" icon={<FaPlus />} onClick={openAddModal}>
           Add Announcement

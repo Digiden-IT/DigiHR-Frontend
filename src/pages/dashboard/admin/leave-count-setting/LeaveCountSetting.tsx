@@ -29,10 +29,15 @@ const LeaveCountSetting = () => {
         toast.success(res?.message || "Leave Count Settings updated", {
           id: toastId,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
-        toast.error(err?.data?.message || `Failed to update, try again. Error:`, {
-          id: toastId,
-        });
+        console.log(err);
+        toast.error(
+          err?.data?.message || `Failed to update, try again. Error:`,
+          {
+            id: toastId,
+          }
+        );
       }
     });
   };
@@ -54,9 +59,9 @@ const LeaveCountSetting = () => {
           onFinish={handleSubmit}
           initialValues={initialValues}
           labelCol={{ span: 8 }}
-          className="md:w-1/2 space-y-5 mb-5"
+          className="md:w-1/2 space-y-3 mb-5"
         >
-          <div className="grid grid-cols-1 gap-y-6">
+          <div className="grid grid-cols-1 gap-y-1">
             <Form.Item
               name="totalSickLeaves"
               label="Total Sick Leaves"

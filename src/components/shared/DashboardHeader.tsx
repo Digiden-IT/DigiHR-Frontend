@@ -1,9 +1,9 @@
-import { Badge, Dropdown, Layout, MenuProps } from "antd";
-import { CiBellOn } from "react-icons/ci";
+import { Avatar, Dropdown, Layout, MenuProps } from "antd";
+
 import { RxExit } from "react-icons/rx";
-import { useAppDispatch } from "../../redux/hooks";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../redux/feature/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { logout, selectCurrentUser } from "../../redux/feature/auth/authSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -11,23 +11,23 @@ const { Header } = Layout;
 const DashboardHeader = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector(selectCurrentUser);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login", { replace: true });
   };
 
-  const handleProfile = () => {
-    navigate("../user/my-profile", { replace: true });
-  };
-
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: (
-        <p onClick={handleProfile} className="flex items-center gap-2 w-28">
+        <Link
+          to={`/${user?.role?.toLowerCase()}/my-profile`}
+          className="flex items-center gap-2"
+        >
           <AiOutlineUser size={18} /> Profile
-        </p>
+        </Link>
       ),
     },
     {
@@ -40,14 +40,16 @@ const DashboardHeader = () => {
     },
   ];
 
+  console.log(user);
+
   return (
     <Header className="bg-white sticky top-0 z-10 flex gap-3 justify-end items-center h-14 px-10 shadow">
-      <Badge dot>
-        <CiBellOn size={30} className="cursor-pointer" />
-      </Badge>
-
       <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
-        <GiHamburgerMenu size={26} className="cursor-pointer" />
+        <Avatar
+          size={"default"}
+          src="https://static-00.iconduck.com/assets.00/avatar-default-icon-2048x2048-h6w375ur.png"
+          className="cursor-pointer"
+        />
       </Dropdown>
     </Header>
   );

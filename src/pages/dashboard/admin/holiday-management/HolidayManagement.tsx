@@ -57,6 +57,7 @@ const HolidayManagement: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };
@@ -83,9 +84,10 @@ const HolidayManagement: React.FC = () => {
         pagination={false}
         className="mb-6"
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col-reverse md:flex-row gap-4 justify-between items-center mt-4">
         <div className="flex items-center">
           <div className="mr-2">
             <Tag color="purple" className="flex items-center">
