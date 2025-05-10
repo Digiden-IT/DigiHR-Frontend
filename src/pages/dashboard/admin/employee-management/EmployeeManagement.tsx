@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Space, Table, Button } from "antd";
+import { Table, Button } from "antd";
 import { VscSettings } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa";
 import AddNewEmployeeModal from "../../../../components/modals/AddNewEmployeeModal";
@@ -46,6 +46,7 @@ const EmployeeManagement = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete user", { id: toastId });
     }
   };
@@ -65,28 +66,30 @@ const EmployeeManagement = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <Space className="mb-4 flex justify-between">
-        <div>
+      <div className="mb-4 flex flex-col md:flex-row md:justify-between gap-4">
+        <div className="flex justify-end">
           <Button
-            className="btn-1"
+            className="btn-1 w-40"
             icon={<FaPlus />}
             onClick={() => handleAddUser()}
           >
             Add Employee
           </Button>
         </div>
+
         <div className="flex gap-4">
           <input
             type="text"
-            placeholder="Search by Date"
-            className="w-full px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Search by Name"
+            className="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          <Button className="rounded-md">
+          {/*todo: show the button, temporarily hiddedn the filter button  */}
+          <Button className="rounded-md hidden">
             <VscSettings size={20} />
             Filter
           </Button>
         </div>
-      </Space>
+      </div>
       <Table<EmployeeFormValues>
         columns={columns}
         dataSource={usersData?.data}
@@ -94,6 +97,7 @@ const EmployeeManagement = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
       {totalElements !== 0 && (
         <PageNavigation

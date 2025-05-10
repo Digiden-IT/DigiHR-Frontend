@@ -28,7 +28,7 @@ const HolidayManagement: React.FC = () => {
   const { data, isLoading, refetch, isFetching } = useGetAllHolidaysQuery([
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
-    { name: "sort", value: "date" },
+    { name: "sort", value: "date,desc" },
   ]);
 
   const holidaysData: HolidayType[] = data?.data || [];
@@ -57,6 +57,7 @@ const HolidayManagement: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };
@@ -83,9 +84,10 @@ const HolidayManagement: React.FC = () => {
         pagination={false}
         className="mb-6"
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col-reverse md:flex-row gap-4 justify-between items-center mt-4">
         <div className="flex items-center">
           <div className="mr-2">
             <Tag color="purple" className="flex items-center">

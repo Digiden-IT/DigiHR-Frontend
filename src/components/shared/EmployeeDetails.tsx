@@ -56,11 +56,12 @@ const EmployeeDetails = () => {
       };
 
       await updateUser({ id: employeeData.id, ...formattedValues }).unwrap();
-      toast.success("Employee updated successfully", { id: toastId });
+      toast.success("Updated successfully", { id: toastId });
       refetchEmployee();
       setIsEditMode(false);
     } catch (error) {
-      toast.error("Failed to update employee", { id: toastId });
+      console.log(error);
+      toast.error("Failed to update", { id: toastId });
     }
   };
 
@@ -72,10 +73,10 @@ const EmployeeDetails = () => {
   if (isLoading) {
     return <BasicLoader />;
   }
-  console.log("Employee Data", employeeData);
+
   return (
     <div className="p-6 min-h-screen bg-white">
-      <div className="flex justify-between my-5">
+      <div className="flex flex-col md:flex-row justify-between my-5">
         <div className="flex items-center gap-6 mb-8">
           {employeeData?.gender.constant === "FEMALE" ? (
             <img
@@ -91,15 +92,9 @@ const EmployeeDetails = () => {
             />
           )}
           <div>
-            <h2 className="text-2xl font-bold">
-              {employeeData?.name || "Loading..."}
-            </h2>
-            <p className="text-gray-600">
-              {employeeData?.designation || "Loading..."}
-            </p>
-            <p className="text-gray-500">
-              {employeeData?.email || "Loading..."}
-            </p>
+            <h2 className="text-2xl font-bold">{employeeData?.name}</h2>
+            <p className="text-gray-600">{employeeData?.designation}</p>
+            <p className="text-gray-500">{employeeData?.email}</p>
           </div>
         </div>
         <div className="flex justify-between gap-2">
