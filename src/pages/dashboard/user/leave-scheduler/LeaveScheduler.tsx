@@ -63,7 +63,7 @@ const LeaveScheduler: React.FC = () => {
         pendingLeaves={leaveSummary?.pendingLeave}
         usedLeaves={leaveSummary?.usedLeave}
       />
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <h1 className="text-2xl font-semibold">Leave Request Lists</h1>
         <Button
           className="btn-1"
@@ -80,6 +80,7 @@ const LeaveScheduler: React.FC = () => {
         className="mb-6"
         loading={isLoading}
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
       {totalElements !== 0 && (
         <PageNavigation

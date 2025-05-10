@@ -48,6 +48,7 @@ const HomeDashboard = () => {
         try {
           return new Date(dateString).toISOString().split("T")[0];
         } catch (error) {
+          console.log(error);
           return null;
         }
       };
@@ -87,9 +88,9 @@ const HomeDashboard = () => {
   }
   return (
     <>
-      <div className="min-h-screen p-4 noScrollbarStyle ">
+      <div className="min-h-screen p-4 noScrollbarStyle overflow-scroll">
         <div className="grid md:grid-cols-12 gap-2 h-screen">
-          <div className="col-span-7 overflow-hidden flex flex-col">
+          <div className="col-span-7 overflow-hidden flex flex-col min-h-screen">
             <div className="text-xl mb-2 font-bold text-center ">
               Announcements
             </div>
@@ -174,7 +175,7 @@ const HomeDashboard = () => {
                 style={{ border: "1px solid blue", borderRadius: "1px" }}
               />
             </div>
-            <div className=" flex-1">
+            <div className="mb-4 flex-1">
               <div className="text-xl mb-2 font-bold text-center ">
                 Upcoming Holidays
               </div>

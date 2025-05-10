@@ -1,11 +1,9 @@
 import { Avatar, Dropdown, Layout, MenuProps } from "antd";
-
 import { RxExit } from "react-icons/rx";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { logout, selectCurrentUser } from "../../redux/feature/auth/authSlice";
 import { AiOutlineUser } from "react-icons/ai";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 const { Header } = Layout;
 const DashboardHeader = () => {
