@@ -95,9 +95,15 @@ const Announcements: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="flex flex-col md:flex-col md:justify-between gap-4 md:items-center mb-6">
-        <h1 className="text-2xl font-semibold">Recent Announcements</h1>
-        <Button className="btn-1" icon={<FaPlus />} onClick={openAddModal}>
+      <div className="flex flex-col md:flex-row md:justify-between md `:items-center gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl text-center font-semibold">
+          Recent Announcements
+        </h1>
+        <Button
+          className="btn-1 w-full sm:w-auto"
+          icon={<FaPlus />}
+          onClick={openAddModal}
+        >
           Add Announcement
         </Button>
       </div>

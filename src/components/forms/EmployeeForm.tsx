@@ -32,7 +32,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   );
 
   useEffect(() => {
-    if (initialValues ) {
+    if (initialValues) {
       const formValues = {
         ...initialValues,
         gender: initialValues.gender?.constant,
@@ -48,10 +48,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           : undefined,
       };
       form.setFieldsValue(formValues);
-    } 
-  }, [initialValues, form ]);
-
-
+    }
+  }, [initialValues, form]);
 
   useEffect(() => {
     if (filterOptionsData) {
@@ -113,7 +111,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           disabled={isViewMode}
         />
       </Form.Item>
-
+      <Form.Item
+        label="Enter Address"
+        name="address"
+        rules={[{ required: true, message: "Please input address" }]}
+        className="w-full"
+      >
+        <Input placeholder="street, district etc.." disabled={isViewMode} />
+      </Form.Item>
       <Form.Item
         label="Date of Birth"
         name="dateOfBirth"
@@ -234,15 +239,6 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         className="w-full"
       >
         <Input placeholder="Enter designation" disabled={isUserRestricted} />
-      </Form.Item>
-
-      <Form.Item
-        label="Enter Address"
-        name="address"
-        rules={[{ required: true, message: "Please input address" }]}
-        className="w-full"
-      >
-        <Input placeholder="street, district etc.." disabled={isViewMode} />
       </Form.Item>
 
       {!isEditMode && !isViewMode && (

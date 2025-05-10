@@ -69,9 +69,9 @@ const HomeDashboard = () => {
 
   useEffect(() => {
     if (holidayData?.data) {
-      const upcoming = holidayData.data
-        .filter((holiday: HolidayType) => holiday.isUpcoming === true)
-        .slice(0, 5);
+      const upcoming = holidayData.data.filter(
+        (holiday: HolidayType) => holiday.isUpcoming === true
+      );
 
       setUpcomingHolidays(upcoming);
     }
@@ -87,85 +87,83 @@ const HomeDashboard = () => {
     <BasicLoader />;
   }
   return (
-    <>
-      <div className="min-h-screen p-4 noScrollbarStyle overflow-scroll">
-        <div className="grid md:grid-cols-12 gap-2 h-screen">
-          <div className="col-span-7 overflow-hidden flex flex-col min-h-screen">
-            <div className="text-xl mb-2 font-bold text-center ">
-              Announcements
-            </div>
-            <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
-              {announcements?.data.map((announcement: AnnouncementType) => (
-                <Card
-                  key={announcement.id}
-                  className="shadow-md rounded-lg border border-blue-300 mb-4"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <Avatar
-                      size={30}
-                      src={"https://avatar.iran.liara.run/public/boy"}
-                    />
-                    <div>
-                      <h4 className="font-medium">{announcement.authorName}</h4>
-                      <h6 className="text-gray-500 text-sm">
-                        {announcement.announcementDate}
-                      </h6>
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-semibold">
-                    {announcement.title}
-                  </h3>
-                  <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">
-                    {announcement.description}
-                  </p>
-                  {/* Reaction stats */}
-                  <div className="flex justify-between items-center mt-4 text-xs text-gray-500 pt-2 border-t border-gray-200">
-                    <div className="flex gap-2">
-                      <span className="flex items-center gap-1">
-                        <span className="flex items-center justify-center bg-blue-100 rounded-full p-1">
-                          <LikeFilled
-                            style={{ color: "#1890ff", fontSize: "12px" }}
-                          />
-                        </span>
-                        {reactions.likes}
-                      </span>
-                    </div>
-                    <div>
-                      <span>{reactions.comments} comments</span>
-                    </div>
-                  </div>
-
-                  {/* Reaction buttons */}
-                  <div className="flex justify-around items-center mt-3 pt-3 border-t border-gray-200">
-                    <button
-                      onClick={() => handleReaction("like")}
-                      className={`flex items-center gap-1 px-3 py-1 rounded-md hover:bg-gray-100 ${
-                        userReactions.liked ? "text-blue-600" : "text-gray-600"
-                      }`}
-                    >
-                      {userReactions.liked ? (
-                        <LikeFilled style={{ fontSize: "18px" }} />
-                      ) : (
-                        <LikeOutlined style={{ fontSize: "18px" }} />
-                      )}
-                      <span className="text-sm">Like</span>
-                    </button>
-
-                    <button className="flex items-center gap-1 px-3 py-1 rounded-md hover:bg-gray-100 text-gray-600">
-                      <MessageOutlined style={{ fontSize: "18px" }} />
-                      <span className="text-sm">Comment</span>
-                    </button>
-                  </div>
-                </Card>
-              ))}
-            </div>
+    <div className="min-h-screen p-4 overflow-scroll md:overflow-hidden">
+      <div className="grid md:grid-cols-12 gap-2 h-screen ">
+        <div className="col-span-12  md:col-span-7 flex flex-col min-h-screen">
+          <div className="text-xl mb-2 font-bold text-center ">
+            Announcements
           </div>
+          <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
+            {announcements?.data.map((announcement: AnnouncementType) => (
+              <Card
+                key={announcement.id}
+                className="shadow-md rounded-lg border border-blue-300 mb-4"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <Avatar
+                    size={30}
+                    src={"https://avatar.iran.liara.run/public/boy"}
+                  />
+                  <div>
+                    <h4 className="font-medium">{announcement.authorName}</h4>
+                    <h6 className="text-gray-500 text-sm">
+                      {announcement.announcementDate}
+                    </h6>
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold">{announcement.title}</h3>
+                <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">
+                  {announcement.description}
+                </p>
+                {/* Reaction stats */}
+                <div className="flex justify-between items-center mt-4 text-xs text-gray-500 pt-2 border-t border-gray-200">
+                  <div className="flex gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="flex items-center justify-center bg-blue-100 rounded-full p-1">
+                        <LikeFilled
+                          style={{ color: "#1890ff", fontSize: "12px" }}
+                        />
+                      </span>
+                      {reactions.likes}
+                    </span>
+                  </div>
+                  <div>
+                    <span>{reactions.comments} comments</span>
+                  </div>
+                </div>
 
-          <div className="col-span-5 flex-col gap-4 h-full ">
-            <div className="flex-1 mb-3">
-              <div className="text-xl mb-2 font-bold text-center ">
-                Employees on Leave
-              </div>
+                {/* Reaction buttons */}
+                <div className="flex justify-around items-center mt-3 pt-3 border-t border-gray-200">
+                  <button
+                    onClick={() => handleReaction("like")}
+                    className={`flex items-center gap-1 px-3 py-1 rounded-md hover:bg-gray-100 ${
+                      userReactions.liked ? "text-blue-600" : "text-gray-600"
+                    }`}
+                  >
+                    {userReactions.liked ? (
+                      <LikeFilled style={{ fontSize: "18px" }} />
+                    ) : (
+                      <LikeOutlined style={{ fontSize: "18px" }} />
+                    )}
+                    <span className="text-sm">Like</span>
+                  </button>
+
+                  <button className="flex items-center gap-1 px-3 py-1 rounded-md hover:bg-gray-100 text-gray-600">
+                    <MessageOutlined style={{ fontSize: "18px" }} />
+                    <span className="text-sm">Comment</span>
+                  </button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="col-span-12  md:col-span-5 flex-col gap-4 md:h-full ">
+          <div className="flex-1 mb-3">
+            <div className="text-xl mb-2 font-bold text-center ">
+              Employees on Leave
+            </div>
+            <div className="overflow-y-auto max-h-[400px] no-scrollbar">
               <Table<LeaveRecord>
                 columns={employeeLeaveColumns}
                 dataSource={currentLeaves}
@@ -175,11 +173,12 @@ const HomeDashboard = () => {
                 style={{ border: "1px solid blue", borderRadius: "1px" }}
               />
             </div>
-            <div className="mb-4 flex-1">
-              <div className="text-xl mb-2 font-bold text-center ">
-                Upcoming Holidays
-              </div>
-
+          </div>
+          <div className="mb-4 flex-1">
+            <div className="text-xl mb-2 font-bold text-center ">
+              Upcoming Holidays
+            </div>
+            <div className="overflow-y-auto max-h-[400px] no-scrollbar">
               <Table<HolidayType>
                 columns={holidayColumns}
                 dataSource={upcomingHolidays}
@@ -191,7 +190,7 @@ const HomeDashboard = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
