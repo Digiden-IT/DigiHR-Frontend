@@ -5,15 +5,14 @@
 @tailwind utilities;
 
 :root {
-  --color-type-one: #7152F3;
-  --color-type-two: #FFFFFF;
-  --color-type-three: #A2A1A833;
+  --color-type-one: #7152f3;
+  --color-type-two: #ffffff;
+  --color-type-three: #a2a1a833;
   --color-type-four: #ffffff;
   --color-type-five: #4792a6;
-  --color-type-six: #F5F5F5;
-  --color-type-seven: #B0003A;
+  --color-type-six: #f5f5f5;
+  --color-type-seven: #b0003a;
   --bg-color: #e5e7eb;
-  
 }
 
 .bg-one {
@@ -72,7 +71,7 @@
 
 .ant-menu-item-selected {
   background-color: var(--color-type-two) !important;
-  color:  var(--color-type-seven) !important;
+  color: var(--color-type-seven) !important;
   font-weight: 500;
   border-color: violet;
   border-radius: 5px;
@@ -80,7 +79,7 @@
 
 .ant-layout-sider-trigger {
   background-color: var(--color-type-six) !important;
-  color: #B0003A !important;
+  color: #b0003a !important;
 }
 
 /* Laptop screens */
@@ -101,13 +100,13 @@
   }
 }
 
-.btn-1{
+.btn-1 {
   background-color: var(--color-type-seven) !important;
   color: #ffffff !important;
 }
 
 .noScrollbarStyle {
-    @layer utilities {
+  @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -117,8 +116,9 @@
     }
   }
 }
-.ant-menu-item-selected a, .ant-menu-item-selected svg {
-  color: #B0003A  !important;
+.ant-menu-item-selected a,
+.ant-menu-item-selected svg {
+  color: #b0003a !important;
 }
 .ant-menu-item {
   color: white !important;

@@ -38,8 +38,6 @@ const DashboardHeader = () => {
     },
   ];
 
-  console.log(user);
-
   return (
     <Header className="bg-white sticky top-0 z-10 flex gap-3 justify-end items-center h-14 px-10 shadow">
       <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">

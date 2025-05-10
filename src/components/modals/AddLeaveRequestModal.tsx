@@ -10,7 +10,9 @@ import {
 import { Button, DatePicker, Form, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
   visible,
@@ -45,22 +47,23 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
 
     const formattedValues = {
       leaveReason: values.leaveReason,
-      startDate: values.from.format("YYYY-MM-DD"),
-      endDate: values.to.format("YYYY-MM-DD"),
+      startDate: values.range[0].format("YYYY-MM-DD"),
+      endDate: values.range[1].format("YYYY-MM-DD"),
     };
+
     if (formattedValues.startDate > formattedValues.endDate) {
       toast.error("From date cannot be greater than To date", { id: toastId });
       return;
     }
     try {
       const response = await addLeaveRequest(formattedValues).unwrap();
-
       if (response) {
         toast.success("New Leave request added successfully!", { id: toastId });
         form.resetFields();
         refetchLeave();
         onCloseModal();
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.errorFields) {
         toast.error("Please check form inputs.", { id: toastId });
@@ -107,20 +110,17 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
           </Select>
         </Form.Item>
         <Form.Item
-          label="From"
-          name="from"
+          label="range"
+          name="range"
           rules={[{ required: true, message: "Please input a date" }]}
           className="w-full mb-4"
         >
-          <DatePicker className="w-full" placeholder="From" />
-        </Form.Item>
-        <Form.Item
-          label="To"
-          name="to"
-          rules={[{ required: true, message: "Please input a date" }]}
-          className="w-full mb-4"
-        >
-          <DatePicker className="w-full" placeholder="To" />
+          <RangePicker
+            className="w-full"
+            showTime={{ format: "HH" }}
+            format="YYYY-MM-DD HH:mm"
+            mode={["date", "date"]}
+          />
         </Form.Item>
         <div className="col-span-1 md:col-span-2 flex justify-center gap-4 mt-4">
           <Button onClick={handleCancel}>Cancel</Button>
