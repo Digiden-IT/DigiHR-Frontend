@@ -68,7 +68,7 @@ const HolidayManagement: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="flex justify-end">
+      <div className="flex flex-col-reverse md:flex-row gap-4 md:justify-end  mb-4">
         <Button
           icon={<FaPlus />}
           className="btn-1 mb-4"
@@ -77,7 +77,6 @@ const HolidayManagement: React.FC = () => {
           Add New Holiday
         </Button>
       </div>
-
       <Table<HolidayType>
         columns={columns}
         dataSource={holidaysData}

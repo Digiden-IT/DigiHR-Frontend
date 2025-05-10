@@ -66,22 +66,20 @@ const EmployeeManagement = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="mb-4 flex flex-col md:flex-row md:justify-between gap-4">
-        <div className="flex justify-end">
-          <Button
-            className="btn-1 w-40"
-            icon={<FaPlus />}
-            onClick={() => handleAddUser()}
-          >
-            Add Employee
-          </Button>
-        </div>
+      <div className="mb-4 flex flex-col md:flex-row md:justify-end gap-4">
+        <Button
+          className="btn-1"
+          icon={<FaPlus />}
+          onClick={() => handleAddUser()}
+        >
+          Add Employee
+        </Button>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 ">
           <input
             type="text"
             placeholder="Search by Name"
-            className="w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="hidden md:w-full px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           {/*todo: show the button, temporarily hiddedn the filter button  */}
           <Button className="rounded-md hidden">
