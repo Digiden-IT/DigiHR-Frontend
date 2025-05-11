@@ -1,4 +1,4 @@
-import React, { isValidElement, ReactElement } from "react";
+import { isValidElement, ReactElement } from "react";
 import { Layout, Menu, MenuProps } from "antd";
 import { useCurrentToken } from "../../redux/feature/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
@@ -79,10 +79,7 @@ const DashboardSidebar = () => {
   };
 
   const location = useLocation();
-  console.log("Location:", location.pathname); // Log the current pathname
-  console.log("Sidebar Items:", sidebarItems); // Log the sidebar items
   const selectedKey = findActiveMenuKey(sidebarItems, location.pathname);
-  console.log("Selected Menu Key:", selectedKey);
 
   return (
     <Sider
