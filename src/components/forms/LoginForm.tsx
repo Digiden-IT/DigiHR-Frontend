@@ -5,7 +5,7 @@ import { useLoginMutation } from "../../redux/feature/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/feature/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
-import logo from "../../../public/Logo.png";
+import logo from "../../../public/logo_expanded.png";
 import { TUser } from "../../types/user.type";
 import { toast } from "sonner";
 
