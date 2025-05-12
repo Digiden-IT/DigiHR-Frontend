@@ -2,18 +2,21 @@ import { Layout, Menu, MenuProps } from "antd";
 import { useCurrentToken } from "../../redux/feature/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
 import { jwtDecode } from "jwt-decode";
-import logo from "../../../public/Logo.png";
+import logo_expanded from "../../../public/logo_expanded.png";
+import logo_collapsed from "../../../public/logo_collapsed.png";
 import { TUser, userRole } from "../../types/user.type";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
 import { userPaths } from "../../routes/user.routes";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const { Sider } = Layout;
 
 const DashboardSidebar = () => {
   const token = useAppSelector(useCurrentToken);
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   let user;
 
@@ -49,9 +52,18 @@ const DashboardSidebar = () => {
       width={250}
       theme="light"
       className="h-screen sticky top-0 left-0 bg-[#60032a]"
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      onBreakpoint={(broken) => {
+        setCollapsed(broken);
+      }}
     >
-      <div className="h-[4rem] flex justify-center items-center text-gray-50 mb-5 bg-white">
-        <img src={logo} className="w-40" />
+      <div className="h-[3.5rem] flex justify-center items-center text-gray-50 mb-5 bg-white">
+        <img
+          src={collapsed ? logo_collapsed : logo_expanded}
+          className={collapsed ? "w-8" : "w-40"}
+          alt="logo"
+        />
       </div>
       <Menu
         mode="inline"
