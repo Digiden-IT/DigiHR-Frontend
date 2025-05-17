@@ -53,6 +53,7 @@ const AddEditAnnouncement: React.FC<AnnouncementProps> = ({
         form.resetFields();
         onCancel();
       } catch (err) {
+        console.log(err);
         toast.error(
           isEditing
             ? "Failed to update announcement"
@@ -130,7 +131,7 @@ const AddEditAnnouncement: React.FC<AnnouncementProps> = ({
             loading={isAdding || isUpdating}
             onClick={handleSubmit}
           >
-            {isEditing ? "Update" : "Add"}
+            {isEditing ? "Update" : "+ Add"}
           </Button>
         </div>
       </Form>
