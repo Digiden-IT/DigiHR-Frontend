@@ -52,12 +52,9 @@ return acc;
   
   return routes;
 };
-console.log(routeGenerator(adminroute,"admin"))
-
 // sidebar Generator ----------------------------------------------------------------------- 
 
 export const sidebarItemsGenerator = (items, role) => {
-    console.log("Inside function: ",role)
   const sidebarItems = items.reduce((acc, item) => {
     if (item.path && item.name) {
       acc.push({
@@ -90,5 +87,3 @@ export const sidebarItemsGenerator = (items, role) => {
 
   return sidebarItems;
 };
-
-console.log(sidebarItemsGenerator(adminroute, "admin"))

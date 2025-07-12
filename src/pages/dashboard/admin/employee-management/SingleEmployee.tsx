@@ -1,8 +1,8 @@
 import EmployeeDetails from "../../../../components/shared/EmployeeDetails";
 
-const MyProfile = () => {
+const SingleEmployee = () => {  
   return (
     <EmployeeDetails/>
   );
 }
-export default MyProfile;
+export default SingleEmployee;

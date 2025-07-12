@@ -9,6 +9,7 @@ const PageNavigation: React.FC<PaginateProps> = ({
 }) => {
   return (
     <Pagination
+      className="flex justify-end"
       current={currentPage}
       total={totalElements}
       pageSize={pageSize}

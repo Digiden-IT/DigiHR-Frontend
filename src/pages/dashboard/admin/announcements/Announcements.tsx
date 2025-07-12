@@ -1,4 +1,4 @@
-import { Card, Button, Avatar, Dropdown, Modal } from "antd";
+import { Card, Button, Avatar, Dropdown } from "antd";
 import { AiOutlineMore } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
@@ -54,6 +54,8 @@ const Announcements: React.FC = () => {
     setSelectedAnnouncementId(id);
   };
   const handleOk = async () => {
+    if (isDeleting) return;
+
     const toastId = toast.loading("Deleting...");
     try {
       await deleteAnnouncement(selectedAnnouncementId);
@@ -61,8 +63,8 @@ const Announcements: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
-      toast.error("Failed to delete holiday", { id: toastId });
+      console.log(error);
+      toast.error("Failed to delete announcement", { id: toastId });
     }
   };
 
@@ -93,9 +95,15 @@ const Announcements: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Recent Announcements</h1>
-        <Button className="btn-1" icon={<FaPlus />} onClick={openAddModal}>
+      <div className="flex flex-col md:flex-row md:justify-between md `:items-center gap-4 mb-6">
+        <h1 className="text-xl sm:text-2xl text-center font-semibold">
+          Recent Announcements
+        </h1>
+        <Button
+          className="btn-1 w-full sm:w-auto"
+          icon={<FaPlus />}
+          onClick={openAddModal}
+        >
           Add Announcement
         </Button>
       </div>
@@ -103,7 +111,7 @@ const Announcements: React.FC = () => {
       {isLoading ? (
         <BasicLoader />
       ) : (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-1 gap-4">
           {announcements?.data.map((announcement: AnnouncementType) => (
             <Card
               key={announcement.id}
@@ -112,7 +120,7 @@ const Announcements: React.FC = () => {
               <div className="flex items-center gap-3 mb-4">
                 <Avatar
                   size={30}
-                  src={"https://avatars.githubusercontent.com/u/90123719?v=4"}
+                  src={"https://avatar.iran.liara.run/public/boy"}
                 />
                 <div>
                   <h4 className="font-medium">{announcement.authorName}</h4>
@@ -146,9 +154,9 @@ const Announcements: React.FC = () => {
       />
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
-        deleteModalMessage="Delete Announcements?"
+        deleteModalMessage="Delete Announcement?"
       />
     </div>
   );

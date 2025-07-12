@@ -11,11 +11,14 @@ const RedirectToRoleBasedDashboard = () => {
 
   const user = token ? verifyToken(token) : null;
 
-  console.log(user);
-
   useEffect(() => {
     if (user?.role) {
-      navigate(`/${user.role.toLowerCase()}/dashboard`, { replace: true });
+      const role = user?.role.toLowerCase();
+      if (role === "admin") {
+        navigate("/admin/announcements", { replace: true });
+      } else {
+        navigate("/user/dashboard", { replace: true });
+      }
     } else {
       navigate("/login", { replace: true });
     }

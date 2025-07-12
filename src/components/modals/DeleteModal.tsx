@@ -3,7 +3,7 @@ import { DeleteModalProps } from "../../types/props.type";
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   visible,
-  onCancel,
+  onCloseModal,
   onOk,
   deleteModalMessage,
 }) => {
@@ -22,7 +22,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
       }
       footer={
         <div className="flex justify-center gap-4 mt-8">
-          <Button className="py-2 border rounded-md" onClick={onCancel}>
+          <Button className="py-2 border rounded-md" onClick={onCloseModal}>
             Cancel
           </Button>
           <Button className="btn-1" onClick={onOk}>

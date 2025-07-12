@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 const AddNewHoliday: React.FC<HolidayProps> = ({
   visible,
-  onCancel,
+  onCloseModal,
   refetchHolidays,
 }) => {
   const [form] = Form.useForm();
@@ -26,7 +26,7 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
         toast.success("New holiday added successfully!", { id: toastId });
         form.resetFields();
         refetchHolidays();
-        onCancel();
+        onCloseModal();
       }
     } catch (err: any) {
       if (err.errorFields) {
@@ -38,7 +38,7 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
   };
   const handleCancel = () => {
     form.resetFields();
-    onCancel();
+    onCloseModal();
   };
 
   return (
@@ -48,7 +48,7 @@ const AddNewHoliday: React.FC<HolidayProps> = ({
       centered
       closable={false}
       className="rounded-xl"
-      title={<div className="text-2xl font-semibold mb-6">Add New Holiday</div>}
+      title={<div className="text-2xl font-semibold mb-6 text-center">Add New Holiday</div>}
     >
       <Form
         form={form}

@@ -1,17 +1,15 @@
-import { Avatar, Badge, Dropdown, Layout, MenuProps } from "antd";
-import { CiBellOn } from "react-icons/ci";
+import { Avatar, Dropdown, Layout, MenuProps } from "antd";
 import { RxExit } from "react-icons/rx";
-import { useAppDispatch } from "../../redux/hooks";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../redux/feature/auth/authSlice";
-import { GoGear } from "react-icons/go";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { Link, useNavigate } from "react-router-dom";
+import { logout, selectCurrentUser } from "../../redux/feature/auth/authSlice";
 import { AiOutlineUser } from "react-icons/ai";
-import { IoHelpCircleOutline } from "react-icons/io5";
 
 const { Header } = Layout;
 const DashboardHeader = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector(selectCurrentUser);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -22,29 +20,16 @@ const DashboardHeader = () => {
     {
       key: "1",
       label: (
-        <p className="flex items-center gap-2 w-28">
+        <Link
+          to={`/${user?.role?.toLowerCase()}/my-profile`}
+          className="flex items-center gap-2"
+        >
           <AiOutlineUser size={18} /> Profile
-        </p>
+        </Link>
       ),
     },
     {
       key: "2",
-      label: (
-        <p className="flex items-center gap-2 w-28">
-          <GoGear size={18} /> Settings
-        </p>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <p className="flex items-center gap-2 w-28">
-          <IoHelpCircleOutline size={20} /> Help
-        </p>
-      ),
-    },
-    {
-      key: "4",
       label: (
         <p onClick={handleLogout} className="flex items-center gap-2 w-28">
           <RxExit size={14} className="mx-[3px]" /> Logout
@@ -55,13 +40,10 @@ const DashboardHeader = () => {
 
   return (
     <Header className="bg-white sticky top-0 z-10 flex gap-3 justify-end items-center h-14 px-10 shadow">
-      <Badge dot>
-        <CiBellOn size={30} className="cursor-pointer" />
-      </Badge>
-
       <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
         <Avatar
-          src={"https://avatars.githubusercontent.com/u/90123719?v=4"}
+          size={"default"}
+          src="https://static-00.iconduck.com/assets.00/avatar-default-icon-2048x2048-h6w375ur.png"
           className="cursor-pointer"
         />
       </Dropdown>

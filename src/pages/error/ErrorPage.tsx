@@ -19,7 +19,7 @@ const ErrorPage = () => {
             rel="noopener noreferrer"
             className="px-8 py-3 font-semibold rounded btn-1"
           >
-            Back to homepage
+            Return 
           </Link>
         </div>
       </div>

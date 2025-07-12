@@ -49,5 +49,5 @@ export const {
   useAddAnnouncementsMutation,
   useGetAllAnnouncementsQuery,
   useUpdateAnnouncementMutation,
-  useDeleteAnnouncementMutation
+  useDeleteAnnouncementMutation,
 } = announcementApi;

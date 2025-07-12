@@ -76,7 +76,7 @@ const AddEditAnnouncement: React.FC<AnnouncementProps> = ({
       closable={false}
       className="rounded-xl"
       title={
-        <div className="text-2xl font-semibold mb-6">
+        <div className="text-2xl font-semibold mb-6 text-center">
           {isEditing ? "Edit Announcement" : "Create New Announcement"}
         </div>
       }

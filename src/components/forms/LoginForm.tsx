@@ -1,20 +1,18 @@
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/feature/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/feature/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
-import logo from "../../../public/Logo.png";
+import logo from "../../../public/logo_expanded.png";
 import { TUser } from "../../types/user.type";
 import { toast } from "sonner";
 
 const LoginForm = () => {
-  const [login, { error, isLoading }] = useLoginMutation();
+  const [login, {isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  console.log(error);
 
   const onFinish = async (values: { email: string; password: string }) => {
     const toastId = toast.loading("Logging in");
@@ -32,13 +30,14 @@ const LoginForm = () => {
           id: toastId,
           duration: 2000,
         });
-        navigate(`/${decodedUser?.role.toLowerCase()}/dashboard`, {
-          replace: true,
-        });
+        const role = decodedUser?.role.toLowerCase();
+        if (role === "admin") {
+          navigate("/admin/announcements", { replace: true });
+        } else {
+          navigate("/user/dashboard", { replace: true });
+        }
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      // message.error(err?.data?.message as string);
       toast.error(
         err?.data?.message || "Something went wrong, try again later",
         {
@@ -96,12 +95,6 @@ const LoginForm = () => {
           {isLoading ? "Loging..." : "Log in"}
         </Button>
       </Form.Item>
-      <p className="text-center">
-        or return to
-        <Link to={"/"} className="font-semibold uppercase mx-1">
-          Home
-        </Link>
-      </p>
     </Form>
   );
 };

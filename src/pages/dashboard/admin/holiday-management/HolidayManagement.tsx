@@ -1,8 +1,6 @@
-import { Button, Modal, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import { useState } from "react";
-import { CiTrash } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa";
-import type { TableColumnsType, PaginationProps } from "antd";
 import { HolidayType } from "../../../../types/props.type";
 import AddNewHoliday from "../../../../components/modals/AddNewHoliday";
 import DeleteModal from "../../../../components/modals/DeleteModal";
@@ -13,21 +11,24 @@ import {
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import PageNavigation from "../../../../components/shared/PageNavigation";
 import { toast } from "sonner";
+import { usePagination } from "../../../../hooks/usePagination";
+import HolidayTableColumns from "../../../../components/shared/table-columns/HolidayTableColumns";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 
 const HolidayManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedHolidayId, setSelectedHolidayId] = useState<number>(0);
-  const [deleteHoliday] = useDeleteHolidayMutation();
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: 10,
-  });
+  const { pagination, handlePageChange } = usePagination(8);
+  const user = useAppSelector(selectCurrentUser);
+
+  const [deleteHoliday, { isLoading: isDeleting }] = useDeleteHolidayMutation();
 
   const { data, isLoading, refetch, isFetching } = useGetAllHolidaysQuery([
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
-    { name: "sort", value: "date" },
+    { name: "sort", value: "date,desc" },
   ]);
 
   const holidaysData: HolidayType[] = data?.data || [];
@@ -46,13 +47,9 @@ const HolidayManagement: React.FC = () => {
     setSelectedHolidayId(0);
   };
 
-  const handlePageChange: PaginationProps["onChange"] = (page, pageSize) => {
-    setPagination({
-      currentPage: page,
-      pageSize: pageSize || pagination.pageSize,
-    });
-  };
   const handleOk = async () => {
+    if (isDeleting) return;
+
     const toastId = toast.loading("Deleting...");
     try {
       await deleteHoliday(selectedHolidayId);
@@ -60,73 +57,36 @@ const HolidayManagement: React.FC = () => {
       refetch();
       handleCloseModals();
     } catch (error) {
-      console.error("Delete error:", error);
+      console.log(error);
       toast.error("Failed to delete holiday", { id: toastId });
     }
   };
-
-  const columns: TableColumnsType<HolidayType> = [
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (text: string, record: HolidayType) => (
-        <div className="flex items-center">
-          <div
-            className={`w-1 h-7 ${
-              new Date(record.date) > new Date() ? "bg-one" : "bg-three"
-            } mr-2`}
-          />
-          <span>{text}</span>
-        </div>
-      ),
-    },
-    {
-      title: "Day",
-      dataIndex: "dayOfWeek",
-      key: "dayOfWeek",
-    },
-    {
-      title: "Holiday Name",
-      dataIndex: "holidayName",
-      key: "holidayName",
-    },
-    {
-      title: "",
-      key: "action",
-      render: (_, record: HolidayType) => (
-        <CiTrash
-          size={20}
-          className="text-red-500 hover:text-red-700 border-none shadow-none"
-          onClick={() => handleOpenDeleteModal(record.id)}
-        />
-      ),
-    },
-  ];
-
+  const columns = HolidayTableColumns(user?.role, handleOpenDeleteModal);
   if (isLoading || isFetching) {
     return <BasicLoader />;
   }
 
   return (
     <div className="p-6 min-h-screen">
-      <Button
-        icon={<FaPlus />}
-        className="btn-1 mb-4"
-        onClick={handleOpenAddModal}
-      >
-        Add New Holiday
-      </Button>
-
+      <div className="flex flex-col-reverse md:flex-row gap-4 md:justify-end  mb-4">
+        <Button
+          icon={<FaPlus />}
+          className="btn-1 mb-4"
+          onClick={handleOpenAddModal}
+        >
+          Add New Holiday
+        </Button>
+      </div>
       <Table<HolidayType>
         columns={columns}
         dataSource={holidaysData}
         pagination={false}
         className="mb-6"
         rowKey="id"
+        scroll={{ x: "max-content" }}
       />
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col-reverse md:flex-row gap-4 justify-between items-center mt-4">
         <div className="flex items-center">
           <div className="mr-2">
             <Tag color="purple" className="flex items-center">
@@ -141,25 +101,26 @@ const HolidayManagement: React.FC = () => {
             </Tag>
           </div>
         </div>
-
-        <PageNavigation
-          currentPage={pagination.currentPage}
-          totalElements={totalElements}
-          pageSize={pagination.pageSize}
-          onChange={handlePageChange}
-        />
+        {totalElements !== 0 && (
+          <PageNavigation
+            currentPage={pagination.currentPage}
+            totalElements={totalElements}
+            pageSize={pagination.pageSize}
+            onChange={handlePageChange}
+          />
+        )}
       </div>
 
       {/* Modals */}
       <AddNewHoliday
         visible={isAddModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         refetchHolidays={refetch}
       />
 
       <DeleteModal
         visible={isDeleteModalOpen}
-        onCancel={handleCloseModals}
+        onCloseModal={handleCloseModals}
         onOk={handleOk}
         deleteModalMessage="Delete Holiday?"
       />

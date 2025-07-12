@@ -5,12 +5,13 @@
 @tailwind utilities;
 
 :root {
-  --color-type-one: #7152F3;
-  --color-type-two: #EEF5FF;
-  --color-type-three: #A2A1A833;
+  --color-type-one: #7152f3;
+  --color-type-two: #ffffff;
+  --color-type-three: #a2a1a833;
   --color-type-four: #ffffff;
-  --color-type-five: #d4dcff;
-  --color-type-six: #1b6bb1;
+  --color-type-five: #4792a6;
+  --color-type-six: #f5f5f5;
+  --color-type-seven: #b0003a;
   --bg-color: #e5e7eb;
 }
 
@@ -70,7 +71,7 @@
 
 .ant-menu-item-selected {
   background-color: var(--color-type-two) !important;
-  color:  var(--color-type-one) !important;
+  color: var(--color-type-seven) !important;
   font-weight: 500;
   border-color: violet;
   border-radius: 5px;
@@ -78,7 +79,7 @@
 
 .ant-layout-sider-trigger {
   background-color: var(--color-type-six) !important;
-  color: white !important;
+  color: #b0003a !important;
 }
 
 /* Laptop screens */
@@ -99,7 +100,26 @@
   }
 }
 
-.btn-1{
-  background-color: var(--color-type-one) !important;
+.btn-1 {
+  background-color: var(--color-type-seven) !important;
   color: #ffffff !important;
+}
+
+.noScrollbarStyle {
+  @layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+}
+.ant-menu-item-selected a,
+.ant-menu-item-selected svg {
+  color: #b0003a !important;
+}
+.ant-menu-item {
+  color: white !important;
 }
