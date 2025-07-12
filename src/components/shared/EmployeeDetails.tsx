@@ -78,7 +78,7 @@ const EmployeeDetails = () => {
     <div className="p-6 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between my-5">
         <div className="flex items-center gap-6 mb-8">
-          {employeeData?.gender.constant === "FEMALE" ? (
+          {employeeData?.gender?.constant === "FEMALE" ? (
             <img
               src="https://avatar.iran.liara.run/public/girl"
               alt="Profile"
