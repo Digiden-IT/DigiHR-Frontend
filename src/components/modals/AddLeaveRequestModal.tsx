@@ -7,7 +7,7 @@ import {
   AddLeaveRequestFormOptionsType,
   FormFieldFilterType,
 } from "../../types/props.type";
-import { Button, DatePicker, Form, Modal, Select } from "antd";
+import { Alert, Button, DatePicker, Form, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -122,6 +122,11 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
             mode={["date", "date"]}
           />
         </Form.Item>
+        <Alert
+          message="Ensure your request is submitted at least one day prior."
+          type="warning"
+          showIcon
+        />
         <div className="col-span-1 md:col-span-2 flex justify-center gap-4 mt-4">
           <Button onClick={handleCancel}>Cancel</Button>
           <Button className="btn-1" htmlType="submit">

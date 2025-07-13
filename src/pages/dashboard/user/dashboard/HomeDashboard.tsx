@@ -42,7 +42,6 @@ const HomeDashboard = () => {
 
   useEffect(() => {
     if (leaveData?.data) {
-      const today = new Date();
       const formatDateString = (dateString: string) => {
         if (!dateString) return null;
         try {
@@ -52,18 +51,30 @@ const HomeDashboard = () => {
           return null;
         }
       };
-
+      const today = new Date();
       const todayFormatted = today.toISOString().split("T")[0];
-      const activeLeaves = leaveData.data.filter((leave: LeaveRecord) => {
-        const startDate = formatDateString(leave.startDate);
-        const endDate = formatDateString(leave.endDate);
 
-        if (!startDate || !endDate) return false;
+      const sevenDaysLater = new Date();
+      sevenDaysLater.setDate(today.getDate() + 7);
+      const sevenDaysLaterFormatted = sevenDaysLater
+        .toISOString()
+        .split("T")[0];
 
-        return startDate <= todayFormatted && todayFormatted <= endDate;
+      const approvedLeaves = leaveData.data.filter(
+        (leave: LeaveRecord) => leave.requestStatus?.constant === "APPROVED"
+      );
+
+      const upcomingLeaves = approvedLeaves.filter((leave: LeaveRecord) => {
+        const startDateStr = formatDateString(leave.startDate);
+        if (!startDateStr) return false;
+
+        return (
+          todayFormatted <= startDateStr &&
+          startDateStr <= sevenDaysLaterFormatted
+        );
       });
 
-      setCurrentLeaves(activeLeaves);
+      setCurrentLeaves(upcomingLeaves);
     }
   }, [leaveData]);
 
@@ -87,10 +98,10 @@ const HomeDashboard = () => {
     <BasicLoader />;
   }
   return (
-    <div className="min-h-screen p-4 overflow-scroll md:overflow-hidden">
+    <div className="min-h-screen p-4 overflow-scroll md:overflow-hidden bg-[#FAF4EF]">
       <div className="grid md:grid-cols-12 gap-2 h-screen ">
         <div className="col-span-12  md:col-span-7 flex flex-col min-h-screen">
-          <div className="text-xl mb-2 font-bold text-center ">
+          <div className="text-xl mb-2 font-bold text-center bg-[#60032a] text-white rounded-lg">
             Announcements
           </div>
           <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
@@ -159,8 +170,8 @@ const HomeDashboard = () => {
         </div>
 
         <div className="col-span-12  md:col-span-5 flex-col gap-4 md:h-full ">
-          <div className="flex-1 mb-3">
-            <div className="text-xl mb-2 font-bold text-center ">
+          <div className="flex-1 mb-3 shadow-2xl rounded-lg ">
+            <div className="text-xl mb-2 font-bold text-center text-white bg-[#60032a] rounded-lg">
               Employees on Leave
             </div>
             <div className="overflow-y-auto max-h-[400px] no-scrollbar">
@@ -170,12 +181,11 @@ const HomeDashboard = () => {
                 pagination={false}
                 loading={isLoading}
                 rowKey="id"
-                style={{ border: "1px solid blue", borderRadius: "1px" }}
               />
             </div>
           </div>
-          <div className="mb-4 flex-1">
-            <div className="text-xl mb-2 font-bold text-center ">
+          <div className="mb-4 flex-1 shadow-2xl rounded-lg">
+            <div className="text-xl mb-2 font-bold text-center text-white bg-[#60032a] rounded-lg">
               Upcoming Holidays
             </div>
             <div className="overflow-y-auto max-h-[400px] no-scrollbar">
@@ -184,7 +194,6 @@ const HomeDashboard = () => {
                 dataSource={upcomingHolidays}
                 pagination={false}
                 rowKey="id"
-                style={{ border: "1px solid #1890ff", borderRadius: "1px" }}
               />
             </div>
           </div>
