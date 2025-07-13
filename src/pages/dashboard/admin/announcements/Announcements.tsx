@@ -136,8 +136,10 @@ const Announcements: React.FC = () => {
                   <AiOutlineMore className="ml-auto cursor-pointer" size={20} />
                 </Dropdown>
               </div>
-              <h3 className="text-lg font-semibold">{announcement.title}</h3>
-              <p className="text-gray-600 my-2 overflow-hidden text-ellipsis line-clamp-3">
+              <h3 className="text-[#2b789e] text-lg font-bold font-serif">
+                {announcement.title}
+              </h3>
+              <p className=" my-2 overflow-hidden text-ellipsis line-clamp-3">
                 {announcement.description}
               </p>
             </Card>
