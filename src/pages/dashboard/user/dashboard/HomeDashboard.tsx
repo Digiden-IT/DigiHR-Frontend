@@ -42,6 +42,7 @@ const HomeDashboard = () => {
 
   useEffect(() => {
     if (leaveData?.data) {
+      console.log("Leave Data:", leaveData.data);
       const today = new Date();
       const formatDateString = (dateString: string) => {
         if (!dateString) return null;
@@ -54,13 +55,15 @@ const HomeDashboard = () => {
       };
 
       const todayFormatted = today.toISOString().split("T")[0];
-      const activeLeaves = leaveData.data.filter((leave: LeaveRecord) => {
-        const startDate = formatDateString(leave.startDate);
+      const approvedLeaves = leaveData.data.filter(
+        (leave: LeaveRecord) => leave.requestStatus?.constant === "APPROVED"
+      );
+      const activeLeaves = approvedLeaves.filter((leave: LeaveRecord) => {
         const endDate = formatDateString(leave.endDate);
 
-        if (!startDate || !endDate) return false;
+        if (!endDate) return false;
 
-        return startDate <= todayFormatted && todayFormatted <= endDate;
+        return todayFormatted <= endDate;
       });
 
       setCurrentLeaves(activeLeaves);
