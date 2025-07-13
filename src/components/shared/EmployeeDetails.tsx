@@ -92,7 +92,9 @@ const EmployeeDetails = () => {
             />
           )}
           <div>
-            <h2 className="text-2xl font-bold">{employeeData?.name}</h2>
+            <h2 className="text-2xl font-bold text-[#b0003a]">
+              {employeeData?.name}
+            </h2>
             <p className="text-gray-600">{employeeData?.designation}</p>
             <p className="text-gray-500">{employeeData?.email}</p>
           </div>
