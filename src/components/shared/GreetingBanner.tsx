@@ -1,8 +1,4 @@
 import img6 from "../../assets/img6.png";
-import img7 from "../../assets/img7.svg";
-import Hi_Benner from "../../assets/Hi_Benner.webp";
-
-
 import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
 
