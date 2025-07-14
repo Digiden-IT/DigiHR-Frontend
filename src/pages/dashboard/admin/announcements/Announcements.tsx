@@ -11,8 +11,11 @@ import {
 } from "../../../../redux/api/announcementApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import { toast } from "sonner";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 
 const Announcements: React.FC = () => {
+  const user = useAppSelector(selectCurrentUser);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedAnnouncementId, setSelectedAnnouncementId] =
     useState<number>(0);
@@ -95,6 +98,9 @@ const Announcements: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
+      <div className="text-3xl font-semibold mb-4 text-center bg-white rounded-lg shadow-md p-10">
+        Hi, {user?.name} 🚀🚀🚀
+      </div>
       <div className="flex flex-col md:flex-row md:justify-between md `:items-center gap-4 mb-6">
         <h1 className="text-xl sm:text-2xl text-center font-semibold">
           Recent Announcements
@@ -115,7 +121,7 @@ const Announcements: React.FC = () => {
           {announcements?.data.map((announcement: AnnouncementType) => (
             <Card
               key={announcement.id}
-              className="shadow-md rounded-lg border-blue-300 h-60"
+              className="shadow-md rounded-lg border-blue-300"
             >
               <div className="flex items-center gap-3 mb-4">
                 <Avatar
@@ -139,7 +145,7 @@ const Announcements: React.FC = () => {
               <h3 className="text-[#2b789e] text-lg font-bold font-serif">
                 {announcement.title}
               </h3>
-              <p className=" my-2 overflow-hidden text-ellipsis line-clamp-3">
+              <p className=" my-2 whitespace-pre-line">
                 {announcement.description}
               </p>
             </Card>

@@ -20,7 +20,7 @@ const ViewEmployees: React.FC = () => {
   const totalElements = usersData?.totalElements || 0;
 
   return (
-    <div className="p-6 min-h-screen bg-[#FAF4EF]">
+    <div className="p-6 min-h-screen">
       <div className="mb-4 flex flex-col md:flex-row gap-4 md:justify-center bg-[#60032a] text-white rounded-lg">
         <h1 className="text-2xl font-semibold text-center  ">
           All Employee List
