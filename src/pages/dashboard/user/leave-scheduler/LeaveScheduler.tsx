@@ -56,7 +56,7 @@ const LeaveScheduler: React.FC = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen bg-[#FAF4EF]">
+    <div className="p-6 min-h-screen">
       <LeaveStatsCards
         totalLeaves={leaveSummary?.totalLeave}
         availableLeaves={leaveSummary?.availableLeave}

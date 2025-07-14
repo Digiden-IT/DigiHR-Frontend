@@ -43,7 +43,7 @@ const DashboardHeader = () => {
       <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
         <Avatar
           size={"default"}
-          src="https://static-00.iconduck.com/assets.00/avatar-default-icon-2048x2048-h6w375ur.png"
+          src="https://avatar.iran.liara.run/public/boy"
           className="cursor-pointer"
         />
       </Dropdown>
