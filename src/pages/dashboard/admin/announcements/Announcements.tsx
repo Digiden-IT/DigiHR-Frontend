@@ -11,11 +11,9 @@ import {
 } from "../../../../redux/api/announcementApi";
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import { toast } from "sonner";
-import { useAppSelector } from "../../../../redux/hooks";
-import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
+import GreetingBanner from "../../../../components/shared/GreetingBanner";
 
 const Announcements: React.FC = () => {
-  const user = useAppSelector(selectCurrentUser);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedAnnouncementId, setSelectedAnnouncementId] =
     useState<number>(0);
@@ -98,9 +96,7 @@ const Announcements: React.FC = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="text-3xl font-semibold mb-4 text-center bg-white rounded-lg shadow-md p-10">
-        Hi, {user?.name} 🚀🚀🚀
-      </div>
+      <GreetingBanner />
       <div className="flex flex-col md:flex-row md:justify-between md `:items-center gap-4 mb-6">
         <h1 className="text-xl sm:text-2xl text-center font-semibold">
           Recent Announcements

@@ -14,6 +14,8 @@ import { selectCurrentUser } from "../../../../redux/feature/auth/authSlice";
 import { useGetAllLeavesQuery } from "../../../../redux/api/leaveManagement";
 import HolidayTableColumns from "../../../../components/shared/table-columns/HolidayTableColumns";
 import { useGetAllHolidaysQuery } from "../../../../redux/api/holidayManagementApi";
+import GreetingBanner from "../../../../components/shared/GreetingBanner";
+
 
 const HomeDashboard = () => {
   const user = useAppSelector(selectCurrentUser);
@@ -97,13 +99,10 @@ const HomeDashboard = () => {
   if (isLoading) {
     <BasicLoader />;
   }
+  
   return (
     <div className="min-h-screen p-4 overflow-scroll md:overflow-hidden">
-      <div className="text-3xl font-semibold mb-4 text-center bg-white rounded-lg shadow-md p-10">
-        Hi, {user?.name}
-        {user?.role === "ADMIN" ? " 🚀🚀🚀" : " 👋"}
-      </div>
-
+      <GreetingBanner />
       <div className="grid md:grid-cols-12 gap-2 h-screen ">
         <div className="col-span-12  md:col-span-7 flex flex-col min-h-screen">
           <div className="overflow-y-auto flex-grow pr-2 no-scrollbar">
@@ -175,7 +174,7 @@ const HomeDashboard = () => {
 
         <div className="col-span-12  md:col-span-5 flex-col gap-4 md:h-full ">
           <div className="flex-1 mb-3 shadow-2xl rounded-lg ">
-            <div className=" mb-2 font-semibold text-center rounded-t-lg bg-[#60032a] text-white font-serif p-2">
+            <div className=" mb-2 font-semibold text-center rounded-t-lg bg-[#b750ca] text-white font-serif p-2">
               Employees on Leave
             </div>
             <div className="overflow-y-auto max-h-[400px] no-scrollbar">
@@ -189,7 +188,7 @@ const HomeDashboard = () => {
             </div>
           </div>
           <div className="mb-4 flex-1 shadow-2xl bg-white rounded-lg">
-            <div className="mb-2 font-semibold text-center rounded-t-lg bg-[#60032a] text-white font-serif p-2">
+            <div className="mb-2 font-semibold text-center rounded-t-lg bg-[#4980b0] text-white font-serif p-2">
               Upcoming Holidays
             </div>
             <div className="overflow-y-auto max-h-[400px] no-scrollbar">
