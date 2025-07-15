@@ -14,6 +14,8 @@ import BasicLoader from "../../components/shared/BasicLoader";
 import { TUser } from "../../types/user.type";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
+import img_boy from "../../assets/boy_image.png";
+import img_girl from "../../assets/image_girl.avif";
 
 const EmployeeDetails = () => {
   const user = useAppSelector(selectCurrentUser) as TUser;
@@ -80,14 +82,14 @@ const EmployeeDetails = () => {
         <div className="flex items-center gap-6 mb-8">
           {employeeData?.gender?.constant === "FEMALE" ? (
             <img
-              src="https://avatar.iran.liara.run/public/girl"
-              alt="Profile"
+              src={img_girl}
+              alt="Profile Girl"
               className="w-20 h-20 rounded-xl object-cover"
             />
           ) : (
             <img
-              src="https://avatar.iran.liara.run/public/boy"
-              alt="Profile"
+              src={img_boy}
+              alt="Profile Boy"
               className="w-20 h-20 rounded-xl object-cover"
             />
           )}

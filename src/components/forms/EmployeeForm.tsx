@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Select, DatePicker, Button, InputNumber } from "antd";
+import { Form, Input, Select, DatePicker, Button } from "antd";
 import {
   EmployeeFormProps,
   AddNewEmployeeFormOptionsType,
@@ -64,7 +64,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   }, [filterOptionsData]);
 
   const isUserRestricted = currentUserRole === "user" || isViewMode;
-  const isDisabledForEdit = isViewMode || isEditMode;
+ // const isDisabledForEdit = isViewMode || isEditMode;
 
   return (
     <Form
@@ -83,16 +83,16 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       >
         <Input placeholder="john watson" disabled={isViewMode} />
       </Form.Item>
-      {isDisabledForEdit ? (
-        <Form.Item
-          label="Employee ID"
-          name="id"
-          className="w-full"
-          rules={[{ required: true, message: "Please input employee id" }]}
-        >
-          <Input placeholder="123456" disabled />
-        </Form.Item>
-      ) : null}
+
+      <Form.Item
+        label="Employee ID"
+        name="employeeCode"
+        className="w-full"
+        rules={[{ required: true, message: "Please input employee id" }]}
+      >
+        <Input placeholder="Employee123" disabled={isUserRestricted} />
+      </Form.Item>
+
       <Form.Item
         label="Mobile Number"
         name="phoneNumber"
@@ -104,7 +104,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         ]}
         className="w-full"
       >
-        <InputNumber
+        <Input
           prefix="+88"
           placeholder="Enter 11 digit number"
           style={{ width: "100%" }}
@@ -128,7 +128,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         <DatePicker
           className="w-full"
           placeholder="dd/mm/year"
-          disabled={isDisabledForEdit}
+          disabled={isViewMode}
         />
       </Form.Item>
 
@@ -138,7 +138,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true, message: "Please input gender" }]}
         className="w-full"
       >
-        <Select placeholder="Choose Gender" disabled={isDisabledForEdit}>
+        <Select placeholder="Choose Gender" disabled={isViewMode}>
           {formOptions.genders.map((gender: FormFieldFilterType) => (
             <Option key={gender.constant} value={gender.constant}>
               {gender.name}
@@ -153,7 +153,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         rules={[{ required: true, message: "Please input blood group" }]}
         className="w-full"
       >
-        <Select placeholder="Choose Group" disabled={isDisabledForEdit}>
+        <Select placeholder="Choose Group" disabled={isViewMode}>
           {formOptions.bloodGroups.map((bloodGroup: FormFieldFilterType) => (
             <Option key={bloodGroup.constant} value={bloodGroup.constant}>
               {bloodGroup.name}
@@ -228,7 +228,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
         <DatePicker
           className="w-full"
           placeholder="dd/mm/year"
-          disabled={isDisabledForEdit}
+          disabled={isUserRestricted}
         />
       </Form.Item>
 
