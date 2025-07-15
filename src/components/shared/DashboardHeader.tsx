@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { logout, selectCurrentUser } from "../../redux/feature/auth/authSlice";
 import { AiOutlineUser } from "react-icons/ai";
+import img_boy from "../../assets/boy_image.png";
 
 const { Header } = Layout;
 const DashboardHeader = () => {
@@ -41,11 +42,7 @@ const DashboardHeader = () => {
   return (
     <Header className="bg-white sticky top-0 z-10 flex gap-3 justify-end items-center h-14 px-10 shadow">
       <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
-        <Avatar
-          size={"default"}
-          src="https://avatar.iran.liara.run/public/boy"
-          className="cursor-pointer"
-        />
+        <Avatar size={"default"} src={img_boy} className="cursor-pointer" />
       </Dropdown>
     </Header>
   );

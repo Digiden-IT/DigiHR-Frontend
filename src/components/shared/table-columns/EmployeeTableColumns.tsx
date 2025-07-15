@@ -12,23 +12,30 @@ export const EmployeeTableColumns = (
 
   const baseColumns: TableColumnsType<EmployeeFormValues> = [
     {
+      title: "Employee ID",
+      dataIndex: "employeeCode",
+      key: "employeeCode",
+      fixed: "left",
+    },
+    {
       title: "Employee Name",
       dataIndex: "name",
       key: "name",
+      fixed: "left",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
     },
-  ];
-
-  const userColumns: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Mobile Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
     },
+  ];
+
+  const userColumns: TableColumnsType<EmployeeFormValues> = [
     {
       title: "Designation",
       dataIndex: "designation",
@@ -37,6 +44,11 @@ export const EmployeeTableColumns = (
   ];
 
   const adminColumns: TableColumnsType<EmployeeFormValues> = [
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
     {
       title: "Department",
       dataIndex: ["department", "name"],
@@ -61,6 +73,7 @@ export const EmployeeTableColumns = (
     {
       title: "Action",
       key: "action",
+      fixed: "right",
       render: (_, record) => (
         <Space size="middle">
           <Link to={`/${role}/employee-management/user-details/${record.id}`}>

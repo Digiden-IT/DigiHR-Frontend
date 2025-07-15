@@ -33,14 +33,19 @@ export const LeaveManagementTableColumns = (
       },
     },
     {
-      title: "Days",
-      dataIndex: "numberOfDays",
-      key: "numberOfDays",
-    },
-    {
       title: "Leave Reason",
       dataIndex: ["leaveReason", "name"],
       key: "leaveReason",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Days",
+      dataIndex: "numberOfDays",
+      key: "numberOfDays",
     },
   ];
 
