@@ -7,7 +7,7 @@ import {
   AddLeaveRequestFormOptionsType,
   FormFieldFilterType,
 } from "../../types/props.type";
-import { Alert, Button, DatePicker, Form, Modal, Select } from "antd";
+import { Alert, Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -47,6 +47,7 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
 
     const formattedValues = {
       leaveReason: values.leaveReason,
+      description: values.description,
       startDate: values.range[0].format("YYYY-MM-DD"),
       endDate: values.range[1].format("YYYY-MM-DD"),
     };
@@ -110,15 +111,22 @@ const AddLeaveRequestModal: React.FC<LeaveRequestModalProps> = ({
           </Select>
         </Form.Item>
         <Form.Item
-          label="range"
+          label="Description"
+          name="description"
+          rules={[{ required: true, message: "Please input description" }]}
+          className="w-full mb-4"
+        >
+          <Input.TextArea placeholder="Describe your leave reason" />
+        </Form.Item>
+        <Form.Item
+          label="Select Date Range"
           name="range"
           rules={[{ required: true, message: "Please input a date" }]}
           className="w-full mb-4"
         >
           <RangePicker
             className="w-full"
-            showTime={{ format: "HH" }}
-            format="YYYY-MM-DD HH:mm"
+            format="YYYY-MM-DD"
             mode={["date", "date"]}
           />
         </Form.Item>
