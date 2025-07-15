@@ -29,6 +29,7 @@ const EmployeeManagement = () => {
   } = useGetAllUserQuery([
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
+    { name: "sort", value: "employeeCode" },
   ]);
   const totalElements = usersData?.totalElements || 0;
   const [toggleDeleteUser] = useToggleDeleteStatusMutation();
