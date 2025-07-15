@@ -14,6 +14,7 @@ const ViewEmployees: React.FC = () => {
   const { data: usersData, isLoading } = useGetAllUserQuery([
     { name: "page", value: pagination.currentPage - 1 },
     { name: "size", value: pagination.pageSize },
+    { name: "sort", value: "employeeCode" },
   ]);
   const user = useAppSelector(selectCurrentUser);
   const columns = EmployeeTableColumns(user?.role);
