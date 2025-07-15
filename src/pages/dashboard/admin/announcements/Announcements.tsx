@@ -12,6 +12,7 @@ import {
 import BasicLoader from "../../../../components/shared/BasicLoader";
 import { toast } from "sonner";
 import GreetingBanner from "../../../../components/shared/GreetingBanner";
+import img_boy from "../../../../assets/boy_image.png";
 
 const Announcements: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -140,10 +141,7 @@ const Announcements: React.FC = () => {
               className="shadow-md rounded-lg border-blue-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <Avatar
-                  size={30}
-                  src={"https://avatar.iran.liara.run/public/boy"}
-                />
+                <Avatar size={30} src={img_boy} />
                 <div>
                   <h4 className="font-medium">{announcement.authorName}</h4>
                   <h6 className="text-gray-500 text-sm">

@@ -15,7 +15,7 @@ import { useGetAllLeavesQuery } from "../../../../redux/api/leaveManagement";
 import HolidayTableColumns from "../../../../components/shared/table-columns/HolidayTableColumns";
 import { useGetAllHolidaysQuery } from "../../../../redux/api/holidayManagementApi";
 import GreetingBanner from "../../../../components/shared/GreetingBanner";
-
+import img_boy from "../../../../assets/boy_image.png";
 
 const HomeDashboard = () => {
   const user = useAppSelector(selectCurrentUser);
@@ -99,7 +99,7 @@ const HomeDashboard = () => {
   if (isLoading) {
     <BasicLoader />;
   }
-  
+
   return (
     <div className="min-h-screen p-4 overflow-scroll md:overflow-hidden">
       <GreetingBanner />
@@ -112,10 +112,7 @@ const HomeDashboard = () => {
                 className="shadow-md rounded-lg border border-blue-300 mb-4"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <Avatar
-                    size={30}
-                    src={"https://avatar.iran.liara.run/public/boy"}
-                  />
+                  <Avatar size={30} src={img_boy} />
                   <div>
                     <h4 className="font-medium">{announcement.authorName}</h4>
                     <h6 className="text-gray-500 text-sm">
