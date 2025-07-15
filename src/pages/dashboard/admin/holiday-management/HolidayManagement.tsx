@@ -28,7 +28,7 @@ const HolidayManagement: React.FC = () => {
   const { data, isLoading, refetch, isFetching } = useGetAllHolidaysQuery([
     { name: "page", value: pagination.currentPage - 1 }, // API uses 0-indexed pagination
     { name: "size", value: pagination.pageSize },
-    { name: "sort", value: "date,desc" },
+    { name: "sort", value: "id" },
   ]);
 
   const holidaysData: HolidayType[] = data?.data || [];

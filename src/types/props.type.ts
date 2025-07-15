@@ -37,6 +37,7 @@ export interface HolidayType {
 
 export type EmployeeFormValues = {
   id: number;
+  employeeCode: string;
   name: string;
   phoneNumber?: string;
   dateOfBirth?: string;

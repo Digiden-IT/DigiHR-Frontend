@@ -33,7 +33,7 @@ const HomeDashboard = () => {
     { name: "sort", value: "announcementDate,desc" },
   ]);
   const { data: holidayData } = useGetAllHolidaysQuery([
-    { name: "sort", value: "date" },
+    { name: "sort", value: "id" },
   ]);
   const { data: leaveData } = useGetAllLeavesQuery([]);
 

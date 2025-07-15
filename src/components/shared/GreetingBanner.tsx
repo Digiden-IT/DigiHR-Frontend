@@ -17,24 +17,6 @@ const GreetingBanner = () => {
     return "Good night";
   };
   return (
-    // <div className="relative mb-6 h-[200px] ">
-    //   <img
-    //     src={img7}
-    //     alt="Greetings Banner"
-    //     className="w-full h-full mb-4 rounded-lg object-cover"
-    //   />
-    //   {/* <div className="absolute  top-14 left-24 md:left-72 ">
-    //     <div className=" text-3xl font-semibold ">
-    //       Hi,{" "}
-    //       <span className="text-red-800 text-3xl font-semibold">
-    //         {user?.name} 👋
-    //       </span>
-    //     </div>
-    //     <div className="text-2xl text-blue-800 font-semibold">
-    //       {getTimeGreeting()}
-    //     </div>
-    //   </div> */}
-    // </div>
     <div
       className="relative mb-6 h-[200px] w-full rounded-lg bg-no-repeat bg-cover"
       style={{
