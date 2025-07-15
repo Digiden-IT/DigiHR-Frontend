@@ -94,6 +94,26 @@ const Announcements: React.FC = () => {
     },
   ];
 
+  function addSixHours(dateString: string | null | undefined): string {
+    if (!dateString) return "";
+
+    try {
+      const date = new Date(dateString);
+      date.setHours(date.getHours() + 6);
+
+      return date.toLocaleString("en-US", {
+        month: "short", // Jul
+        day: "numeric", // 14
+        hour: "numeric", // 6
+        minute: "2-digit", // 28
+        hour12: true, // PM
+      });
+    } catch (error) {
+      console.error("Invalid date:", error);
+      return "";
+    }
+  }
+
   return (
     <div className="p-6 min-h-screen">
       <GreetingBanner />
@@ -127,7 +147,7 @@ const Announcements: React.FC = () => {
                 <div>
                   <h4 className="font-medium">{announcement.authorName}</h4>
                   <h6 className="text-gray-500 text-sm">
-                    {announcement.announcementDate}
+                    {addSixHours(announcement.announcementDate)}
                   </h6>
                 </div>
                 <Dropdown
